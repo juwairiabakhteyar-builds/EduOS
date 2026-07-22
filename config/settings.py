@@ -40,6 +40,10 @@ INSTALLED_APPS = [
 
     'accounts',
     'users',
+
+    "Apps.students",
+    "Apps.academics",
+    "Apps.guardians",
 ]
 
 MIDDLEWARE = [
@@ -124,3 +128,4 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 AUTH_USER_MODEL = 'users.User'
+LOGIN_URL = "login"

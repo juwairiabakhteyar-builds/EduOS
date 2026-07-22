@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        {% block title %}
+
+        EduOS
+
+        {% endblock %}
+
+    </title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            EduOS
+
+        </div>
+
+        <nav>
+
+            <a href="/">🏠 Dashboard</a>
+
+            <a href="/students/">👨‍🎓 Students</a>
+
+            <a href="#">👩‍🏫 Teachers</a>
+
+            <a href="#">📚 Academics</a>
+
+            <a href="#">📝 Attendance</a>
+
+            <a href="#">💰 Fees</a>
+
+            <a href="#">📖 Library</a>
+
+            <a href="#">📊 Exams</a>
+
+            <a href="#">⚙ Settings</a>
+
+        </nav>
+
+    </aside>
+
+    <main class="main-area">
+
+        <header class="topbar">
+
+            <h2>EduOS ERP</h2>
+
+            <div>
+
+                👤 Admin
+
+            </div>
+
+        </header>
+
+        <section class="page-content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
