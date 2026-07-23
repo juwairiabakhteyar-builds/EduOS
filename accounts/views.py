@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -6,6 +7,15 @@ from Apps.students.models import Student
 from Apps.academics.models import AcademicLevel, Section
 
 def home(request):
+
+    User = get_user_model()
+
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser(
+            username="admin",
+            email="admin@eduos.com",
+            password="EduOS@123"
+        )
 
     return render(
         request,
