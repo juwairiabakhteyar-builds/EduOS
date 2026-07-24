@@ -41,6 +41,8 @@ INSTALLED_APPS = [
 
     'accounts',
     'users',
+    
+    'schools',
 
     "Apps.students",
     "Apps.academics",

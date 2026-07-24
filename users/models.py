@@ -27,5 +27,13 @@ class User(AbstractUser):
         blank=True
     )
 
+    school = models.ForeignKey(
+        "schools.School",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="users"
+    )
+
     def __str__(self):
         return f"{self.username} ({self.role})"

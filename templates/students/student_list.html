@@ -11,31 +11,32 @@ Students | EduOS
     <div class="page-header">
 
         <div>
-
-            <h1>Students</h1>
-
-            <p>Manage all enrolled students</p>
-
+            <h1>Student Management</h1>
+            <p>Total Students: {{ page_obj.paginator.count }}</p>
         </div>
 
-        <a href="/students/add/" class="btn-primary">
-
+        <a href="{% url 'student_create' %}" class="btn-primary">
             + Add Student
-
         </a>
 
     </div>
 
     <div class="card">
 
-        <div class="table-toolbar">
+        <form method="GET" class="table-toolbar">
 
             <input
                 type="text"
-                placeholder="Search student..."
+                name="q"
+                value="{{ query }}"
+                placeholder="Search by Name, Student ID or Admission No..."
                 class="search-box">
 
-        </div>
+            <button class="btn-primary" type="submit">
+                Search
+            </button>
+
+        </form>
 
         <table class="erp-table">
 
@@ -43,11 +44,15 @@ Students | EduOS
 
                 <tr>
 
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Level</th>
+                    <th>Photo</th>
+                    <th>Student ID</th>
+                    <th>Admission No.</th>
+                    <th>Student Name</th>
+                    <th>Gender</th>
+                    <th>Academic Level</th>
                     <th>Section</th>
-                    <th>Status</th>
+                    <th>Guardian</th>
+                    <th>Actions</th>
 
                 </tr>
 
@@ -55,41 +60,110 @@ Students | EduOS
 
             <tbody>
 
-                {% for student in students %}
+            {% for student in page_obj %}
 
                 <tr>
 
+                    <td>
+
+                        {% if student.photo %}
+                            <img src="{{ student.photo.url }}"
+                                 width="45"
+                                 height="45"
+                                 style="border-radius:50%;object-fit:cover;">
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </td>
+
                     <td>{{ student.student_id }}</td>
 
-                    <td><a href="{% url 'student_detail' student.id %}">
-    {{ student.first_name }} {{ student.last_name }}
-</a></td>
+                    <td>{{ student.admission_number }}</td>
+
+                    <td>
+
+                        <a href="{% url 'student_detail' student.pk %}">
+                            {{ student.full_name }}
+                        </a>
+
+                    </td>
+
+                    <td>{{ student.gender }}</td>
 
                     <td>{{ student.academic_level }}</td>
 
                     <td>{{ student.section }}</td>
 
-                    <td>Active</td>
+                    <td>{{ student.guardian }}</td>
 
-                </tr>
+                    <td>
 
-                {% empty %}
+                        <a href="{% url 'student_detail' student.pk %}">
+                            View
+                        </a>
 
-                <tr>
+                        |
 
-                    <td colspan="5" style="text-align:center;padding:40px;">
+                        <a href="{% url 'student_update' student.pk %}">
+                            Edit
+                        </a>
 
-                        No students found.
+                        |
+
+                        <a href="{% url 'student_delete' student.pk %}">
+                            Delete
+                        </a>
 
                     </td>
 
                 </tr>
 
-                {% endfor %}
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="9" style="text-align:center;padding:40px;">
+
+                        <h4>No Students Found</h4>
+
+                        <p>Click "Add Student" to create the first student.</p>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
 
             </tbody>
 
         </table>
+
+        <div style="margin-top:20px;text-align:center;">
+
+            {% if page_obj.has_previous %}
+
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                    ← Previous
+                </a>
+
+            {% endif %}
+
+            <strong>
+
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+            </strong>
+
+            {% if page_obj.has_next %}
+
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                    Next →
+                </a>
+
+            {% endif %}
+
+        </div>
 
     </div>
 

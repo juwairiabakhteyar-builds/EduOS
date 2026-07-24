@@ -5,28 +5,38 @@ from django.contrib.auth import get_user_model
 class Command(BaseCommand):
     help = "Bootstrap EduOS"
 
+
     def handle(self, *args, **kwargs):
+
         User = get_user_model()
 
-        if not User.objects.filter(username="admin").exists():
+        user, created = User.objects.get_or_create(
+            username="admin",
+            defaults={
+                "email": "admin@eduos.com",
+                "role": "super_admin",
+                "is_staff": True,
+                "is_superuser": True,
+            }
+        )
 
-            User.objects.create_superuser(
-                username="admin",
-                email="admin@eduos.com",
-                password="EduOS@123",
-                role="super_admin",
+        user.email = "admin@eduos.com"
+        user.role = "super_admin"
+        user.is_staff = True
+        user.is_superuser = True
+        user.set_password("EduOS@123")
+        user.save()
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                "Super Admin is ready."
             )
+        )
 
-            self.stdout.write(
-                self.style.SUCCESS(
-                    "✅ Super Admin created successfully."
-                )
-            )
+    else:
 
-        else:
-
-            self.stdout.write(
-                self.style.WARNING(
-                    "⚠ Super Admin already exists."
-                )
-            )
+    self.stdout.write(
+        self.style.WARNING(
+        "⚠ Super Admin already exists."
+        )
+    )
