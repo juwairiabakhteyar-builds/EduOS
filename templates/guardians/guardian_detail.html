@@ -1,0 +1,23 @@
+{% extends "layouts/app.html" %}
+
+{% block content %}
+
+<h2>{{ guardian.first_name }} {{ guardian.last_name }}</h2>
+
+<p><strong>Relationship:</strong> {{ guardian.relationship }}</p>
+
+<p><strong>Mobile:</strong> {{ guardian.mobile_number }}</p>
+
+<p><strong>Email:</strong> {{ guardian.email }}</p>
+
+<p><strong>Occupation:</strong> {{ guardian.occupation }}</p>
+
+<a href="{% url 'guardian_update' guardian.id %}" class="btn btn-warning">
+    Edit
+</a>
+
+<a href="{% url 'guardian_delete' guardian.id %}" class="btn btn-danger">
+    Delete
+</a>
+
+{% endblock %}

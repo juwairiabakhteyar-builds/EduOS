@@ -1,4 +1,6 @@
 from django.db import models
+import datetime
+import re
 
 from Apps.academics.models import (
     AcademicSession,
@@ -21,12 +23,14 @@ class Student(models.Model):
 
     student_id = models.CharField(
         max_length=20,
-        unique=True
+        unique=True,
+        blank=True,
     )
 
     admission_number = models.CharField(
         max_length=30,
-        unique=True
+        unique=True,
+        blank=True,
     )
 
     first_name = models.CharField(
@@ -91,7 +95,55 @@ class Student(models.Model):
 
     @property
     def full_name(self):
-        return f"{self.first_name} {self.middle_name} {self.last_name}".replace("  ", " ").strip()
+        return (
+            f"{self.first_name} {self.middle_name} {self.last_name}"
+            .replace("  ", " ")
+            .strip()
+        )
 
-    def __str__(self):
-        return f"{self.student_id} - {self.full_name}"
+    def save(self, *args, **kwargs):
+
+        import datetime
+        import re
+
+        # -----------------------------
+        # Auto Student ID
+        # -----------------------------
+        if not self.student_id:
+
+            max_number = 0
+
+            for student in Student.objects.exclude(pk=self.pk):
+
+                sid = student.student_id or ""
+
+                match = re.fullmatch(r"STU(\d+)", sid)
+
+                if match:
+                    number = int(match.group(1))
+                    max_number = max(max_number, number)
+
+            self.student_id = f"STU{max_number + 1:06d}"
+
+        # -----------------------------
+        # Auto Admission Number
+        # -----------------------------
+        if not self.admission_number:
+
+            year = datetime.date.today().year
+
+            max_number = 0
+
+            for student in Student.objects.exclude(pk=self.pk):
+
+                adm = student.admission_number or ""
+
+                match = re.fullmatch(rf"ADM{year}(\d+)", adm)
+
+                if match:
+                    number = int(match.group(1))
+                    max_number = max(max_number, number)
+
+            self.admission_number = f"ADM{year}{max_number + 1:03d}"
+
+        super().save(*args, **kwargs)

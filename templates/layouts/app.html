@@ -40,25 +40,55 @@
 
         <nav>
 
-            <a href="/">🏠 Dashboard</a>
+    <a href="{% url 'dashboard' %}">
+        🏠 Dashboard
+    </a>
 
-            <a href="/students/">👨‍🎓 Students</a>
+    <a href="{% url 'student_list' %}">
+        👨‍🎓 Students
+    </a>
 
-            <a href="#">👩‍🏫 Teachers</a>
+    <a href="{% url 'guardian_list' %}">
+        👨‍👩‍👧 Guardians
+    </a>
 
-            <a href="#">📚 Academics</a>
+    <a href="#">
+        👩‍🏫 Teachers
+    </a>
 
-            <a href="#">📝 Attendance</a>
+    <a href="#">
+        📚 Academics
+    </a>
 
-            <a href="#">💰 Fees</a>
+    <a href="#">
+        📝 Attendance
+    </a>
 
-            <a href="#">📖 Library</a>
+    <a href="#">
+        🚌 Transport
+    </a>
 
-            <a href="#">📊 Exams</a>
+    <a href="#">
+        📖 Library
+    </a>
 
-            <a href="#">⚙ Settings</a>
+    <a href="#">
+        💰 Fees
+    </a>
 
-        </nav>
+    <a href="#">
+        📊 Examinations
+    </a>
+
+    <a href="#">
+        📢 Notices
+    </a>
+
+    <a href="#">
+        ⚙ Settings
+    </a>
+
+</nav>
 
     </aside>
 

@@ -1,16 +1,18 @@
+from Apps.academics.models import Section
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
 
 from .forms import StudentForm
 from .models import Student
+from Apps.guardians.models import Guardian
 
 
 def student_list(request):
 
     query = request.GET.get("q")
 
-    students = Student.objects.all()
+    students = Student.objects.all().order_by("student_id")
 
     if query:
         students = students.filter(
@@ -50,14 +52,29 @@ def student_create(request):
 
         if form.is_valid():
 
-            form.save()
+            guardian = Guardian.objects.create(
+                first_name=form.cleaned_data["guardian_first_name"],
+                last_name=form.cleaned_data["guardian_last_name"],
+                relationship=form.cleaned_data["guardian_relationship"],
+                mobile_number=form.cleaned_data["guardian_mobile"],
+                email=form.cleaned_data["guardian_email"],
+                occupation=form.cleaned_data["guardian_occupation"],
+            )
+
+            student = form.save(commit=False)
+            student.guardian = guardian
+            student.save()
 
             messages.success(
                 request,
-                "Student added successfully."
+                "Student admitted successfully."
             )
 
             return redirect("student_list")
+
+        else:
+
+            print(form.errors)
 
     else:
 
@@ -104,8 +121,25 @@ def student_update(request, pk):
         )
 
         if form.is_valid():
+            print("===== EDIT FORM DATA =====")
+            print(form.cleaned_data)
+            print("==========================")
 
-            form.save()
+            student = form.save(commit=False)
+
+            guardian = student.guardian
+
+            guardian.first_name = form.cleaned_data["guardian_first_name"]
+            guardian.last_name = form.cleaned_data["guardian_last_name"]
+            guardian.relationship = form.cleaned_data["guardian_relationship"]
+            guardian.mobile_number = form.cleaned_data["guardian_mobile"]
+            guardian.email = form.cleaned_data["guardian_email"]
+            guardian.occupation = form.cleaned_data["guardian_occupation"]
+
+            guardian.save()
+            print("Guardian saved:", guardian.mobile_number)
+
+            student.save()
 
             messages.success(
                 request,
@@ -121,6 +155,14 @@ def student_update(request, pk):
 
         form = StudentForm(
             instance=student,
+            initial={
+                "guardian_first_name": student.guardian.first_name,
+                "guardian_last_name": student.guardian.last_name,
+                "guardian_relationship": student.guardian.relationship,
+                "guardian_mobile": student.guardian.mobile_number,
+                "guardian_email": student.guardian.email,
+                "guardian_occupation": student.guardian.occupation,
+            },
         )
 
     return render(
@@ -131,7 +173,6 @@ def student_update(request, pk):
             "student": student,
         },
     )
-
 
 def student_delete(request, pk):
 
@@ -158,3 +199,19 @@ def student_delete(request, pk):
             "student": student,
         },
     )
+
+def get_sections(request):
+
+        level_id = request.GET.get("academic_level")
+
+        sections = Section.objects.filter(
+            academic_level_id=level_id
+        ).values(
+            "id",
+            "name",
+        )
+
+        return JsonResponse(
+            list(sections),
+            safe=False,
+        )

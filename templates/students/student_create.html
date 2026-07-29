@@ -23,29 +23,25 @@ Add Student | EduOS
 
             {% csrf_token %}
 
+            <h3>Student Details</h3>
+
             <div class="row">
 
-                <div class="col-md-6 mb-3">
-                    <label>Student ID *</label>
-                    {{ form.student_id }}
+                <div class="alert alert-info mb-3">
+    Student ID and Admission Number will be generated automatically after admission.
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label>Admission Number *</label>
-                    {{ form.admission_number }}
-                </div>
-
-                <div class="col-md-4 mb-3">
                     <label>First Name *</label>
                     {{ form.first_name }}
                 </div>
 
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                     <label>Middle Name</label>
                     {{ form.middle_name }}
                 </div>
 
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                     <label>Last Name *</label>
                     {{ form.last_name }}
                 </div>
@@ -80,9 +76,53 @@ Add Student | EduOS
                     {{ form.section }}
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Guardian</label>
-                    {{ form.guardian }}
+                {{ form.guardian }}
+
+            </div>
+
+            <hr>
+
+            <h3>Guardian Details</h3>
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+                    <label>Guardian First Name *</label>
+                    {{ form.guardian_first_name }}
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label>Guardian Last Name</label>
+                    {{ form.guardian_last_name }}
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label>Relationship *</label>
+                    {{ form.guardian_relationship }}
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label>Mobile Number *</label>
+                    <input
+                        type="tel"
+                        name="guardian_mobile"
+                        id="id_guardian_mobile"
+                        maxlength="10"
+                        pattern="[0-9]{10}"
+                        inputmode="numeric"
+                        class="form-control"
+                        value="{{ form.guardian_mobile.value|default:'' }}"
+>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label>Email</label>
+                    {{ form.guardian_email }}
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label>Occupation</label>
+                    {{ form.guardian_occupation }}
                 </div>
 
             </div>
@@ -96,7 +136,7 @@ Add Student | EduOS
                 </a>
 
                 <button type="submit" class="btn btn-primary">
-                    Save Student
+                    Admit Student
                 </button>
 
             </div>
@@ -106,5 +146,125 @@ Add Student | EduOS
     </div>
 
 </div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const level = document.getElementById("id_academic_level");
+    const section = document.getElementById("id_section");
+
+    function loadSections() {
+
+        const levelId = level.value;
+
+        section.innerHTML =
+            '<option value="">---------</option>';
+
+        if (!levelId)
+            return;
+
+        fetch(`/students/sections/?academic_level=${levelId}`)
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                data.forEach(function(item){
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = item.id;
+
+                    option.textContent = item.name;
+
+                    section.appendChild(option);
+
+                });
+
+            });
+
+    }
+
+    level.addEventListener(
+        "change",
+        loadSections
+    );
+
+});
+
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ==========================
+    // Mobile Number
+    // ==========================
+
+    const mobile = document.getElementById("id_guardian_mobile");
+
+    if (mobile) {
+
+        mobile.addEventListener("keypress", function(e){
+
+            const key = e.key;
+
+            // Allow only digits
+            if (!/[0-9]/.test(key)) {
+                e.preventDefault();
+                return;
+            }
+
+            // Maximum 10 digits
+            if (this.value.length >= 10) {
+                e.preventDefault();
+            }
+
+        });
+
+        // Prevent paste of invalid content
+        mobile.addEventListener("input", function(){
+
+            this.value = this.value
+                .replace(/\D/g,"")
+                .slice(0,10);
+
+        });
+
+    }
+
+    // ==========================
+    // Name Fields
+    // ==========================
+
+    const nameFields = [
+
+        "id_first_name",
+        "id_middle_name",
+        "id_last_name",
+        "id_guardian_first_name",
+        "id_guardian_last_name",
+
+    ];
+
+    nameFields.forEach(function(id){
+
+        const field = document.getElementById(id);
+
+        if(!field) return;
+
+        field.addEventListener("input", function(){
+
+            this.value = this.value.replace(/[^a-zA-Z\s'-]/g,"");
+
+        });
+
+    });
+
+});
+
+</script>
 
 {% endblock %}

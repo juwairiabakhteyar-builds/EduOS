@@ -20,9 +20,16 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),
+    path("admin/", admin.site.urls),
+
+    # Authentication
+    path("", include("accounts.urls")),
+
+    # Students
     path("students/", include("Apps.students.urls")),
+
+    # Guardians
+    path("guardians/", include("Apps.guardians.urls")),
 ]
 
 if settings.DEBUG:

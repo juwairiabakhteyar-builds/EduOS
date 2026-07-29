@@ -1,0 +1,27 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}
+Add Guardian | EduOS
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <h1>Add Guardian</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button class="btn btn-primary">
+            Save Guardian
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
