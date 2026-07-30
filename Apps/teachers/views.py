@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -17,14 +14,11 @@ def teacher_list(request):
 
     if query:
 
-        teachers = teachers.filter(
-            first_name__icontains=query
-        ) | teachers.filter(
-            last_name__icontains=query
-        ) | teachers.filter(
-            teacher_id__icontains=query
-        ) | teachers.filter(
-            designation__icontains=query
+        teachers = (
+            teachers.filter(first_name__icontains=query)
+            | teachers.filter(last_name__icontains=query)
+            | teachers.filter(teacher_id__icontains=query)
+            | teachers.filter(designation__icontains=query)
         )
 
     paginator = Paginator(
@@ -57,9 +51,19 @@ def teacher_create(request):
             request.FILES,
         )
 
+        print("=" * 60)
+        print("POST RECEIVED")
+
         if form.is_valid():
 
-            form.save()
+            print("FORM IS VALID")
+
+            teacher = form.save()
+
+            print("=" * 60)
+            print("Teacher Saved Successfully")
+            print("Teacher ID:", teacher.teacher_id)
+            print("=" * 60)
 
             messages.success(
                 request,
@@ -69,6 +73,13 @@ def teacher_create(request):
             return redirect(
                 "teacher_list"
             )
+
+        else:
+
+            print("=" * 60)
+            print("FORM ERRORS")
+            print(form.errors.as_json())
+            print("=" * 60)
 
     else:
 
@@ -127,6 +138,13 @@ def teacher_update(request, pk):
                 "teacher_detail",
                 pk=teacher.pk,
             )
+
+        else:
+
+            print("=" * 60)
+            print("UPDATE FORM ERRORS")
+            print(form.errors.as_json())
+            print("=" * 60)
 
     else:
 
