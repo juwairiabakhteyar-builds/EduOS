@@ -1,182 +1,43 @@
-{% extends "layouts/app.html" %}
+def teacher_create(request):
 
-{% block title %}
-{% if teacher %}
-Edit Teacher
-{% else %}
-Add Teacher
-{% endif %} | EduOS
-{% endblock %}
+    if request.method == "POST":
 
-{% block content %}
+        form = TeacherForm(
+            request.POST,
+            request.FILES,
+        )
 
-<div class="page-container">
+        print("=" * 60)
+        print("POST RECEIVED")
 
-    <div class="page-header">
+        if form.is_valid():
 
-        <div>
+            print("FORM IS VALID")
 
-            <h1>
+            teacher = form.save()
 
-                {% if teacher %}
-                    Edit Teacher
-                {% else %}
-                    Add New Teacher
-                {% endif %}
+            print("Teacher Saved:", teacher.teacher_id)
 
-            </h1>
+            messages.success(
+                request,
+                "Teacher added successfully."
+            )
 
-            <p>Teacher Information</p>
+            return redirect("teacher_list")
 
-        </div>
+        else:
 
-    </div>
+            print("FORM ERRORS")
+            print(form.errors)
 
-    <div class="card">
+    else:
 
-        <form method="POST" enctype="multipart/form-data">
+        form = TeacherForm()
 
-            {% csrf_token %}
-
-            <h3>Personal Information</h3>
-
-            <div class="row">
-
-                <div class="col-md-4 mb-3">
-                    <label>First Name *</label>
-                    {{ form.first_name }}
-                    {{ form.first_name.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Middle Name</label>
-                    {{ form.middle_name }}
-                    {{ form.middle_name.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Last Name *</label>
-                    {{ form.last_name }}
-                    {{ form.last_name.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Gender *</label>
-                    {{ form.gender }}
-                    {{ form.gender.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Date of Birth *</label>
-                    {{ form.date_of_birth }}
-                    {{ form.date_of_birth.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Photo</label>
-                    {{ form.photo }}
-                    {{ form.photo.errors }}
-                </div>
-
-            </div>
-
-            <hr>
-
-            <h3>Contact Information</h3>
-
-            <div class="row">
-
-                <div class="col-md-4 mb-3">
-                    <label>Mobile Number *</label>
-                    {{ form.mobile_number }}
-                    {{ form.mobile_number.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Email *</label>
-                    {{ form.email }}
-                    {{ form.email.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Status</label>
-                    {{ form.status }}
-                    {{ form.status.errors }}
-                </div>
-
-            </div>
-
-            <hr>
-
-            <h3>Professional Information</h3>
-
-            <div class="row">
-
-                <div class="col-md-4 mb-3">
-                    <label>Qualification *</label>
-                    {{ form.qualification }}
-                    {{ form.qualification.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Designation *</label>
-                    {{ form.designation }}
-                    {{ form.designation.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Experience (Years)</label>
-                    {{ form.experience }}
-                    {{ form.experience.errors }}
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Joining Date *</label>
-                    {{ form.joining_date }}
-                    {{ form.joining_date.errors }}
-                </div>
-
-            </div>
-
-            <hr>
-
-            <h3>Address</h3>
-
-            <div class="mb-3">
-
-                {{ form.address }}
-                {{ form.address.errors }}
-
-            </div>
-
-            <div class="d-flex justify-content-end">
-
-                <a
-                    href="{% url 'teacher_list' %}"
-                    class="btn btn-secondary me-2"
-                >
-                    Cancel
-                </a>
-
-                <button
-                    type="submit"
-                    class="btn btn-primary"
-                >
-
-                    {% if teacher %}
-                        Update Teacher
-                    {% else %}
-                        Add Teacher
-                    {% endif %}
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-
-{% endblock %}
+    return render(
+        request,
+        "teachers/teacher_create.html",
+        {
+            "form": form,
+        },
+    )

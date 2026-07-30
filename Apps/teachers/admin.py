@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from .models import Teacher
 
 
@@ -8,8 +7,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
     list_display = (
         "teacher_id",
-        "first_name",
-        "last_name",
+        "full_name",
         "designation",
         "mobile_number",
         "status",
@@ -20,7 +18,6 @@ class TeacherAdmin(admin.ModelAdmin):
         "first_name",
         "last_name",
         "mobile_number",
-        "designation",
     )
 
     list_filter = (
@@ -28,6 +25,6 @@ class TeacherAdmin(admin.ModelAdmin):
         "designation",
     )
 
-    ordering = (
+    readonly_fields = (
         "teacher_id",
     )
