@@ -1,0 +1,165 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}
+Teachers | EduOS
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Teachers</h1>
+            <p>Manage all teaching staff</p>
+        </div>
+
+        <a href="{% url 'teacher_create' %}" class="btn btn-primary">
+            + Add Teacher
+        </a>
+
+    </div>
+
+    <div class="card">
+
+        <form method="GET">
+
+            <div class="table-toolbar">
+
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ query }}"
+                    class="search-box"
+                    placeholder="Search teacher..."
+                >
+
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                >
+                    Search
+                </button>
+
+            </div>
+
+        </form>
+
+        <table class="erp-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Photo</th>
+                    <th>Teacher ID</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Mobile</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for teacher in page_obj %}
+
+                <tr>
+
+                    <td>
+
+                        {% if teacher.photo %}
+
+                            <img
+                                src="{{ teacher.photo.url }}"
+                                class="student-photo"
+                            >
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ teacher.teacher_id }}</td>
+
+                    <td>{{ teacher.full_name }}</td>
+
+                    <td>{{ teacher.designation }}</td>
+
+                    <td>{{ teacher.mobile_number }}</td>
+
+                    <td>{{ teacher.status }}</td>
+
+                    <td>
+
+                        <a
+                            href="{% url 'teacher_detail' teacher.pk %}"
+                            class="btn btn-primary"
+                        >
+                            View
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="7">
+
+                        No teachers found.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <div class="pagination">
+
+            {% if page_obj.has_previous %}
+
+                <a href="?page={{ page_obj.previous_page_number }}">
+
+                    Previous
+
+                </a>
+
+            {% endif %}
+
+            <a>
+
+                {{ page_obj.number }}
+
+            </a>
+
+            {% if page_obj.has_next %}
+
+                <a href="?page={{ page_obj.next_page_number }}">
+
+                    Next
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

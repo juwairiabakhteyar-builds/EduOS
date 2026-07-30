@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "Apps.students",
     "Apps.academics",
     "Apps.guardians",
+    "Apps.teachers",
+    "Apps.leave_management",
 ]
 
 MIDDLEWARE = [
