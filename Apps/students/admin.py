@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Student
 
 
@@ -28,11 +29,51 @@ class StudentAdmin(admin.ModelAdmin):
         "gender",
     )
 
+    ordering = (
+        "student_id",
+    )
+
     readonly_fields = (
         "student_id",
         "admission_number",
     )
 
-    ordering = (
-        "student_id",
+    fieldsets = (
+
+        (
+            "Student Details",
+            {
+                "fields": (
+                    "student_id",
+                    "admission_number",
+                    "first_name",
+                    "middle_name",
+                    "last_name",
+                    "gender",
+                    "date_of_birth",
+                    "photo",
+                )
+            },
+        ),
+
+        (
+            "Academic Information",
+            {
+                "fields": (
+                    "academic_session",
+                    "academic_level",
+                    "section",
+                )
+            },
+        ),
+
+        (
+            "Guardian",
+            {
+                "fields": (
+                    "guardian",
+                )
+            },
+        ),
+
     )

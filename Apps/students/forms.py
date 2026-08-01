@@ -2,11 +2,42 @@ from django import forms
 
 from .models import Student
 from Apps.guardians.models import Guardian
+from Apps.academics.models import Section
 
 from django.core.exceptions import ValidationError
 import re
 
 class StudentForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        self.fields["section"].queryset = Section.objects.none()
+
+        if "academic_level" in self.data:
+
+            try:
+
+                level_id = int(self.data.get("academic_level"))
+
+                self.fields["section"].queryset = (
+                    Section.objects.filter(
+                        academic_level_id=level_id
+                    ).order_by("name")
+                )
+
+            except (ValueError, TypeError):
+
+                pass
+
+        elif self.instance.pk:
+
+            self.fields["section"].queryset = (
+                Section.objects.filter(
+                    academic_level=self.instance.academic_level
+                ).order_by("name")
+            )
 
     guardian_first_name = forms.CharField(
         max_length=100,
@@ -112,7 +143,8 @@ class StudentForm(forms.ModelForm):
             ),
 
             "section": forms.Select(
-                attrs={"class": "form-select"}
+                attrs={"class": "form-select"},
+                choices=[("", "Select Section")],
             ),
 
             "guardian": forms.HiddenInput(),
@@ -141,7 +173,6 @@ class StudentForm(forms.ModelForm):
 
         return value
 
-
     def clean_middle_name(self):
 
         value = self.cleaned_data["middle_name"].strip()
@@ -152,7 +183,6 @@ class StudentForm(forms.ModelForm):
             )
 
         return value
-
 
     def clean_last_name(self):
 
@@ -165,7 +195,6 @@ class StudentForm(forms.ModelForm):
 
         return value
 
-
     def clean_guardian_first_name(self):
 
         value = self.cleaned_data["guardian_first_name"].strip()
@@ -177,7 +206,6 @@ class StudentForm(forms.ModelForm):
 
         return value
 
-
     def clean_guardian_last_name(self):
 
         value = self.cleaned_data["guardian_last_name"].strip()
@@ -188,7 +216,6 @@ class StudentForm(forms.ModelForm):
             )
 
         return value
-
 
     def clean_guardian_mobile(self):
 
