@@ -3,6 +3,10 @@ from django.core.exceptions import ValidationError
 import re
 
 
+# ======================================================
+# Academic Session
+# ======================================================
+
 class AcademicSession(models.Model):
 
     name = models.CharField(
@@ -19,6 +23,7 @@ class AcademicSession(models.Model):
         pattern = r"^\d{4}-\d{4}$"
 
         if not re.fullmatch(pattern, self.name):
+
             raise ValidationError(
                 {
                     "name":
@@ -30,6 +35,7 @@ class AcademicSession(models.Model):
         end_year = int(self.name[5:])
 
         if end_year != start_year + 1:
+
             raise ValidationError(
                 {
                     "name":
@@ -44,4 +50,58 @@ class AcademicSession(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
+
+        return self.name
+
+
+# ======================================================
+# Academic Level
+# ======================================================
+
+class AcademicLevel(models.Model):
+
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+    )
+
+    class Meta:
+
+        ordering = ["id"]
+
+    def __str__(self):
+
+        return self.name
+
+
+# ======================================================
+# Section
+# ======================================================
+
+class Section(models.Model):
+
+    name = models.CharField(
+        max_length=10,
+    )
+
+    academic_level = models.ForeignKey(
+        AcademicLevel,
+        on_delete=models.CASCADE,
+        related_name="sections",
+    )
+
+    class Meta:
+
+        unique_together = (
+            "academic_level",
+            "name",
+        )
+
+        ordering = [
+            "academic_level",
+            "name",
+        ]
+
+    def __str__(self):
+
         return self.name
