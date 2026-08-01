@@ -25,10 +25,49 @@ class StudentAdmin(admin.ModelAdmin):
         "academic_session",
         "academic_level",
         "section",
-        "gender",
     )
 
     readonly_fields = (
         "student_id",
         "admission_number",
+    )
+
+    fieldsets = (
+
+        (
+            "Student Information",
+            {
+                "fields": (
+                    "student_id",
+                    "admission_number",
+                    "first_name",
+                    "middle_name",
+                    "last_name",
+                    "gender",
+                    "date_of_birth",
+                    "photo",
+                )
+            },
+        ),
+
+        (
+            "Academic Information",
+            {
+                "fields": (
+                    "academic_session",
+                    "academic_level",
+                    "section",
+                )
+            },
+        ),
+
+        (
+            "Guardian",
+            {
+                "fields": (
+                    "guardian",
+                )
+            },
+        ),
+
     )
