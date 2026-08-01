@@ -12,7 +12,6 @@ class StudentAdmin(admin.ModelAdmin):
         "full_name",
         "academic_level",
         "section",
-        "academic_session",
     )
 
     search_fields = (
@@ -29,51 +28,7 @@ class StudentAdmin(admin.ModelAdmin):
         "gender",
     )
 
-    ordering = (
-        "student_id",
-    )
-
     readonly_fields = (
         "student_id",
         "admission_number",
-    )
-
-    fieldsets = (
-
-        (
-            "Student Details",
-            {
-                "fields": (
-                    "student_id",
-                    "admission_number",
-                    "first_name",
-                    "middle_name",
-                    "last_name",
-                    "gender",
-                    "date_of_birth",
-                    "photo",
-                )
-            },
-        ),
-
-        (
-            "Academic Information",
-            {
-                "fields": (
-                    "academic_session",
-                    "academic_level",
-                    "section",
-                )
-            },
-        ),
-
-        (
-            "Guardian",
-            {
-                "fields": (
-                    "guardian",
-                )
-            },
-        ),
-
     )
