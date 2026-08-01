@@ -1,50 +1,47 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+import re
 
 
 class AcademicSession(models.Model):
 
     name = models.CharField(
         max_length=20,
-        unique=True
+        unique=True,
     )
 
     is_active = models.BooleanField(
-        default=False
+        default=False,
     )
 
-    def __str__(self):
-        return self.name
+    def clean(self):
 
-class AcademicLevel(models.Model):
+        pattern = r"^\d{4}-\d{4}$"
 
-    name = models.CharField(
-        max_length=50,
-        unique=True
-    )
+        if not re.fullmatch(pattern, self.name):
+            raise ValidationError(
+                {
+                    "name":
+                    "Session must be in the format YYYY-YYYY (Example: 2026-2027)."
+                }
+            )
 
-    def __str__(self):
-        return self.name
+        start_year = int(self.name[:4])
+        end_year = int(self.name[5:])
 
-class Section(models.Model):
+        if end_year != start_year + 1:
+            raise ValidationError(
+                {
+                    "name":
+                    "End year must be exactly one year after the start year."
+                }
+            )
 
-    name = models.CharField(
-        max_length=10,
-    )
+    def save(self, *args, **kwargs):
 
-    academic_level = models.ForeignKey(
-        AcademicLevel,
-        on_delete=models.CASCADE,
-        related_name="sections",
-    )
+        self.full_clean()
 
-    class Meta:
-
-        ordering = ["name"]
-
-        unique_together = (
-            "academic_level",
-            "name",
-        )
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
