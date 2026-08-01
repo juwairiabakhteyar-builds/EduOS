@@ -1,10 +1,13 @@
 from django.contrib import admin
 
 from .models import Student
+from .forms import StudentForm
 
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
+
+    form = StudentForm
 
     list_display = (
         "student_id",
@@ -30,44 +33,4 @@ class StudentAdmin(admin.ModelAdmin):
     readonly_fields = (
         "student_id",
         "admission_number",
-    )
-
-    fieldsets = (
-
-        (
-            "Student Information",
-            {
-                "fields": (
-                    "student_id",
-                    "admission_number",
-                    "first_name",
-                    "middle_name",
-                    "last_name",
-                    "gender",
-                    "date_of_birth",
-                    "photo",
-                )
-            },
-        ),
-
-        (
-            "Academic Information",
-            {
-                "fields": (
-                    "academic_session",
-                    "academic_level",
-                    "section",
-                )
-            },
-        ),
-
-        (
-            "Guardian",
-            {
-                "fields": (
-                    "guardian",
-                )
-            },
-        ),
-
     )
