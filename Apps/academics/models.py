@@ -26,17 +26,26 @@ class AcademicLevel(models.Model):
     def __str__(self):
         return self.name
 
-
 class Section(models.Model):
 
     name = models.CharField(
-        max_length=10
+        max_length=10,
     )
 
     academic_level = models.ForeignKey(
-    AcademicLevel,
-    on_delete=models.CASCADE
+        AcademicLevel,
+        on_delete=models.CASCADE,
+        related_name="sections",
     )
 
+    class Meta:
+
+        ordering = ["name"]
+
+        unique_together = (
+            "academic_level",
+            "name",
+        )
+
     def __str__(self):
-        return f"{self.academic_level} - {self.name}"
+        return self.name

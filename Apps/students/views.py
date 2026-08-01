@@ -1,12 +1,13 @@
-from Apps.academics.models import Section
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.http import JsonResponse
+
+from Apps.academics.models import Section
+from Apps.guardians.models import Guardian
 
 from .forms import StudentForm
 from .models import Student
-from Apps.guardians.models import Guardian
-
 
 def student_list(request):
 
@@ -202,16 +203,27 @@ def student_delete(request, pk):
 
 def get_sections(request):
 
-        level_id = request.GET.get("academic_level")
+    level_id = request.GET.get("academic_level")
 
-        sections = Section.objects.filter(
-            academic_level_id=level_id
-        ).values(
-            "id",
-            "name",
+    if not level_id:
+        return JsonResponse([], safe=False)
+
+    sections = Section.objects.filter(
+        academic_level_id=level_id
+    ).order_by("name")
+
+    data = []
+
+    for section in sections:
+
+        data.append(
+            {
+                "id": section.id,
+                "name": section.name,
+            }
         )
 
-        return JsonResponse(
-            list(sections),
-            safe=False,
-        )
+    return JsonResponse(
+        data,
+        safe=False,
+    )

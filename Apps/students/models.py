@@ -25,12 +25,14 @@ class Student(models.Model):
         max_length=20,
         unique=True,
         blank=True,
+        editable=False,
     )
 
     admission_number = models.CharField(
         max_length=30,
         unique=True,
         blank=True,
+        editable=False,
     )
 
     first_name = models.CharField(
