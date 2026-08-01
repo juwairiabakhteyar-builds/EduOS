@@ -51,19 +51,9 @@ def teacher_create(request):
             request.FILES,
         )
 
-        print("=" * 60)
-        print("POST RECEIVED")
-
         if form.is_valid():
 
-            print("FORM IS VALID")
-
             teacher = form.save()
-
-            print("=" * 60)
-            print("Teacher Saved Successfully")
-            print("Teacher ID:", teacher.teacher_id)
-            print("=" * 60)
 
             messages.success(
                 request,
@@ -78,8 +68,12 @@ def teacher_create(request):
 
             print("=" * 60)
             print("FORM ERRORS")
-            print(form.errors.as_json())
-            print("=" * 60)
+            print(form.errors)
+
+            messages.error(
+                request,
+                "Please correct the errors below."
+            )
 
     else:
 

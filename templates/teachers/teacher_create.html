@@ -15,15 +15,19 @@ Add Teacher
     <div class="page-header">
 
         <div>
+
             <h1>
+
                 {% if teacher %}
                     Edit Teacher
                 {% else %}
                     Add New Teacher
                 {% endif %}
+
             </h1>
 
             <p>Teacher Information</p>
+
         </div>
 
     </div>
@@ -34,12 +38,26 @@ Add Teacher
 
             {% csrf_token %}
 
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} mb-3">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger mb-3">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
             <h3>Personal Information</h3>
 
             <div class="row">
 
                 <div class="col-md-4 mb-3">
-                    <label>First Name <span class="text-danger">*</span></label>
+                    <label>First Name *</label>
                     {{ form.first_name }}
                     {{ form.first_name.errors }}
                 </div>
@@ -51,19 +69,19 @@ Add Teacher
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label>Last Name <span class="text-danger">*</span></label>
+                    <label>Last Name *</label>
                     {{ form.last_name }}
                     {{ form.last_name.errors }}
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label>Gender <span class="text-danger">*</span></label>
+                    <label>Gender *</label>
                     {{ form.gender }}
                     {{ form.gender.errors }}
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label>Date of Birth <span class="text-danger">*</span></label>
+                    <label>Date of Birth *</label>
                     {{ form.date_of_birth }}
                     {{ form.date_of_birth.errors }}
                 </div>
@@ -83,13 +101,13 @@ Add Teacher
             <div class="row">
 
                 <div class="col-md-4 mb-3">
-                    <label>Mobile Number <span class="text-danger">*</span></label>
+                    <label>Mobile Number *</label>
                     {{ form.mobile_number }}
                     {{ form.mobile_number.errors }}
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label>Email <span class="text-danger">*</span></label>
+                    <label>Email *</label>
                     {{ form.email }}
                     {{ form.email.errors }}
                 </div>
@@ -109,13 +127,13 @@ Add Teacher
             <div class="row">
 
                 <div class="col-md-4 mb-3">
-                    <label>Qualification <span class="text-danger">*</span></label>
+                    <label>Qualification *</label>
                     {{ form.qualification }}
                     {{ form.qualification.errors }}
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label>Designation <span class="text-danger">*</span></label>
+                    <label>Designation *</label>
                     {{ form.designation }}
                     {{ form.designation.errors }}
                 </div>
@@ -127,7 +145,7 @@ Add Teacher
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label>Joining Date <span class="text-danger">*</span></label>
+                    <label>Joining Date *</label>
                     {{ form.joining_date }}
                     {{ form.joining_date.errors }}
                 </div>
@@ -145,11 +163,17 @@ Add Teacher
 
             <div class="d-flex justify-content-end">
 
-                <a href="{% url 'teacher_list' %}" class="btn btn-secondary me-2">
+                <a
+                    href="{% url 'teacher_list' %}"
+                    class="btn btn-secondary me-2"
+                >
                     Cancel
                 </a>
 
-                <button type="submit" class="btn btn-primary">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
                     {% if teacher %}
                         Update Teacher
                     {% else %}
