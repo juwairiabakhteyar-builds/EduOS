@@ -1,0 +1,194 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}
+Leave Types | EduOS
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Leave Types</h1>
+
+            <p>
+                Total Leave Types:
+                {{ page_obj.paginator.count }}
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'leave_type_create' %}"
+            class="btn-primary"
+        >
+            + Add Leave Type
+        </a>
+
+    </div>
+
+    <div class="card">
+
+        <form
+            method="GET"
+            class="table-toolbar"
+        >
+
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                class="search-box"
+                placeholder="Search Leave Type..."
+            >
+
+            <button
+                type="submit"
+                class="btn-primary"
+            >
+                Search
+            </button>
+
+        </form>
+
+        <table class="erp-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Leave Name</th>
+                    <th>Code</th>
+                    <th>Maximum Days</th>
+                    <th>Paid</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for leave_type in page_obj %}
+
+                <tr>
+
+                    <td>
+
+                        <a href="{% url 'leave_type_detail' leave_type.pk %}">
+
+                            {{ leave_type.leave_name }}
+
+                        </a>
+
+                    </td>
+
+                    <td>
+
+                        {{ leave_type.leave_code }}
+
+                    </td>
+
+                    <td>
+
+                        {{ leave_type.maximum_days }}
+
+                    </td>
+
+                    <td>
+
+                        {% if leave_type.is_paid %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {{ leave_type.status }}
+
+                    </td>
+
+                    <td>
+
+                        <a href="{% url 'leave_type_detail' leave_type.pk %}">
+                            View
+                        </a>
+
+                        |
+
+                        <a href="{% url 'leave_type_update' leave_type.pk %}">
+                            Edit
+                        </a>
+
+                        |
+
+                        <a href="{% url 'leave_type_delete' leave_type.pk %}">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="6" style="text-align:center;padding:40px;">
+
+                        <h4>No Leave Types Found</h4>
+
+                        <p>
+
+                            Click "Add Leave Type" to create the first leave type.
+
+                        </p>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <div style="margin-top:20px;text-align:center;">
+
+            {% if page_obj.has_previous %}
+
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                    ← Previous
+                </a>
+
+            {% endif %}
+
+            <strong>
+
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+            </strong>
+
+            {% if page_obj.has_next %}
+
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                    Next →
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

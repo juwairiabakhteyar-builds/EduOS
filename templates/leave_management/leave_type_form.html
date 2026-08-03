@@ -1,0 +1,181 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}
+{% if leave_type %}
+Edit Leave Type
+{% else %}
+Add Leave Type
+{% endif %} | EduOS
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>
+
+                {% if leave_type %}
+                    Edit Leave Type
+                {% else %}
+                    Add Leave Type
+                {% endif %}
+
+            </h1>
+
+            <p>
+                Manage school leave types
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+
+                <div class="alert alert-danger">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Leave Name *</label>
+
+                    {{ form.leave_name }}
+
+                    {% if form.leave_name.errors %}
+                        <div class="text-danger small">
+                            {{ form.leave_name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Leave Code *</label>
+
+                    {{ form.leave_code }}
+
+                    {% if form.leave_code.errors %}
+                        <div class="text-danger small">
+                            {{ form.leave_code.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Maximum Days *</label>
+
+                    {{ form.maximum_days }}
+
+                    {% if form.maximum_days.errors %}
+                        <div class="text-danger small">
+                            {{ form.maximum_days.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Status *</label>
+
+                    {{ form.status }}
+
+                    {% if form.status.errors %}
+                        <div class="text-danger small">
+                            {{ form.status.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-12 mb-3">
+
+                    <div class="form-check">
+
+                        {{ form.is_paid }}
+
+                        <label class="form-check-label">
+
+                            Paid Leave
+
+                        </label>
+
+                    </div>
+
+                    {% if form.is_paid.errors %}
+                        <div class="text-danger small">
+                            {{ form.is_paid.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-12 mb-3">
+
+                    <label>Description</label>
+
+                    {{ form.description }}
+
+                    {% if form.description.errors %}
+                        <div class="text-danger small">
+                            {{ form.description.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-end">
+
+                <a
+                    href="{% url 'leave_type_list' %}"
+                    class="btn btn-secondary me-2"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+
+                    {% if leave_type %}
+                        Update Leave Type
+                    {% else %}
+                        Add Leave Type
+                    {% endif %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

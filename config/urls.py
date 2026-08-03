@@ -22,6 +22,12 @@ urlpatterns = [
     #Teachers
     path("teachers/", include("Apps.teachers.urls")),
 
+    # Leave Management
+    path(
+        "leave-management/",
+         include("Apps.leave_management.urls"),
+         ),
+
 ]
 
 if settings.DEBUG:

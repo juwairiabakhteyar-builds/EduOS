@@ -1,0 +1,71 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}
+Delete Leave Type | EduOS
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Delete Leave Type</h1>
+
+            <p>
+                This action cannot be undone.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div class="alert alert-danger">
+
+            <h3>
+
+                Are you sure you want to delete this Leave Type?
+
+            </h3>
+
+            <br>
+
+            <strong>
+
+                {{ leave_type.leave_name }}
+
+            </strong>
+
+            ({{ leave_type.leave_code }})
+
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <a
+                href="{% url 'leave_type_detail' leave_type.pk %}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="btn btn-danger"
+            >
+                Delete Leave Type
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

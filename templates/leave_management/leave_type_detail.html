@@ -1,0 +1,154 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}
+Leave Type Details | EduOS
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Leave Type Details</h1>
+
+            <p>View Leave Type Information</p>
+
+        </div>
+
+        <div>
+
+            <a
+                href="{% url 'leave_type_update' leave_type.pk %}"
+                class="btn btn-primary"
+            >
+                Edit
+            </a>
+
+            <a
+                href="{% url 'leave_type_list' %}"
+                class="btn btn-secondary"
+            >
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <table class="erp-table">
+
+            <tbody>
+
+                <tr>
+
+                    <th>Leave Name</th>
+
+                    <td>{{ leave_type.leave_name }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Leave Code</th>
+
+                    <td>{{ leave_type.leave_code }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Maximum Days</th>
+
+                    <td>{{ leave_type.maximum_days }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Paid Leave</th>
+
+                    <td>
+
+                        {% if leave_type.is_paid %}
+
+                            Yes
+
+                        {% else %}
+
+                            No
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Status</th>
+
+                    <td>{{ leave_type.status }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Description</th>
+
+                    <td>
+
+                        {% if leave_type.description %}
+
+                            {{ leave_type.description }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Created At</th>
+
+                    <td>{{ leave_type.created_at }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Last Updated</th>
+
+                    <td>{{ leave_type.updated_at }}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <div style="margin-top:25px;">
+
+            <a
+                href="{% url 'leave_type_delete' leave_type.pk %}"
+                class="btn btn-danger"
+            >
+                Delete Leave Type
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
