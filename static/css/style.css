@@ -235,3 +235,116 @@ label{
 }
 
 }
+
+/* ===========================
+   Django Messages
+=========================== */
+
+.alert{
+
+    position:relative;
+
+    padding:15px 20px;
+
+    margin-bottom:20px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    border:1px solid transparent;
+
+    animation:fadeIn .3s ease;
+
+}
+
+.alert-success{
+
+    background:#d1e7dd;
+
+    color:#0f5132;
+
+    border-color:#badbcc;
+
+}
+
+.alert-error,
+.alert-danger{
+
+    background:#f8d7da;
+
+    color:#842029;
+
+    border-color:#f5c2c7;
+
+}
+
+.alert-warning{
+
+    background:#fff3cd;
+
+    color:#664d03;
+
+    border-color:#ffecb5;
+
+}
+
+.alert-info{
+
+    background:#cff4fc;
+
+    color:#055160;
+
+    border-color:#b6effb;
+
+}
+
+.close-alert{
+
+    position:absolute;
+
+    top:8px;
+
+    right:12px;
+
+    border:none;
+
+    background:none;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    color:inherit;
+
+    font-weight:bold;
+
+}
+
+.close-alert:hover{
+
+    opacity:.7;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}

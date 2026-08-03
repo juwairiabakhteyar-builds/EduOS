@@ -244,24 +244,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const level = document.getElementById("id_academic_level");
     const section = document.getElementById("id_section");
 
+    if (!level || !section) {
+        console.log("Academic Level or Section dropdown not found.");
+        return;
+    }
+
     function loadSections() {
 
         const levelId = level.value;
 
         section.innerHTML =
-            '<option value="">---------</option>';
+            '<option value="">Loading...</option>';
 
-        if (!levelId)
+        if (!levelId) {
+
+            section.innerHTML =
+                '<option value="">Select Section</option>';
+
             return;
+        }
 
         fetch(`/students/sections/?academic_level=${levelId}`)
 
             .then(response => {
 
                 if (!response.ok) {
-
                     throw new Error("Unable to load sections.");
-
                 }
 
                 return response.json();
@@ -279,7 +287,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.createElement("option");
 
                     option.value = item.id;
-
                     option.textContent = item.name;
 
                     section.appendChild(option);
@@ -290,16 +297,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
             .catch(function(error){
 
-                console.log(error);
+                console.error(error);
+
+                section.innerHTML =
+                    '<option value="">Unable to load</option>';
 
             });
 
     }
 
-    level.addEventListener(
-        "change",
-        loadSections
-    );
+    level.addEventListener("change", loadSections);
+
+    // Load sections automatically if a level is already selected
+    if (level.value) {
+        loadSections();
+    }
 
 });
 

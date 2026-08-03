@@ -8,8 +8,10 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>
 
@@ -21,8 +23,10 @@
 
     </title>
 
-    <link rel="stylesheet"
-          href="{% static 'css/style.css' %}">
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
 
 </head>
 
@@ -40,55 +44,55 @@
 
         <nav>
 
-    <a href="{% url 'dashboard' %}">
-        🏠 Dashboard
-    </a>
+            <a href="{% url 'dashboard' %}">
+                🏠 Dashboard
+            </a>
 
-    <a href="{% url 'student_list' %}">
-        👨‍🎓 Students
-    </a>
+            <a href="{% url 'student_list' %}">
+                👨‍🎓 Students
+            </a>
 
-    <a href="{% url 'guardian_list' %}">
-        👨‍👩‍👧 Guardians
-    </a>
+            <a href="{% url 'guardian_list' %}">
+                👨‍👩‍👧 Guardians
+            </a>
 
-    <a href="{% url 'teacher_list' %}">
-    👩‍🏫 Teachers
-    </a>
+            <a href="{% url 'teacher_list' %}">
+                👩‍🏫 Teachers
+            </a>
 
-    <a href="#">
-        📚 Academics
-    </a>
+            <a href="#">
+                📚 Academics
+            </a>
 
-    <a href="#">
-        📝 Attendance
-    </a>
+            <a href="#">
+                📝 Attendance
+            </a>
 
-    <a href="#">
-        🚌 Transport
-    </a>
+            <a href="#">
+                🚌 Transport
+            </a>
 
-    <a href="#">
-        📖 Library
-    </a>
+            <a href="#">
+                📖 Library
+            </a>
 
-    <a href="#">
-        💰 Fees
-    </a>
+            <a href="#">
+                💰 Fees
+            </a>
 
-    <a href="#">
-        📊 Examinations
-    </a>
+            <a href="#">
+                📊 Examinations
+            </a>
 
-    <a href="#">
-        📢 Notices
-    </a>
+            <a href="#">
+                📢 Notices
+            </a>
 
-    <a href="#">
-        ⚙ Settings
-    </a>
+            <a href="#">
+                ⚙ Settings
+            </a>
 
-</nav>
+        </nav>
 
     </aside>
 
@@ -107,6 +111,28 @@
         </header>
 
         <section class="page-content">
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="alert alert-{{ message.tags }}">
+
+                        {{ message }}
+
+                        <button
+                            type="button"
+                            class="close-alert"
+                            onclick="this.parentElement.remove();"
+                        >
+                            &times;
+                        </button>
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
 
             {% block content %}
 

@@ -9,6 +9,8 @@ from Apps.guardians.models import Guardian
 from .forms import StudentForm
 from .models import Student
 
+from django.contrib import messages
+
 def student_list(request):
 
     query = request.GET.get("q")
@@ -16,20 +18,15 @@ def student_list(request):
     students = Student.objects.all().order_by("student_id")
 
     if query:
-        students = students.filter(
-            first_name__icontains=query
-        ) | students.filter(
-            last_name__icontains=query
-        ) | students.filter(
-            student_id__icontains=query
-        ) | students.filter(
-            admission_number__icontains=query
+        students = (
+            students.filter(first_name__icontains=query)
+            | students.filter(last_name__icontains=query)
+            | students.filter(student_id__icontains=query)
+            | students.filter(admission_number__icontains=query)
         )
 
     paginator = Paginator(students, 10)
-
     page_number = request.GET.get("page")
-
     page_obj = paginator.get_page(page_number)
 
     return render(
@@ -67,11 +64,21 @@ def student_create(request):
             student.save()
 
             messages.success(
-                request,
-                "Student admitted successfully."
-            )
+                    request,
+                    "Student admitted successfully."
+                )
 
-            return redirect("student_list")
+            return render(
+                request,
+                "students/student_list.html",
+                {
+                    "page_obj": Paginator(
+                        Student.objects.all().order_by("student_id"),
+                        10,
+                    ).get_page(1),
+                    "query": "",
+                },
+            )
 
         else:
 
@@ -88,7 +95,6 @@ def student_create(request):
             "form": form,
         },
     )
-
 
 def student_detail(request, pk):
 
