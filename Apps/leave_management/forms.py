@@ -1,9 +1,11 @@
 from django import forms
-from django.core.exceptions import ValidationError
-import re
 
-from .models import LeaveType
+from .models import LeaveType, LeaveApplication
 
+
+# ======================================================
+# Leave Type Form
+# ======================================================
 
 class LeaveTypeForm(forms.ModelForm):
 
@@ -31,14 +33,13 @@ class LeaveTypeForm(forms.ModelForm):
             "leave_code": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "style": "text-transform:uppercase;",
                 }
             ),
 
             "maximum_days": forms.NumberInput(
                 attrs={
                     "class": "form-control",
-                    "min": "0",
+                    "min": 0,
                 }
             ),
 
@@ -60,26 +61,72 @@ class LeaveTypeForm(forms.ModelForm):
                     "class": "form-select",
                 }
             ),
+
         }
 
-    def clean_leave_name(self):
 
-        name = self.cleaned_data["leave_name"].strip()
+# ======================================================
+# Leave Application Form
+# ======================================================
 
-        if not re.fullmatch(r"[A-Za-z ]+", name):
-            raise ValidationError(
-                "Leave name can contain only letters and spaces."
-            )
+class LeaveApplicationForm(forms.ModelForm):
 
-        return name
+    class Meta:
 
-    def clean_leave_code(self):
+        model = LeaveApplication
 
-        code = self.cleaned_data["leave_code"].strip().upper()
+        fields = [
+            "leave_type",
+            "from_date",
+            "to_date",
+            "reason",
+        ]
 
-        if not re.fullmatch(r"[A-Z]{2,5}", code):
-            raise ValidationError(
-                "Leave code must contain 2 to 5 uppercase letters."
-            )
+        widgets = {
 
-        return code
+            "leave_type": forms.Select(
+                attrs={
+                    "class": "form-select",
+                }
+            ),
+
+            "from_date": forms.DateInput(
+                attrs={
+                    "class": "form-control",
+                    "type": "date",
+                }
+            ),
+
+            "to_date": forms.DateInput(
+                attrs={
+                    "class": "form-control",
+                    "type": "date",
+                }
+            ),
+
+            "reason": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 4,
+                    "placeholder": "Enter the reason for leave...",
+                }
+            ),
+
+        }
+
+    def clean(self):
+
+        cleaned_data = super().clean()
+
+        from_date = cleaned_data.get("from_date")
+        to_date = cleaned_data.get("to_date")
+
+        if from_date and to_date:
+
+            if to_date < from_date:
+
+                raise forms.ValidationError(
+                    "To Date cannot be earlier than From Date."
+                )
+
+        return cleaned_data

@@ -1,0 +1,84 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}
+Leave Application | EduOS
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Leave Application Details</h1>
+
+            <p>Application Information</p>
+
+        </div>
+
+        <a
+            href="{% url 'leave_application_list' %}"
+            class="btn btn-secondary"
+        >
+            ← Back
+        </a>
+
+    </div>
+
+    <div class="card">
+
+        <table class="erp-table">
+
+            <tbody>
+
+                <tr>
+                    <th>Applicant</th>
+                    <td>{{ application.applicant }}</td>
+                </tr>
+
+                <tr>
+                    <th>Leave Type</th>
+                    <td>{{ application.leave_type }}</td>
+                </tr>
+
+                <tr>
+                    <th>From Date</th>
+                    <td>{{ application.from_date }}</td>
+                </tr>
+
+                <tr>
+                    <th>To Date</th>
+                    <td>{{ application.to_date }}</td>
+                </tr>
+
+                <tr>
+                    <th>Total Days</th>
+                    <td>{{ application.total_days }}</td>
+                </tr>
+
+                <tr>
+                    <th>Reason</th>
+                    <td>{{ application.reason }}</td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td>{{ application.status }}</td>
+                </tr>
+
+                <tr>
+                    <th>Applied On</th>
+                    <td>{{ application.created_at }}</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
