@@ -77,6 +77,31 @@ Leave Application | EduOS
 
         </table>
 
+        <hr>
+
+        <div class="action-buttons">
+
+            {% if application.status == "Pending" %}
+
+            <a href="{% url 'leave_application_approve' application.pk %}"
+            class="btn btn-success">
+                ✅ Approve
+            </a>
+
+            <a href="{% url 'leave_application_reject' application.pk %}"
+            class="btn btn-danger">
+                ❌ Reject
+            </a>
+
+            <a href="{% url 'leave_application_cancel' application.pk %}"
+            class="btn btn-secondary">
+                🚫 Cancel
+            </a>
+
+            {% endif %}
+
+        </div>
+
     </div>
 
 </div>

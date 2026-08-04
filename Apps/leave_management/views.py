@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 from .models import LeaveType, LeaveApplication
 from .forms import LeaveTypeForm, LeaveApplicationForm
@@ -172,8 +174,6 @@ def leave_type_delete(request, pk):
         },
     )
 
-from django.contrib.auth.decorators import login_required
-
 
 @login_required
 def leave_application_list(request):
@@ -263,4 +263,101 @@ def leave_application_detail(request, pk):
         {
             "application": application,
         },
+    )
+
+
+@login_required
+def leave_application_approve(request, pk):
+
+    application = get_object_or_404(
+        LeaveApplication,
+        pk=pk,
+    )
+
+    if application.status == "Pending":
+
+        application.status = "Approved"
+        application.approved_by = request.user
+        application.approved_at = timezone.now()
+        application.save()
+
+        messages.success(
+            request,
+            "Leave application approved successfully.",
+        )
+
+    else:
+
+        messages.error(
+            request,
+            "This application has already been processed.",
+        )
+
+    return redirect(
+        "leave_application_detail",
+        pk=application.pk,
+    )
+
+
+@login_required
+def leave_application_reject(request, pk):
+
+    application = get_object_or_404(
+        LeaveApplication,
+        pk=pk,
+    )
+
+    if application.status == "Pending":
+
+        application.status = "Rejected"
+        application.approved_by = request.user
+        application.approved_at = timezone.now()
+        application.save()
+
+        messages.success(
+            request,
+            "Leave application rejected successfully.",
+        )
+
+    else:
+
+        messages.error(
+            request,
+            "This application has already been processed.",
+        )
+
+    return redirect(
+        "leave_application_detail",
+        pk=application.pk,
+    )
+
+
+@login_required
+def leave_application_cancel(request, pk):
+
+    application = get_object_or_404(
+        LeaveApplication,
+        pk=pk,
+    )
+
+    if application.status == "Pending":
+
+        application.status = "Cancelled"
+        application.save()
+
+        messages.success(
+            request,
+            "Leave application cancelled successfully.",
+        )
+
+    else:
+
+        messages.error(
+            request,
+            "Only pending applications can be cancelled.",
+        )
+
+    return redirect(
+        "leave_application_detail",
+        pk=application.pk,
     )

@@ -61,4 +61,22 @@ urlpatterns = [
         name="leave_application_detail",
     ),
 
+    path(
+    "applications/<int:pk>/approve/",
+    views.leave_application_approve,
+    name="leave_application_approve",
+    ),
+
+    path(
+        "applications/<int:pk>/reject/",
+        views.leave_application_reject,
+        name="leave_application_reject",
+    ),
+
+    path(
+        "applications/<int:pk>/cancel/",
+        views.leave_application_cancel,
+        name="leave_application_cancel",
+    ),
+
 ]

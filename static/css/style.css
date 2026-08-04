@@ -348,3 +348,41 @@ label{
     }
 
 }
+
+/* =====================================
+   Leave Application Action Buttons
+===================================== */
+
+.action-buttons{
+    display:flex;
+    gap:12px;
+    margin-top:25px;
+    flex-wrap:wrap;
+}
+
+.btn-success{
+    background:#198754;
+    color:#fff;
+}
+
+.btn-success:hover{
+    background:#157347;
+}
+
+.btn-danger{
+    background:#dc3545;
+    color:#fff;
+}
+
+.btn-danger:hover{
+    background:#bb2d3b;
+}
+
+.btn-secondary{
+    background:#6c757d;
+    color:#fff;
+}
+
+.btn-secondary:hover{
+    background:#565e64;
+}

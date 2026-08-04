@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class LeaveType(models.Model):
 
     STATUS_CHOICES = [
@@ -45,18 +46,12 @@ class LeaveType(models.Model):
     )
 
     class Meta:
-
         ordering = ["leave_name"]
-
         verbose_name = "Leave Type"
-
         verbose_name_plural = "Leave Types"
 
     def __str__(self):
-
         return f"{self.leave_name} ({self.leave_code})"
-
-    from django.conf import settings
 
 
 class LeaveApplication(models.Model):
@@ -65,6 +60,7 @@ class LeaveApplication(models.Model):
         ("Pending", "Pending"),
         ("Approved", "Approved"),
         ("Rejected", "Rejected"),
+        ("Cancelled", "Cancelled"),
     ]
 
     applicant = models.ForeignKey(
@@ -117,15 +113,18 @@ class LeaveApplication(models.Model):
     )
 
     class Meta:
-
         ordering = ["-created_at"]
-
         verbose_name = "Leave Application"
-
         verbose_name_plural = "Leave Applications"
 
-    def __str__(self):
+    @property
+    def total_days(self):
 
+        return (
+            self.to_date - self.from_date
+        ).days + 1
+
+    def __str__(self):
         return (
             f"{self.applicant.username} - "
             f"{self.leave_type.leave_name}"
