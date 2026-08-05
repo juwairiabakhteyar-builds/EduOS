@@ -28,6 +28,12 @@ urlpatterns = [
          include("Apps.leave_management.urls"),
          ),
 
+    # Attendance
+    path(
+        "attendance/",
+        include("Apps.attendance.urls"),
+    ),
+
 ]
 
 if settings.DEBUG:

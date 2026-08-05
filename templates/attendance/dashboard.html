@@ -1,0 +1,21 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}
+Attendance Dashboard | EduOS
+{% endblock %}
+
+{% block content %}
+
+<h1>Attendance Dashboard</h1>
+
+<p>This module is under development.</p>
+
+<ul>
+    <li>Total Records: {{ total_records }}</li>
+    <li>Present: {{ present_count }}</li>
+    <li>Absent: {{ absent_count }}</li>
+    <li>Late: {{ late_count }}</li>
+    <li>Leave: {{ leave_count }}</li>
+</ul>
+
+{% endblock %}
