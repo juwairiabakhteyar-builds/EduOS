@@ -1,4 +1,5 @@
 from django.db import models
+from Apps.students.models import Student
 from django.conf import settings
 
 
@@ -12,8 +13,8 @@ class Attendance(models.Model):
         ("Leave", "Leave"),
     ]
 
-    person = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+    student = models.ForeignKey(
+        Student,
         on_delete=models.CASCADE,
         related_name="attendance_records",
     )
@@ -51,7 +52,7 @@ class Attendance(models.Model):
         ordering = ["-attendance_date"]
 
         unique_together = (
-            "person",
+            "student",
             "attendance_date",
         )
 
@@ -62,7 +63,7 @@ class Attendance(models.Model):
     def __str__(self):
 
         return (
-            f"{self.person.username} - "
+            f"{self.student.username} - "
             f"{self.attendance_date} - "
             f"{self.status}"
         )

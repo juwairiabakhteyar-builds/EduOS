@@ -7,7 +7,7 @@ from .models import Attendance
 class AttendanceAdmin(admin.ModelAdmin):
 
     list_display = (
-        "person",
+        "student",
         "attendance_date",
         "status",
         "marked_by",
@@ -20,9 +20,10 @@ class AttendanceAdmin(admin.ModelAdmin):
     )
 
     search_fields = (
-        "person__username",
-        "person__first_name",
-        "person__last_name",
+        "student__student_id",
+        "student__first_name",
+        "student__last_name",
+        "student__admission_number",
     )
 
     ordering = (

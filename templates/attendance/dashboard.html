@@ -1,21 +1,24 @@
-{% extends "layouts/app.html" %}
+<div class="action-buttons">
 
-{% block title %}
-Attendance Dashboard | EduOS
-{% endblock %}
+    <a href="{% url 'mark_attendance' %}"
+       class="btn btn-primary">
 
-{% block content %}
+        📝 Mark Attendance
 
-<h1>Attendance Dashboard</h1>
+    </a>
 
-<p>This module is under development.</p>
+    <a href="{% url 'attendance_records' %}"
+       class="btn btn-secondary">
 
-<ul>
-    <li>Total Records: {{ total_records }}</li>
-    <li>Present: {{ present_count }}</li>
-    <li>Absent: {{ absent_count }}</li>
-    <li>Late: {{ late_count }}</li>
-    <li>Leave: {{ leave_count }}</li>
-</ul>
+        📋 Attendance Records
 
-{% endblock %}
+    </a>
+
+    <a href="#"
+       class="btn btn-info">
+
+        📊 Attendance Reports
+
+    </a>
+
+</div>

@@ -10,7 +10,7 @@ class AttendanceForm(forms.ModelForm):
         model = Attendance
 
         fields = [
-            "person",
+            "student",
             "attendance_date",
             "status",
             "remarks",
@@ -18,7 +18,7 @@ class AttendanceForm(forms.ModelForm):
 
         widgets = {
 
-            "person": forms.Select(
+            "student": forms.Select(
                 attrs={
                     "class": "form-select",
                 }
@@ -46,3 +46,48 @@ class AttendanceForm(forms.ModelForm):
             ),
 
         }
+
+        from Apps.academics.models import (
+    AcademicSession,
+    AcademicLevel,
+    Section,
+)
+
+
+class AttendanceFilterForm(forms.Form):
+
+    academic_session = forms.ModelChoiceField(
+        queryset=AcademicSession.objects.all(),
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+            }
+        ),
+    )
+
+    academic_level = forms.ModelChoiceField(
+        queryset=AcademicLevel.objects.all(),
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+            }
+        ),
+    )
+
+    section = forms.ModelChoiceField(
+        queryset=Section.objects.all(),
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+            }
+        ),
+    )
+
+    attendance_date = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                "class": "form-control",
+                "type": "date",
+            }
+        ),
+    )

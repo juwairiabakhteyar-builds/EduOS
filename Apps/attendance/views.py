@@ -25,12 +25,19 @@ def attendance_dashboard(request):
         status="Leave"
     ).count()
 
+    recent_records = Attendance.objects.select_related(
+        "person"
+    ).order_by(
+        "-created_at"
+    )[:5]
+
     context = {
         "total_records": total_records,
         "present_count": present_count,
         "absent_count": absent_count,
         "late_count": late_count,
         "leave_count": leave_count,
+        "recent_records": recent_records,
     }
 
     return render(
