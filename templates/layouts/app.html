@@ -1,7 +1,6 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -16,9 +15,7 @@
     <title>
 
         {% block title %}
-
-        EduOS
-
+            EduOS
         {% endblock %}
 
     </title>
@@ -30,75 +27,107 @@
 
 </head>
 
+
 <body>
 
-<div class="app-layout">
+    <!-- ===================================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================================== -->
 
     <aside class="sidebar">
 
         <div class="logo">
-
             EduOS
-
         </div>
 
+
         <nav>
+
+            <!-- Dashboard -->
 
             <a href="{% url 'dashboard' %}">
                 🏠 Dashboard
             </a>
 
+
+            <!-- Students -->
+
             <a href="{% url 'student_list' %}">
                 👨‍🎓 Students
             </a>
+
+
+            <!-- Guardians -->
 
             <a href="{% url 'guardian_list' %}">
                 👨‍👩‍👧 Guardians
             </a>
 
+
+            <!-- Teachers -->
+
             <a href="{% url 'teacher_list' %}">
                 👩‍🏫 Teachers
             </a>
+
+
+            <!-- Academics -->
 
             <a href="#">
                 📚 Academics
             </a>
 
-            <a href="{% url 'leave_application_list' %}">
-                🏖 Leave Applications
+             <!-- Leave Management -->
+
+
+            <a href="{% url 'leave_management_dashboard' %}">
+                🏖 Leave Management
             </a>
 
-            <a href="{% url 'leave_type_list' %}">
-                📋 Leave Types
-            </a>
 
-            <a href="#">
+            <!-- Attendance -->
+
+            <a href="{% url 'attendance_dashboard' %}">
                 📝 Attendance
             </a>
+
+
+            <!-- Transport -->
 
             <a href="#">
                 🚌 Transport
             </a>
 
+
+            <!-- Library -->
+
             <a href="#">
                 📖 Library
             </a>
+
+
+            <!-- Fees -->
 
             <a href="#">
                 💰 Fees
             </a>
 
+
+            <!-- Examinations -->
+
             <a href="#">
                 📊 Examinations
             </a>
+
+
+            <!-- Notices -->
 
             <a href="#">
                 📢 Notices
             </a>
 
-            <a href="{% url 'leave_type_list' %}">
-                🏖 Leave Management
-            </a>
+
+            <!-- Settings -->
 
             <a href="#">
                 ⚙ Settings
@@ -108,21 +137,36 @@
 
     </aside>
 
+
+    <!-- ===================================================== -->
+    <!-- MAIN AREA -->
+    <!-- ===================================================== -->
+
     <main class="main-area">
+
+
+        <!-- Top Bar -->
 
         <header class="topbar">
 
-            <h2>EduOS ERP</h2>
+            <h2>
+                EduOS ERP
+            </h2>
+
 
             <div>
-
                 👤 Admin
-
             </div>
 
         </header>
 
+
+        <!-- Page Content -->
+
         <section class="page-content">
+
+
+            <!-- Messages -->
 
             {% if messages %}
 
@@ -131,6 +175,7 @@
                     <div class="alert alert-{{ message.tags }}">
 
                         {{ message }}
+
 
                         <button
                             type="button"
@@ -146,15 +191,18 @@
 
             {% endif %}
 
+
+            <!-- Main Template Content -->
+
             {% block content %}
 
             {% endblock %}
+
 
         </section>
 
     </main>
 
-</div>
 
 </body>
 

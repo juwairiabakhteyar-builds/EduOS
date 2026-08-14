@@ -8,39 +8,259 @@ Attendance Records | EduOS
 
 <h1>Attendance Records</h1>
 
-<table class="table">
+<!-- ====================================================== -->
+<!-- FILTERS -->
+<!-- ====================================================== -->
 
-    <tr>
-        <th>Person</th>
-        <th>Date</th>
-        <th>Status</th>
-    </tr>
+<form method="GET">
 
-    {% for record in records %}
+    <div>
 
-    <tr>
+        <label>Academic Session</label>
 
-        <td>{{ record.person }}</td>
+        <select name="academic_session">
 
-        <td>{{ record.attendance_date }}</td>
+            <option value="">
+                All Sessions
+            </option>
 
-        <td>{{ record.status }}</td>
+            {% for session in academic_sessions %}
 
-    </tr>
+                <option
+                    value="{{ session.id }}"
+                    {% if selected_session == session.id|stringformat:"s" %}
+                        selected
+                    {% endif %}
+                >
+                    {{ session.name }}
+                </option>
 
-    {% empty %}
+            {% endfor %}
 
-    <tr>
+        </select>
 
-        <td colspan="3">
+    </div>
 
-            No attendance records found.
 
-        </td>
+    <div>
 
-    </tr>
+        <label>Class</label>
 
-    {% endfor %}
+        <select name="academic_level">
+
+            <option value="">
+                All Classes
+            </option>
+
+            {% for level in academic_levels %}
+
+                <option
+                    value="{{ level.id }}"
+                    {% if selected_level == level.id|stringformat:"s" %}
+                        selected
+                    {% endif %}
+                >
+                    {{ level.name }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+
+    <div>
+
+        <label>Section</label>
+
+        <select name="section">
+
+            <option value="">
+                All Sections
+            </option>
+
+            {% for section in sections %}
+
+                <option
+                    value="{{ section.id }}"
+                    {% if selected_section == section.id|stringformat:"s" %}
+                        selected
+                    {% endif %}
+                >
+                    {{ section.name }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+
+    <div>
+
+        <label>Status</label>
+
+        <select name="status">
+
+            <option value="">
+                All Status
+            </option>
+
+            {% for value, label in status_choices %}
+
+                <option
+                    value="{{ value }}"
+                    {% if selected_status == value %}
+                        selected
+                    {% endif %}
+                >
+                    {{ label }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+
+    <div>
+
+    <label>From Date</label>
+
+    <input
+        type="date"
+        name="from_date"
+        value="{{ selected_from_date }}"
+    >
+
+    </div>
+
+
+    <div>
+
+        <label>To Date</label>
+
+        <input
+            type="date"
+            name="to_date"
+            value="{{ selected_to_date }}"
+        >
+
+    </div>
+
+
+    <button type="submit">
+        Filter
+    </button>
+
+
+    <a href="{% url 'attendance_records' %}">
+        Clear Filters
+    </a>
+
+</form>
+
+
+<hr>
+
+
+<!-- ====================================================== -->
+<!-- RECORDS TABLE -->
+<!-- ====================================================== -->
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>Student</th>
+
+            <th>Session</th>
+
+            <th>Class</th>
+
+            <th>Section</th>
+
+            <th>Date</th>
+
+            <th>Status</th>
+
+            <th>Marked By</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+        {% for record in records %}
+
+            <tr>
+
+                <td>
+                    {{ record.student.full_name }}
+                </td>
+
+                <td>
+                    {{ record.academic_session }}
+                </td>
+
+                <td>
+                    {{ record.academic_level }}
+                </td>
+
+                <td>
+                    {{ record.section }}
+                </td>
+
+                <td>
+                    {{ record.attendance_date }}
+                </td>
+
+                <td>
+                    {{ record.status }}
+                </td>
+
+                <td>
+
+                    {% if record.marked_by %}
+                        {{ record.marked_by.username }}
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <a href="{% url 'attendance_detail' record.id %}">
+                        View
+                    </a>
+
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+
+                <td colspan="8">
+                    No attendance records found.
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
 
 </table>
 

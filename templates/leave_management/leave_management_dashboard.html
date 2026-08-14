@@ -1,0 +1,236 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Leave Management | EduOS{% endblock %}
+
+{% block content %}
+
+<div class="leave-dashboard">
+
+    <!-- Header -->
+    <div class="leave-dashboard-header">
+        <h2>Leave Management</h2>
+        <p>Manage leave applications and leave types.</p>
+    </div>
+
+
+    <!-- Main Actions -->
+    <div class="leave-action-grid">
+
+        <a href="{% url 'leave_application_create' %}"
+           class="leave-action-card">
+
+            <div class="leave-action-icon">📝</div>
+
+            <h3>Apply for Leave</h3>
+
+            <p>
+                Submit a new leave application.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'leave_application_list' %}"
+           class="leave-action-card">
+
+            <div class="leave-action-icon">📋</div>
+
+            <h3>Leave Applications</h3>
+
+            <p>
+                Review and manage submitted applications.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'leave_type_list' %}"
+           class="leave-action-card">
+
+            <div class="leave-action-icon">📂</div>
+
+            <h3>Leave Types</h3>
+
+            <p>
+                Manage the different types of leave.
+            </p>
+
+        </a>
+
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="leave-stats-grid">
+
+        <div class="leave-stat-card">
+
+            <div class="leave-stat-label">
+                Leave Types
+            </div>
+
+            <div class="leave-stat-number">
+                {{ total_leave_types }}
+            </div>
+
+        </div>
+
+
+        <div class="leave-stat-card">
+
+            <div class="leave-stat-label">
+                Total Applications
+            </div>
+
+            <div class="leave-stat-number">
+                {{ total_applications }}
+            </div>
+
+        </div>
+
+
+        <div class="leave-stat-card">
+
+            <div class="leave-stat-label">
+                Pending
+            </div>
+
+            <div class="leave-stat-number pending">
+                {{ pending_applications }}
+            </div>
+
+        </div>
+
+
+        <div class="leave-stat-card">
+
+            <div class="leave-stat-label">
+                Approved
+            </div>
+
+            <div class="leave-stat-number approved">
+                {{ approved_applications }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Recent Applications -->
+    <div class="leave-recent-card">
+
+        <div class="leave-recent-header">
+
+            <h3>Recent Leave Applications</h3>
+
+            <a href="{% url 'leave_application_list' %}"
+               class="leave-view-all">
+                View All
+            </a>
+
+        </div>
+
+
+        <div class="leave-table-wrapper">
+
+            <table class="leave-table">
+
+                <thead>
+                    <tr>
+                        <th>Applicant</th>
+                        <th>Leave Type</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for application in recent_applications %}
+
+                    <tr>
+
+                        <td>
+                            {{ application.applicant }}
+                        </td>
+
+                        <td>
+                            {{ application.leave_type }}
+                        </td>
+
+                        <td>
+
+                            {% if application.status == "Approved" %}
+
+                                <span class="leave-status approved">
+                                    Approved
+                                </span>
+
+                            {% elif application.status == "Rejected" %}
+
+                                <span class="leave-status rejected">
+                                    Rejected
+                                </span>
+
+                            {% elif application.status == "Cancelled" %}
+
+                                <span class="leave-status cancelled">
+                                    Cancelled
+                                </span>
+
+                            {% else %}
+
+                                <span class="leave-status pending">
+                                    Pending
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ application.created_at|date:"d M Y" }}
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{% url 'leave_application_detail' application.pk %}"
+                                class="leave-view-btn"
+                            >
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5"
+                            style="text-align: center; padding: 30px; color: #6b7280;">
+
+                            No leave applications yet.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

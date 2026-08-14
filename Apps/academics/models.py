@@ -82,23 +82,12 @@ class Section(models.Model):
 
     name = models.CharField(
         max_length=10,
-    )
-
-    academic_level = models.ForeignKey(
-        AcademicLevel,
-        on_delete=models.CASCADE,
-        related_name="sections",
+        unique=True,
     )
 
     class Meta:
 
-        unique_together = (
-            "academic_level",
-            "name",
-        )
-
         ordering = [
-            "academic_level",
             "name",
         ]
 

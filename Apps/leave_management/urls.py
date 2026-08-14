@@ -6,6 +6,16 @@ from . import views
 urlpatterns = [
 
     # =====================================
+    # Leave Management Dashboard
+    # =====================================
+
+    path(
+        "management/",
+        views.leave_management_dashboard,
+        name="leave_management_dashboard",
+    ),
+
+    # =====================================
     # Leave Types
     # =====================================
 

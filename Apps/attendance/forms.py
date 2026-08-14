@@ -2,6 +2,12 @@ from django import forms
 
 from .models import Attendance
 
+from Apps.academics.models import (
+    AcademicSession,
+    AcademicLevel,
+    Section,
+)
+
 
 class AttendanceForm(forms.ModelForm):
 
@@ -46,12 +52,6 @@ class AttendanceForm(forms.ModelForm):
             ),
 
         }
-
-        from Apps.academics.models import (
-    AcademicSession,
-    AcademicLevel,
-    Section,
-)
 
 
 class AttendanceFilterForm(forms.Form):

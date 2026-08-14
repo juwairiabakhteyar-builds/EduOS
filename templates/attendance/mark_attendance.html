@@ -6,8 +6,321 @@ Mark Attendance | EduOS
 
 {% block content %}
 
-<h1>Mark Attendance</h1>
+<div class="container-fluid">
 
-<p>Bulk Attendance Screen Coming Soon.</p>
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Mark Attendance
+            </h2>
+
+            <p class="text-muted mb-0">
+                Select the academic details and mark student attendance.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Filters -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Attendance Filters
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <label class="form-label">
+                            Academic Session
+                        </label>
+
+                        {{ form.academic_session }}
+
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <label class="form-label">
+                            Class
+                        </label>
+
+                        {{ form.academic_level }}
+
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <label class="form-label">
+                            Section
+                        </label>
+
+                        {{ form.section }}
+
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <label class="form-label">
+                            Attendance Date
+                        </label>
+
+                        {{ form.attendance_date }}
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-4">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary px-4"
+                    >
+                        Load Students
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Students -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Students
+            </h5>
+
+        </div>
+
+
+        <div class="card-body">
+
+            {% if students %}
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <!-- Selected filter values -->
+
+                <input
+                    type="hidden"
+                    name="academic_session"
+                    value="{{ selected_session }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="academic_level"
+                    value="{{ selected_level }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="section"
+                    value="{{ selected_section }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="attendance_date"
+                    value="{{ selected_date|date:'Y-m-d' }}"
+                >
+
+
+                <!-- Student Table -->
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Photo
+                                </th>
+
+                                <th>
+                                    Admission No.
+                                </th>
+
+                                <th>
+                                    Student Name
+                                </th>
+
+                                <th style="min-width: 180px;">
+                                    Attendance Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for student in students %}
+
+                            <tr>
+
+                                <!-- Photo -->
+
+                                <td>
+
+                                    {% if student.photo %}
+
+                                    <img
+                                        src="{{ student.photo.url }}"
+                                        width="45"
+                                        height="45"
+                                        class="rounded-circle object-fit-cover"
+                                        alt="{{ student.full_name }}"
+                                    >
+
+                                    {% else %}
+
+                                    <div
+                                        class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+                                        style="width:45px;height:45px;"
+                                    >
+                                        👤
+                                    </div>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- Admission Number -->
+
+                                <td>
+
+                                    {{ student.admission_number }}
+
+                                </td>
+
+
+                                <!-- Student Name -->
+
+                                <td>
+
+                                    <strong>
+                                        {{ student.full_name }}
+                                    </strong>
+
+                                </td>
+
+
+                                <!-- Attendance Status -->
+
+                                <td>
+
+                                    <select
+                                        name="status_{{ student.id }}"
+                                        class="form-select"
+                                    >
+
+                                        <option value="Present">
+                                            Present
+                                        </option>
+
+                                        <option value="Absent">
+                                            Absent
+                                        </option>
+
+                                        <option value="Late">
+                                            Late
+                                        </option>
+
+                                        <option value="Half Day">
+                                            Half Day
+                                        </option>
+
+                                        <option value="Leave">
+                                            Leave
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- Save Button -->
+
+                <div class="d-flex justify-content-end mt-4">
+
+                    <button
+                        type="submit"
+                        class="btn btn-success px-4"
+                    >
+                        Save Attendance
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            {% else %}
+
+            <!-- Empty State -->
+
+            <div class="text-center py-5">
+
+                <h5 class="text-muted">
+                    No students loaded.
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Select the filters above and click
+                    <strong>Load Students</strong>.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

@@ -1,0 +1,344 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Attendance Detail | EduOS{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="mb-1">Attendance Detail</h2>
+
+            <p class="text-muted mb-0">
+                View complete attendance information.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a
+                href="{% url 'attendance_edit' attendance.id %}"
+                class="btn btn-primary"
+            >
+                Edit Attendance
+            </a>
+
+            <a
+                href="{% url 'attendance_delete' attendance.id %}"
+                class="btn btn-danger"
+            >
+                Delete
+            </a>
+
+            <a
+                href="{% url 'attendance_records' %}"
+                class="btn btn-outline-secondary"
+            >
+                Back to Records
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Student Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Student Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Student Name
+                    </label>
+
+                    <div class="fw-semibold">
+                        {{ attendance.student.full_name }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Student ID
+                    </label>
+
+                    <div class="fw-semibold">
+                        {{ attendance.student.student_id }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Admission Number
+                    </label>
+
+                    <div class="fw-semibold">
+                        {{ attendance.student.admission_number }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Academic Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Academic Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Academic Session
+                    </label>
+
+                    <div class="fw-semibold">
+                        {{ attendance.academic_session }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Class
+                    </label>
+
+                    <div class="fw-semibold">
+                        {{ attendance.academic_level }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Section
+                    </label>
+
+                    <div class="fw-semibold">
+                        {{ attendance.section }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Attendance Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Attendance Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Attendance Date
+                    </label>
+
+                    <div class="fw-semibold">
+                        {{ attendance.attendance_date|date:"d M Y" }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Status
+                    </label>
+
+                    <div>
+
+                        {% if attendance.status == "Present" %}
+
+                            <span class="badge bg-success">
+                                Present
+                            </span>
+
+                        {% elif attendance.status == "Absent" %}
+
+                            <span class="badge bg-danger">
+                                Absent
+                            </span>
+
+                        {% elif attendance.status == "Late" %}
+
+                            <span class="badge bg-warning text-dark">
+                                Late
+                            </span>
+
+                        {% elif attendance.status == "Half Day" %}
+
+                            <span class="badge bg-info text-dark">
+                                Half Day
+                            </span>
+
+                        {% elif attendance.status == "Leave" %}
+
+                            <span class="badge bg-secondary">
+                                Leave
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                {{ attendance.status }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+                        Marked By
+                    </label>
+
+                    <div class="fw-semibold">
+                        {{ attendance.marked_by }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-12 mb-3">
+
+                    <label class="text-muted small">
+                        Remarks
+                    </label>
+
+                    <div class="fw-semibold">
+
+                        {% if attendance.remarks %}
+
+                            {{ attendance.remarks }}
+
+                        {% else %}
+
+                            <span class="text-muted">
+                                No remarks added.
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Record Information -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Record Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="text-muted small">
+                        Created At
+                    </label>
+
+                    <div>
+                        {{ attendance.created_at|date:"d M Y, h:i A" }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="text-muted small">
+                        Last Updated
+                    </label>
+
+                    <div>
+                        {{ attendance.updated_at|date:"d M Y, h:i A" }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

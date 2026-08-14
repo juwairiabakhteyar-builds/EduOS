@@ -1,24 +1,315 @@
-<div class="action-buttons">
+{% extends "layouts/app.html" %}
 
-    <a href="{% url 'mark_attendance' %}"
-       class="btn btn-primary">
+{% block title %}Attendance | EduOS{% endblock %}
 
-        📝 Mark Attendance
+{% block content %}
 
-    </a>
+<div class="container-fluid">
 
-    <a href="{% url 'attendance_records' %}"
-       class="btn btn-secondary">
+    <!-- Header -->
 
-        📋 Attendance Records
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    </a>
+        <div>
+            <h2 class="mb-1">Attendance</h2>
 
-    <a href="#"
-       class="btn btn-info">
+            <p class="text-muted mb-0">
+                Manage and monitor student attendance.
+            </p>
+        </div>
 
-        📊 Attendance Reports
+    </div>
 
-    </a>
+
+    <!-- Main Actions -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+
+            <a
+                href="{% url 'mark_attendance' %}"
+                class="text-decoration-none"
+            >
+
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <h5 class="mb-2">
+                            Mark Attendance
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Record today's attendance for a class and section.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <a
+                href="{% url 'attendance_records' %}"
+                class="text-decoration-none"
+            >
+
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <h5 class="mb-2">
+                            Attendance Records
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            View, filter, edit and manage attendance records.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <h5 class="mb-2">
+                        Attendance Overview
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Monitor attendance statistics and recent activity.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Statistics -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-muted small">
+                        Total Records
+                    </div>
+
+                    <div class="fs-3 fw-semibold">
+                        {{ total_records }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-muted small">
+                        Present
+                    </div>
+
+                    <div class="fs-3 fw-semibold text-success">
+                        {{ present_count }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-muted small">
+                        Absent
+                    </div>
+
+                    <div class="fs-3 fw-semibold text-danger">
+                        {{ absent_count }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Recent Attendance -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+                Recent Attendance
+            </h5>
+
+            <a
+                href="{% url 'attendance_records' %}"
+                class="btn btn-sm btn-outline-primary"
+            >
+                View All
+            </a>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Student</th>
+
+                            <th>Date</th>
+
+                            <th>Class</th>
+
+                            <th>Section</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for record in recent_records %}
+
+                        <tr>
+
+                            <td>
+                                {{ record.student.full_name }}
+                            </td>
+
+                            <td>
+                                {{ record.attendance_date|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                {{ record.academic_level }}
+                            </td>
+
+                            <td>
+                                {{ record.section }}
+                            </td>
+
+                            <td>
+
+                                {% if record.status == "Present" %}
+                                    <span class="badge bg-success">
+                                        Present
+                                    </span>
+
+                                {% elif record.status == "Absent" %}
+                                    <span class="badge bg-danger">
+                                        Absent
+                                    </span>
+
+                                {% elif record.status == "Late" %}
+                                    <span class="badge bg-warning text-dark">
+                                        Late
+                                    </span>
+
+                                {% elif record.status == "Half Day" %}
+                                    <span class="badge bg-info text-dark">
+                                        Half Day
+                                    </span>
+
+                                {% else %}
+                                    <span class="badge bg-secondary">
+                                        {{ record.status }}
+                                    </span>
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="{% url 'attendance_detail' record.id %}"
+                                    class="btn btn-sm btn-outline-primary"
+                                >
+                                    View
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="text-center text-muted py-4"
+                            >
+                                No attendance records yet.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
+
+{% endblock %}

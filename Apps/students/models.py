@@ -149,3 +149,6 @@ class Student(models.Model):
             self.admission_number = f"ADM{year}{max_number + 1:03d}"
 
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.full_name

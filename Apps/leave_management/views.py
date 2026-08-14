@@ -361,3 +361,48 @@ def leave_application_cancel(request, pk):
         "leave_application_detail",
         pk=application.pk,
     )
+
+# ============================================================
+# LEAVE MANAGEMENT DASHBOARD
+# ============================================================
+
+@login_required
+def leave_management_dashboard(request):
+
+    total_leave_types = LeaveType.objects.count()
+
+    total_applications = LeaveApplication.objects.count()
+
+    pending_applications = LeaveApplication.objects.filter(
+        status="Pending"
+    ).count()
+
+    approved_applications = LeaveApplication.objects.filter(
+        status="Approved"
+    ).count()
+
+    rejected_applications = LeaveApplication.objects.filter(
+        status="Rejected"
+    ).count()
+
+    recent_applications = (
+        LeaveApplication.objects
+        .select_related(
+            "applicant",
+            "leave_type",
+        )
+        .order_by("-created_at")[:5]
+    )
+
+    return render(
+        request,
+        "leave_management/leave_management_dashboard.html",
+        {
+            "total_leave_types": total_leave_types,
+            "total_applications": total_applications,
+            "pending_applications": pending_applications,
+            "approved_applications": approved_applications,
+            "rejected_applications": rejected_applications,
+            "recent_applications": recent_applications,
+        },
+    )

@@ -142,17 +142,8 @@ class AcademicLevelAdmin(admin.ModelAdmin):
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
 
-    form = SectionAdminForm
+    list_display = ("name",)
 
-    list_display = (
-        "academic_level",
-        "name",
-    )
+    list_filter = ("name",)
 
-    list_filter = (
-        "academic_level",
-    )
-
-    search_fields = (
-        "name",
-    )
+    search_fields = ("name",)
