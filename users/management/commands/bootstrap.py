@@ -98,25 +98,23 @@ class Command(BaseCommand):
         # -----------------------------
         # Sections
         # -----------------------------
-        for level in AcademicLevel.objects.all():
-            for section_name in ["A", "B", "C"]:
-                Section.objects.get_or_create(
-                    academic_level=level,
-                    name=section_name,
-                )
+        for section_name in ["A", "B", "C"]:
+            Section.objects.get_or_create(
+                name=section_name,
+            )
 
         self.stdout.write(
-            self.style.SUCCESS("✓ Sections ready.")
+            self.style.SUCCESS("Sections ready.")
         )
 
         # -----------------------------
         # Demo Guardian
         # -----------------------------
         Guardian.objects.get_or_create(
+            first_name="Demo",
+            last_name="Guardian",
             mobile_number="9999999999",
             defaults={
-                "first_name": "Demo",
-                "last_name": "Guardian",
                 "relationship": "Father",
                 "email": "guardian@eduos.com",
                 "occupation": "Engineer",
