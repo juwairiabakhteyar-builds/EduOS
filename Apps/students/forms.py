@@ -7,37 +7,8 @@ from Apps.academics.models import Section
 from django.core.exceptions import ValidationError
 import re
 
+
 class StudentForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
-
-        self.fields["section"].queryset = Section.objects.none()
-
-        if "academic_level" in self.data:
-
-            try:
-
-                level_id = int(self.data.get("academic_level"))
-
-                self.fields["section"].queryset = (
-                    Section.objects.filter(
-                        academic_level_id=level_id
-                    ).order_by("name")
-                )
-
-            except (ValueError, TypeError):
-
-                pass
-
-        elif self.instance.pk:
-
-            self.fields["section"].queryset = (
-                Section.objects.filter(
-                    academic_level=self.instance.academic_level
-                ).order_by("name")
-            )
 
     guardian_first_name = forms.CharField(
         max_length=100,
@@ -87,6 +58,16 @@ class StudentForm(forms.ModelForm):
             attrs={"class": "form-control"}
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        # Sections are independent of Academic Level.
+        # Available sections: A, B, C.
+        self.fields["section"].queryset = (
+            Section.objects.all().order_by("name")
+        )
 
     class Meta:
 

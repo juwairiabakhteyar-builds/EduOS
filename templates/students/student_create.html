@@ -238,34 +238,21 @@ Add Student | EduOS
 </div>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
 
-    const level = document.getElementById("id_academic_level");
     const section = document.getElementById("id_section");
 
-    if (!level || !section) {
-        console.log("Academic Level or Section dropdown not found.");
+    if (!section) {
+        console.log("Section dropdown not found.");
         return;
     }
 
     function loadSections() {
 
-        const levelId = level.value;
-
         section.innerHTML =
             '<option value="">Loading...</option>';
 
-        if (!levelId) {
-
-            section.innerHTML =
-                '<option value="">Select Section</option>';
-
-            return;
-        }
-
-        fetch(`/students/sections/?academic_level=${levelId}`)
-
+        fetch("/students/sections/")
             .then(response => {
 
                 if (!response.ok) {
@@ -273,7 +260,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 return response.json();
-
             })
 
             .then(data => {
@@ -281,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 section.innerHTML =
                     '<option value="">Select Section</option>';
 
-                data.forEach(function(item){
+                data.forEach(function (item) {
 
                     const option =
                         document.createElement("option");
@@ -290,31 +276,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     option.textContent = item.name;
 
                     section.appendChild(option);
-
                 });
-
             })
 
-            .catch(function(error){
+            .catch(function (error) {
 
-                console.error(error);
+                console.error("Section loading error:", error);
 
                 section.innerHTML =
                     '<option value="">Unable to load</option>';
-
             });
-
     }
 
-    level.addEventListener("change", loadSections);
-
-    // Load sections automatically if a level is already selected
-    if (level.value) {
-        loadSections();
-    }
+    loadSections();
 
 });
-
 </script>
 <script>
 

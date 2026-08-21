@@ -209,19 +209,11 @@ def student_delete(request, pk):
 
 def get_sections(request):
 
-    level_id = request.GET.get("academic_level")
-
-    if not level_id:
-        return JsonResponse([], safe=False)
-
-    sections = Section.objects.filter(
-        academic_level_id=level_id
-    ).order_by("name")
+    sections = Section.objects.all().order_by("name")
 
     data = []
 
     for section in sections:
-
         data.append(
             {
                 "id": section.id,
