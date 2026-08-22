@@ -84,7 +84,7 @@ class Command(BaseCommand):
         ]
 
         for i in range(1, 13):
-            levels.append(str(i))
+            levels.append(f"Class {i}")
 
         for level_name in levels:
             AcademicLevel.objects.get_or_create(
