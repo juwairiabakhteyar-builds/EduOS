@@ -10,6 +10,7 @@ from Apps.academics.models import (
 )
 
 from Apps.guardians.models import Guardian
+from Apps.students.models import Student
 
 
 class Command(BaseCommand):
@@ -93,6 +94,21 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS("✓ Academic Levels ready.")
+        )
+
+        # -----------------------------
+        # Remove old duplicate levels
+        # -----------------------------
+        duplicate_levels = AcademicLevel.objects.filter(
+            name__in=[str(i) for i in range(1, 13)]
+        )
+
+        for level in duplicate_levels:
+            if not Student.objects.filter(academic_level=level).exists():
+                level.delete()
+
+        self.stdout.write(
+            self.style.SUCCESS("✓ Duplicate academic levels cleaned.")
         )
 
         # -----------------------------
