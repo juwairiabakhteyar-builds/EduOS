@@ -1,15 +1,346 @@
 {% extends "base.html" %}
 
 {% block title %}
-EduOS
+EduOS | Education Operating System
 {% endblock %}
 
 {% block content %}
 
-<h1>Welcome to EduOS</h1>
+<section class="hero-section">
 
-<h3>The Education Operating System</h3>
+    <div class="hero-content">
 
-<p>Inspiring Excellence Through Technology.</p>
+        <div class="hero-badge">
+            <span class="hero-dot"></span>
+            Smart School Management Platform
+        </div>
+
+        <h1>
+            One platform.<br>
+            <span>Everything your school needs.</span>
+        </h1>
+
+        <p class="hero-text">
+            EduOS brings students, teachers, parents, administration,
+            attendance, academics and daily school operations together
+            in one simple digital ecosystem.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="/students/" class="hero-btn hero-btn-primary">
+                Explore EduOS
+                <span>→</span>
+            </a>
+
+            <a href="/admin/" class="hero-btn hero-btn-secondary">
+                Admin Portal
+            </a>
+
+        </div>
+
+        <div class="hero-trust">
+            <div class="trust-item">
+                <strong>10+</strong>
+                <span>School Modules</span>
+            </div>
+
+            <div class="trust-divider"></div>
+
+            <div class="trust-item">
+                <strong>100%</strong>
+                <span>Digital Workflow</span>
+            </div>
+
+            <div class="trust-divider"></div>
+
+            <div class="trust-item">
+                <strong>1</strong>
+                <span>Unified Platform</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="hero-visual">
+
+        <div class="dashboard-preview">
+
+            <div class="preview-topbar">
+                <div class="preview-logo">
+                    <span>◆</span> EduOS
+                </div>
+
+                <div class="preview-user">
+                    <span class="preview-avatar">A</span>
+                    Admin
+                </div>
+            </div>
+
+            <div class="preview-body">
+
+                <div class="preview-sidebar">
+                    <div class="preview-sidebar-item active">⌂ Dashboard</div>
+                    <div class="preview-sidebar-item">◉ Students</div>
+                    <div class="preview-sidebar-item">✓ Attendance</div>
+                    <div class="preview-sidebar-item">▣ Academics</div>
+                    <div class="preview-sidebar-item">◫ Library</div>
+                </div>
+
+                <div class="preview-main">
+
+                    <div class="preview-heading">
+                        <div>
+                            <small>OVERVIEW</small>
+                            <h3>School Dashboard</h3>
+                        </div>
+                        <span class="preview-date">Today</span>
+                    </div>
+
+                    <div class="preview-stats">
+
+                        <div class="preview-stat">
+                            <span class="stat-icon">👨‍🎓</span>
+                            <small>Students</small>
+                            <strong>1,248</strong>
+                            <em>↑ 8.4%</em>
+                        </div>
+
+                        <div class="preview-stat">
+                            <span class="stat-icon">✓</span>
+                            <small>Attendance</small>
+                            <strong>94.6%</strong>
+                            <em>↑ 2.1%</em>
+                        </div>
+
+                        <div class="preview-stat">
+                            <span class="stat-icon">👩‍🏫</span>
+                            <small>Teachers</small>
+                            <strong>86</strong>
+                            <em>Active</em>
+                        </div>
+
+                    </div>
+
+                    <div class="preview-chart-card">
+
+                        <div class="chart-title">
+                            <strong>Attendance Overview</strong>
+                            <span>This Week</span>
+                        </div>
+
+                        <div class="fake-chart">
+                            <div class="chart-line"></div>
+                            <div class="chart-bars">
+                                <i style="height:48%"></i>
+                                <i style="height:65%"></i>
+                                <i style="height:58%"></i>
+                                <i style="height:82%"></i>
+                                <i style="height:72%"></i>
+                                <i style="height:90%"></i>
+                                <i style="height:76%"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="floating-card floating-card-one">
+            <span>✓</span>
+            <div>
+                <strong>Attendance marked</strong>
+                <small>Just now</small>
+            </div>
+        </div>
+
+        <div class="floating-card floating-card-two">
+            <span>🎓</span>
+            <div>
+                <strong>New student</strong>
+                <small>Admission completed</small>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section-block">
+
+    <div class="section-heading">
+        <span class="section-label">POWERFUL ECOSYSTEM</span>
+
+        <h2>
+            Everything connected in one place.
+        </h2>
+
+        <p>
+            Replace scattered paperwork and disconnected systems
+            with one centralized school management experience.
+        </p>
+    </div>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon">🎓</div>
+            <h3>Student Management</h3>
+            <p>
+                Manage admissions, student profiles, academic details
+                and records from one place.
+            </p>
+            <span class="feature-arrow">→</span>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">✓</div>
+            <h3>Smart Attendance</h3>
+            <p>
+                Mark, track and review student attendance with a
+                simple digital workflow.
+            </p>
+            <span class="feature-arrow">→</span>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3>Academic Management</h3>
+            <p>
+                Organize sessions, classes and sections while keeping
+                academic information structured.
+            </p>
+            <span class="feature-arrow">→</span>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3>People & Roles</h3>
+            <p>
+                Connect administrators, teachers, students and parents
+                through one ecosystem.
+            </p>
+            <span class="feature-arrow">→</span>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📖</div>
+            <h3>Library</h3>
+            <p>
+                Keep books, borrowing activity and library operations
+                organized digitally.
+            </p>
+            <span class="feature-arrow">→</span>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🚌</div>
+            <h3>Transportation</h3>
+            <p>
+                Build a centralized workflow for school transportation
+                and related operations.
+            </p>
+            <span class="feature-arrow">→</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="platform-section">
+
+    <div class="platform-content">
+
+        <span class="section-label">BUILT FOR EVERY ROLE</span>
+
+        <h2>
+            One school.<br>
+            Different experiences.
+        </h2>
+
+        <p>
+            EduOS creates a connected digital environment where every
+            member of the school community can work from the same system.
+        </p>
+
+        <div class="role-list">
+
+            <div class="role-item">
+                <span>01</span>
+                <div>
+                    <strong>Administrators</strong>
+                    <small>Manage the complete school ecosystem.</small>
+                </div>
+            </div>
+
+            <div class="role-item">
+                <span>02</span>
+                <div>
+                    <strong>Teachers</strong>
+                    <small>Manage attendance, academics and students.</small>
+                </div>
+            </div>
+
+            <div class="role-item">
+                <span>03</span>
+                <div>
+                    <strong>Students & Parents</strong>
+                    <small>Stay connected with school activities.</small>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="platform-visual">
+
+        <div class="orbit-card orbit-card-main">
+            <div class="orbit-logo">◆</div>
+            <strong>EduOS</strong>
+            <span>Connected School Ecosystem</span>
+        </div>
+
+        <div class="orbit-node node-one">Students</div>
+        <div class="orbit-node node-two">Teachers</div>
+        <div class="orbit-node node-three">Parents</div>
+        <div class="orbit-node node-four">Admin</div>
+
+        <div class="orbit-ring ring-one"></div>
+        <div class="orbit-ring ring-two"></div>
+
+    </div>
+
+</section>
+
+
+<section class="cta-section">
+
+    <div>
+        <span class="section-label">THE FUTURE OF SCHOOL MANAGEMENT</span>
+
+        <h2>
+            Ready to run your school<br>
+            smarter?
+        </h2>
+
+        <p>
+            EduOS brings your school's everyday operations together
+            in one intelligent platform.
+        </p>
+    </div>
+
+    <a href="/admin/" class="cta-button">
+        Enter EduOS
+        <span>→</span>
+    </a>
+
+</section>
 
 {% endblock %}
