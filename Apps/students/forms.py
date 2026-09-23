@@ -1,11 +1,10 @@
 from django import forms
+from django.core.exceptions import ValidationError
+import re
 
 from .models import Student
 from Apps.guardians.models import Guardian
 from Apps.academics.models import Section
-
-from django.core.exceptions import ValidationError
-import re
 
 
 class StudentForm(forms.ModelForm):
@@ -14,7 +13,10 @@ class StudentForm(forms.ModelForm):
         max_length=100,
         label="Guardian First Name",
         widget=forms.TextInput(
-            attrs={"class": "form-control"}
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter first name",
+            }
         ),
     )
 
@@ -23,7 +25,10 @@ class StudentForm(forms.ModelForm):
         required=False,
         label="Guardian Last Name",
         widget=forms.TextInput(
-            attrs={"class": "form-control"}
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter last name",
+            }
         ),
     )
 
@@ -36,10 +41,16 @@ class StudentForm(forms.ModelForm):
     )
 
     guardian_mobile = forms.CharField(
-        max_length=15,
+        max_length=10,
         label="Mobile Number",
         widget=forms.TextInput(
-            attrs={"class": "form-control"}
+            attrs={
+                "class": "form-control",
+                "placeholder": "10-digit mobile number",
+                "maxlength": "10",
+                "inputmode": "numeric",
+                "autocomplete": "tel",
+            }
         ),
     )
 
@@ -47,7 +58,11 @@ class StudentForm(forms.ModelForm):
         required=False,
         label="Email",
         widget=forms.EmailInput(
-            attrs={"class": "form-control"}
+            attrs={
+                "class": "form-control",
+                "placeholder": "guardian@example.com",
+                "autocomplete": "email",
+            }
         ),
     )
 
@@ -55,22 +70,14 @@ class StudentForm(forms.ModelForm):
         required=False,
         label="Occupation",
         widget=forms.TextInput(
-            attrs={"class": "form-control"}
+            attrs={
+                "class": "form-control",
+                "placeholder": "Occupation",
+            }
         ),
     )
 
-    def __init__(self, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
-
-        # Sections are independent of Academic Level.
-        # Available sections: A, B, C.
-        self.fields["section"].queryset = (
-            Section.objects.all().order_by("name")
-        )
-
     class Meta:
-
         model = Student
 
         fields = [
@@ -83,21 +90,30 @@ class StudentForm(forms.ModelForm):
             "academic_session",
             "academic_level",
             "section",
-            "guardian",
         ]
 
         widgets = {
-
             "first_name": forms.TextInput(
-                attrs={"class": "form-control"}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Enter first name",
+                    "autocomplete": "given-name",
+                }
             ),
 
             "middle_name": forms.TextInput(
-                attrs={"class": "form-control"}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Middle name (optional)",
+                }
             ),
 
             "last_name": forms.TextInput(
-                attrs={"class": "form-control"}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Enter last name",
+                    "autocomplete": "family-name",
+                }
             ),
 
             "gender": forms.Select(
@@ -124,83 +140,95 @@ class StudentForm(forms.ModelForm):
             ),
 
             "section": forms.Select(
-                attrs={"class": "form-select"},
-                choices=[("", "Select Section")],
+                attrs={"class": "form-select"}
             ),
-
-            "guardian": forms.HiddenInput(),
-
         }
 
         labels = {
-
+            "first_name": "First Name",
+            "middle_name": "Middle Name",
+            "last_name": "Last Name",
             "date_of_birth": "Date of Birth",
+            "academic_session": "Academic Session",
             "academic_level": "Academic Level",
-
+            "section": "Section",
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["section"].queryset = (
+            Section.objects.all().order_by("name")
+        )
+
+        # Populate guardian information while editing.
+        if self.instance and self.instance.pk and self.instance.guardian:
+            guardian = self.instance.guardian
+
+            self.fields["guardian_first_name"].initial = guardian.first_name
+            self.fields["guardian_last_name"].initial = guardian.last_name
+            self.fields["guardian_relationship"].initial = guardian.relationship
+            self.fields["guardian_mobile"].initial = guardian.mobile_number
+            self.fields["guardian_email"].initial = guardian.email
+            self.fields["guardian_occupation"].initial = guardian.occupation
+
     # -------------------------
-    # Validation
+    # Name validation
     # -------------------------
+
+    def _validate_name(self, value, field_name, required=True):
+        value = value.strip()
+
+        if not value and required:
+            raise ValidationError(
+                f"{field_name} is required."
+            )
+
+        if value and not re.fullmatch(r"[A-Za-z\s'-]+", value):
+            raise ValidationError(
+                f"{field_name} can contain only letters, spaces, apostrophes and hyphens."
+            )
+
+        return value
 
     def clean_first_name(self):
-
-        value = self.cleaned_data["first_name"].strip()
-
-        if not re.fullmatch(r"[A-Za-z ]+", value):
-            raise ValidationError(
-                "First name can contain only letters."
-            )
-
-        return value
+        return self._validate_name(
+            self.cleaned_data["first_name"],
+            "First name",
+        )
 
     def clean_middle_name(self):
-
-        value = self.cleaned_data["middle_name"].strip()
-
-        if value and not re.fullmatch(r"[A-Za-z ]+", value):
-            raise ValidationError(
-                "Middle name can contain only letters."
-            )
-
-        return value
+        return self._validate_name(
+            self.cleaned_data.get("middle_name", ""),
+            "Middle name",
+            required=False,
+        )
 
     def clean_last_name(self):
-
-        value = self.cleaned_data["last_name"].strip()
-
-        if not re.fullmatch(r"[A-Za-z ]+", value):
-            raise ValidationError(
-                "Last name can contain only letters."
-            )
-
-        return value
+        return self._validate_name(
+            self.cleaned_data["last_name"],
+            "Last name",
+        )
 
     def clean_guardian_first_name(self):
-
-        value = self.cleaned_data["guardian_first_name"].strip()
-
-        if not re.fullmatch(r"[A-Za-z ]+", value):
-            raise ValidationError(
-                "Guardian first name can contain only letters."
-            )
-
-        return value
+        return self._validate_name(
+            self.cleaned_data["guardian_first_name"],
+            "Guardian first name",
+        )
 
     def clean_guardian_last_name(self):
+        return self._validate_name(
+            self.cleaned_data.get("guardian_last_name", ""),
+            "Guardian last name",
+            required=False,
+        )
 
-        value = self.cleaned_data["guardian_last_name"].strip()
-
-        if value and not re.fullmatch(r"[A-Za-z ]+", value):
-            raise ValidationError(
-                "Guardian last name can contain only letters."
-            )
-
-        return value
+    # -------------------------
+    # Guardian mobile
+    # -------------------------
 
     def clean_guardian_mobile(self):
-
-        mobile = self.cleaned_data["guardian_mobile"]
+        mobile = self.cleaned_data["guardian_mobile"].strip()
 
         if not mobile.isdigit():
             raise ValidationError(
@@ -213,3 +241,19 @@ class StudentForm(forms.ModelForm):
             )
 
         return mobile
+
+    # -------------------------
+    # Date of birth
+    # -------------------------
+
+    def clean_date_of_birth(self):
+        dob = self.cleaned_data["date_of_birth"]
+
+        from django.utils import timezone
+
+        if dob >= timezone.localdate():
+            raise ValidationError(
+                "Date of birth must be earlier than today."
+            )
+
+        return dob

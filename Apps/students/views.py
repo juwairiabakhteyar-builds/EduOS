@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db import transaction
+from django.db.models import Q
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 
 from Apps.academics.models import Section
 from Apps.guardians.models import Guardian
@@ -9,20 +11,31 @@ from Apps.guardians.models import Guardian
 from .forms import StudentForm
 from .models import Student
 
-from django.contrib import messages
 
 def student_list(request):
+    query = request.GET.get("q", "").strip()
 
-    query = request.GET.get("q")
-
-    students = Student.objects.all().order_by("student_id")
+    students = (
+        Student.objects
+        .select_related(
+            "academic_session",
+            "academic_level",
+            "section",
+            "guardian",
+        )
+        .order_by("student_id")
+    )
 
     if query:
-        students = (
-            students.filter(first_name__icontains=query)
-            | students.filter(last_name__icontains=query)
-            | students.filter(student_id__icontains=query)
-            | students.filter(admission_number__icontains=query)
+        students = students.filter(
+            Q(first_name__icontains=query)
+            | Q(middle_name__icontains=query)
+            | Q(last_name__icontains=query)
+            | Q(student_id__icontains=query)
+            | Q(admission_number__icontains=query)
+            | Q(guardian__first_name__icontains=query)
+            | Q(guardian__last_name__icontains=query)
+            | Q(guardian__mobile_number__icontains=query)
         )
 
     paginator = Paginator(students, 10)
@@ -39,10 +52,10 @@ def student_list(request):
     )
 
 
+@transaction.atomic
 def student_create(request):
 
     if request.method == "POST":
-
         form = StudentForm(
             request.POST,
             request.FILES,
@@ -64,28 +77,16 @@ def student_create(request):
             student.save()
 
             messages.success(
-                    request,
-                    "Student admitted successfully."
-                )
-
-            return render(
                 request,
-                "students/student_list.html",
-                {
-                    "page_obj": Paginator(
-                        Student.objects.all().order_by("student_id"),
-                        10,
-                    ).get_page(1),
-                    "query": "",
-                },
+                f"{student.full_name} was admitted successfully.",
             )
 
-        else:
-
-            print(form.errors)
+            return redirect(
+                "student_detail",
+                pk=student.pk,
+            )
 
     else:
-
         form = StudentForm()
 
     return render(
@@ -93,13 +94,20 @@ def student_create(request):
         "students/student_create.html",
         {
             "form": form,
+            "page_mode": "create",
         },
     )
+
 
 def student_detail(request, pk):
 
     student = get_object_or_404(
-        Student,
+        Student.objects.select_related(
+            "academic_session",
+            "academic_level",
+            "section",
+            "guardian",
+        ),
         pk=pk,
     )
 
@@ -112,10 +120,11 @@ def student_detail(request, pk):
     )
 
 
+@transaction.atomic
 def student_update(request, pk):
 
     student = get_object_or_404(
-        Student,
+        Student.objects.select_related("guardian"),
         pk=pk,
     )
 
@@ -128,29 +137,50 @@ def student_update(request, pk):
         )
 
         if form.is_valid():
-            print("===== EDIT FORM DATA =====")
-            print(form.cleaned_data)
-            print("==========================")
 
             student = form.save(commit=False)
 
             guardian = student.guardian
 
-            guardian.first_name = form.cleaned_data["guardian_first_name"]
-            guardian.last_name = form.cleaned_data["guardian_last_name"]
-            guardian.relationship = form.cleaned_data["guardian_relationship"]
-            guardian.mobile_number = form.cleaned_data["guardian_mobile"]
-            guardian.email = form.cleaned_data["guardian_email"]
-            guardian.occupation = form.cleaned_data["guardian_occupation"]
+            if guardian:
+                guardian.first_name = (
+                    form.cleaned_data["guardian_first_name"]
+                )
+                guardian.last_name = (
+                    form.cleaned_data["guardian_last_name"]
+                )
+                guardian.relationship = (
+                    form.cleaned_data["guardian_relationship"]
+                )
+                guardian.mobile_number = (
+                    form.cleaned_data["guardian_mobile"]
+                )
+                guardian.email = (
+                    form.cleaned_data["guardian_email"]
+                )
+                guardian.occupation = (
+                    form.cleaned_data["guardian_occupation"]
+                )
 
-            guardian.save()
-            print("Guardian saved:", guardian.mobile_number)
+                guardian.save()
+
+            else:
+                guardian = Guardian.objects.create(
+                    first_name=form.cleaned_data["guardian_first_name"],
+                    last_name=form.cleaned_data["guardian_last_name"],
+                    relationship=form.cleaned_data["guardian_relationship"],
+                    mobile_number=form.cleaned_data["guardian_mobile"],
+                    email=form.cleaned_data["guardian_email"],
+                    occupation=form.cleaned_data["guardian_occupation"],
+                )
+
+                student.guardian = guardian
 
             student.save()
 
             messages.success(
                 request,
-                "Student updated successfully."
+                f"{student.full_name} was updated successfully.",
             )
 
             return redirect(
@@ -159,17 +189,8 @@ def student_update(request, pk):
             )
 
     else:
-
         form = StudentForm(
             instance=student,
-            initial={
-                "guardian_first_name": student.guardian.first_name,
-                "guardian_last_name": student.guardian.last_name,
-                "guardian_relationship": student.guardian.relationship,
-                "guardian_mobile": student.guardian.mobile_number,
-                "guardian_email": student.guardian.email,
-                "guardian_occupation": student.guardian.occupation,
-            },
         )
 
     return render(
@@ -178,8 +199,10 @@ def student_update(request, pk):
         {
             "form": form,
             "student": student,
+            "page_mode": "edit",
         },
     )
+
 
 def student_delete(request, pk):
 
@@ -190,11 +213,13 @@ def student_delete(request, pk):
 
     if request.method == "POST":
 
+        student_name = student.full_name
+
         student.delete()
 
         messages.success(
             request,
-            "Student deleted successfully."
+            f"{student_name} was deleted successfully.",
         )
 
         return redirect("student_list")
@@ -207,21 +232,17 @@ def student_delete(request, pk):
         },
     )
 
+
 def get_sections(request):
 
     sections = Section.objects.all().order_by("name")
 
-    data = []
+    data = [
+        {
+            "id": section.id,
+            "name": section.name,
+        }
+        for section in sections
+    ]
 
-    for section in sections:
-        data.append(
-            {
-                "id": section.id,
-                "name": section.name,
-            }
-        )
-
-    return JsonResponse(
-        data,
-        safe=False,
-    )
+    return JsonResponse(data, safe=False)
