@@ -1,21 +1,20 @@
-from django.contrib.auth import get_user_model
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from Apps.students.models import Student
-from Apps.academics.models import AcademicLevel, Section
+from django.contrib import messages
+from django.shortcuts import render, redirect
+
 
 def home(request):
-
-    User = get_user_model()
-
     return render(
         request,
         "home/home.html"
     )
 
+
 def login_view(request):
+
+    if request.user.is_authenticated:
+        return redirect("dashboard")
 
     if request.method == "POST":
 
@@ -25,7 +24,7 @@ def login_view(request):
         user = authenticate(
             request,
             username=username,
-            password=password
+            password=password,
         )
 
         if user is not None:
@@ -44,23 +43,66 @@ def login_view(request):
         "authentication/login.html"
     )
 
-@login_required
-def dashboard(request):
 
-    recent_students = Student.objects.order_by("-id")[:5]
+def authority(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
 
-    print("Students Found:", recent_students.count())
+        if not username or not password:
+            messages.error(
+                request,
+                "Please enter both username and password."
+            )
+            return render(
+                request,
+                "authentication/authority.html"
+            )
 
-    context = {
-        "total_students": Student.objects.count(),
-        "total_teachers": 0,
-        "total_classes": AcademicLevel.objects.count(),
-        "total_sections": Section.objects.count(),
-        "recent_students": recent_students,
-    }
+        user = authenticate(
+            request,
+            username=username,
+            password=password,
+        )
+
+        if user is None:
+            messages.error(
+                request,
+                "Invalid authority credentials."
+            )
+            return render(
+                request,
+                "authentication/authority.html"
+            )
+
+        if not user.is_active:
+            messages.error(
+                request,
+                "Your account is currently inactive. Please contact your school administrator."
+            )
+            return render(
+                request,
+                "authentication/authority.html"
+            )
+
+        if user.role not in [
+            "super_admin",
+            "school_admin",
+            "principal",
+        ]:
+            messages.error(
+                request,
+                "You do not have authority access."
+            )
+            return render(
+                request,
+                "authentication/authority.html"
+            )
+
+        login(request, user)
+        return redirect("dashboard")
 
     return render(
         request,
-        "dashboard/dashboard.html",
-        context
+        "authentication/authority.html"
     )

@@ -14,6 +14,16 @@ from Apps.attendance.models import Attendance
 def dashboard(request):
 
     today = timezone.localdate()
+
+    current_hour = timezone.localtime().hour
+
+    if current_hour < 12:
+        greeting = "Good Morning"
+    elif current_hour < 17:
+        greeting = "Good Afternoon"
+    else:
+        greeting = "Good Evening"
+
     week_start = today - timedelta(days=6)
 
     # ------------------------------------------------------
@@ -52,6 +62,14 @@ def dashboard(request):
         status="Late"
     ).count()
 
+    today_half_day = today_attendance.filter(
+        status="Half Day"
+    ).count()
+
+    today_leave = today_attendance.filter(
+        status="Leave"
+    ).count()
+
     if today_total:
         attendance_percentage = round(
             (today_present / today_total) * 100,
@@ -66,6 +84,9 @@ def dashboard(request):
 
     weekly_attendance = []
 
+    weekly_total = 0
+    weekly_present = 0
+
     for i in range(7):
 
         current_date = week_start + timedelta(days=i)
@@ -79,6 +100,9 @@ def dashboard(request):
         present = records.filter(
             status="Present"
         ).count()
+
+        weekly_total += total
+        weekly_present += present
 
         if total:
             percentage = round(
@@ -98,16 +122,24 @@ def dashboard(request):
             }
         )
 
+    if weekly_total:
+        weekly_attendance_percentage = round(
+            (weekly_present / weekly_total) * 100,
+            1,
+        )
+    else:
+        weekly_attendance_percentage = 0
+
     # ------------------------------------------------------
     # RECENT STUDENT ADMISSIONS
     # ------------------------------------------------------
 
     recent_students = Student.objects.order_by(
-        "-id"
+        "-created_at"
     )[:5]
 
     # ------------------------------------------------------
-    # RECENT ATTENDANCE ACTIVITY
+    # RECENT ATTENDANCE
     # ------------------------------------------------------
 
     recent_attendance = Attendance.objects.select_related(
@@ -117,7 +149,7 @@ def dashboard(request):
     )[:5]
 
     # ------------------------------------------------------
-    # UNIFIED RECENT ACTIVITY FEED
+    # UNIFIED ACTIVITY FEED
     # ------------------------------------------------------
 
     activities = []
@@ -127,12 +159,8 @@ def dashboard(request):
         activities.append(
             {
                 "type": "student",
-                "icon": "🎓",
                 "title": "New student admission",
-                "description": (
-                    f"{student.first_name} "
-                    f"{student.last_name}"
-                ),
+                "description": student.full_name,
                 "time": student.created_at,
                 "sort_time": student.created_at,
             }
@@ -143,11 +171,9 @@ def dashboard(request):
         activities.append(
             {
                 "type": "attendance",
-                "icon": "✓",
                 "title": "Attendance marked",
                 "description": (
-                    f"{attendance.student.first_name} "
-                    f"{attendance.student.last_name} — "
+                    f"{attendance.student.full_name} — "
                     f"{attendance.status}"
                 ),
                 "time": attendance.created_at,
@@ -167,21 +193,30 @@ def dashboard(request):
     # ------------------------------------------------------
 
     context = {
+        "today": today,
+        "greeting": greeting,
+
         "total_students": total_students,
         "total_teachers": total_teachers,
         "total_classes": total_classes,
         "total_sections": total_sections,
 
-        "today": today,
-
+        # Today
         "today_total": today_total,
         "today_present": today_present,
         "today_absent": today_absent,
         "today_late": today_late,
+        "today_half_day": today_half_day,
+        "today_leave": today_leave,
         "attendance_percentage": attendance_percentage,
 
+        # Weekly
         "weekly_attendance": weekly_attendance,
+        "weekly_attendance_percentage": weekly_attendance_percentage,
 
+        # Activity
+        "recent_students": recent_students,
+        "recent_attendance": recent_attendance,
         "activities": activities,
     }
 

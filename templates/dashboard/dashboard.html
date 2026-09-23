@@ -8,239 +8,324 @@ Dashboard | EduOS
 
 <div class="dashboard-page">
 
-    <!-- Header -->
-    <div class="dashboard-header">
+<div class="dashboard-header">
+
+    <div>
+        <h1>{{ greeting }}, {{ request.user.first_name|default:request.user.username }}</h1>
+        <p>Here's what's happening across your school today.</p>
+    </div>
+
+    <div class="dashboard-date">
+        {{ today|date:"d M Y" }}
+    </div>
+
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-accent"></div>
         <div>
-            <h1>Good Morning, Admin 👋</h1>
-            <p>Here's what's happening across your school today.</p>
-        </div>
-
-        <div class="dashboard-date">
-            {{ today|date:"d M Y" }}
+            <p>Total Students</p>
+            <h2>{{ total_students }}</h2>
         </div>
     </div>
 
+    <div class="stat-card">
+        <div class="stat-accent"></div>
+        <div>
+            <p>Active Teachers</p>
+            <h2>{{ total_teachers }}</h2>
+        </div>
+    </div>
 
-    <!-- Statistics -->
-    <div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-accent"></div>
+        <div>
+            <p>Classes</p>
+            <h2>{{ total_classes }}</h2>
+        </div>
+    </div>
 
-        <div class="stat-card">
-            <div class="stat-icon">🎓</div>
+    <div class="stat-card">
+        <div class="stat-accent"></div>
+        <div>
+            <p>Sections</p>
+            <h2>{{ total_sections }}</h2>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="dashboard-main-grid">
+
+    <!-- TODAY'S ATTENDANCE -->
+
+    <div class="dashboard-card attendance-card">
+
+        <div class="card-heading">
             <div>
-                <p>Total Students</p>
-                <h2>{{ total_students }}</h2>
+                <h2>Today's Attendance</h2>
+                <p>
+                    Live attendance status for {{ today|date:"d M Y" }}
+                </p>
             </div>
+
+            <span class="status-pill">Live</span>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon">👩‍🏫</div>
-            <div>
-                <p>Active Teachers</p>
-                <h2>{{ total_teachers }}</h2>
+
+        <div class="attendance-content">
+
+            <div
+                class="attendance-circle"
+                style="--attendance-percentage: {{ attendance_percentage }}%;"
+            >
+                <div>
+                    <strong>{{ attendance_percentage }}%</strong>
+                    <span>Present</span>
+                </div>
             </div>
+
+
+            <div class="attendance-info">
+
+                <div>
+                    <span class="legend-dot present"></span>
+                    Present
+                    <strong>{{ today_present }}</strong>
+                </div>
+
+                <div>
+                    <span class="legend-dot absent"></span>
+                    Absent
+                    <strong>{{ today_absent }}</strong>
+                </div>
+
+                <div>
+                    <span class="legend-dot late"></span>
+                    Late
+                    <strong>{{ today_late }}</strong>
+                </div>
+
+                <div>
+                    <span class="legend-dot half-day"></span>
+                    Half Day
+                    <strong>{{ today_half_day }}</strong>
+                </div>
+
+                <div>
+                    <span class="legend-dot leave"></span>
+                    Leave
+                    <strong>{{ today_leave }}</strong>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon">📚</div>
-            <div>
-                <p>Classes</p>
-                <h2>{{ total_classes }}</h2>
-            </div>
-        </div>
 
-        <div class="stat-card">
-            <div class="stat-icon">🏫</div>
-            <div>
-                <p>Sections</p>
-                <h2>{{ total_sections }}</h2>
-            </div>
+        <div class="attendance-total">
+            <span>Attendance records today</span>
+            <strong>{{ today_total }}</strong>
         </div>
 
     </div>
 
 
-    <!-- Main Dashboard Grid -->
-    <div class="dashboard-main-grid">
+    <!-- RECENT ACTIVITY -->
 
-        <!-- Attendance -->
-        <div class="dashboard-card attendance-card">
+    <div class="dashboard-card activity-card">
 
-            <div class="card-heading">
-                <div>
-                    <h2>Attendance Overview</h2>
-                    <p>This week's attendance</p>
-                </div>
-
-                <span class="status-pill">
-                    ✓ Live
-                </span>
+        <div class="card-heading">
+            <div>
+                <h2>Recent Activity</h2>
+                <p>Latest activity across EduOS</p>
             </div>
-
-            <div class="attendance-content">
-
-                <div class="attendance-circle">
-
-                    <div>
-                        <strong>
-                            {{ weekly_attendance_percentage }}%
-                        </strong>
-
-                        <span>Attendance</span>
-                    </div>
-
-                </div>
-
-                <div class="attendance-info">
-
-                    <div>
-                        <span class="legend-dot present"></span>
-                        Present
-                    </div>
-
-                    <div>
-                        <span class="legend-dot absent"></span>
-                        Absent
-                    </div>
-
-                    <div>
-                        <span class="legend-dot late"></span>
-                        Late / Half Day
-                    </div>
-
-                </div>
-
-            </div>
-
         </div>
 
 
-        <!-- Recent Activity -->
-        <div class="dashboard-card">
+        <div class="activity-list">
 
-            <div class="card-heading">
-                <div>
-                    <h2>Recent Activity</h2>
-                    <p>Latest school updates</p>
-                </div>
-            </div>
-
-            <div class="activity-list">
-
-                {% for attendance in recent_attendance %}
+            {% for activity in activities %}
 
                 <div class="activity-item">
 
-                    <div class="activity-icon">
-                        ✓
-                    </div>
+                    <div class="activity-indicator"></div>
 
                     <div class="activity-text">
 
                         <strong>
-                            Attendance marked
+                            {{ activity.title }}
                         </strong>
 
                         <span>
-                            {{ attendance.student.first_name }}
-                            {{ attendance.student.last_name }}
-                            — {{ attendance.status }}
+                            {{ activity.description }}
                         </span>
+
+                        <small>
+                            {{ activity.time|timesince }} ago
+                        </small>
 
                     </div>
 
                 </div>
 
-                {% empty %}
+            {% empty %}
 
                 <div class="empty-state">
-                    No attendance activity yet.
+                    No recent activity.
                 </div>
 
-                {% endfor %}
-
-            </div>
+            {% endfor %}
 
         </div>
 
     </div>
 
+</div>
 
-    <!-- Recent Admissions -->
-    <div class="dashboard-card admissions-card">
 
-        <div class="card-heading">
+<!-- WEEKLY ATTENDANCE -->
 
-            <div>
-                <h2>Recent Admissions</h2>
-                <p>Latest students added to EduOS</p>
-            </div>
+<div class="dashboard-card weekly-attendance-card">
 
-            <a href="/students/" class="dashboard-link">
-                View all →
-            </a>
+    <div class="card-heading">
 
+        <div>
+            <h2>Weekly Attendance</h2>
+            <p>Attendance performance over the last 7 days</p>
         </div>
 
-
-        <div class="table-wrapper">
-
-            <table class="dashboard-table">
-
-                <thead>
-                    <tr>
-                        <th>Student ID</th>
-                        <th>Name</th>
-                        <th>Class</th>
-                        <th>Section</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                {% for student in recent_students %}
-
-                    <tr>
-
-                        <td>
-                            <span class="student-id">
-                                {{ student.student_id }}
-                            </span>
-                        </td>
-
-                        <td>
-                            <strong>
-                                {{ student.first_name }}
-                                {{ student.last_name }}
-                            </strong>
-                        </td>
-
-                        <td>
-                            {{ student.academic_level }}
-                        </td>
-
-                        <td>
-                            {{ student.section }}
-                        </td>
-
-                    </tr>
-
-                {% empty %}
-
-                    <tr>
-                        <td colspan="4" class="empty-state">
-                            No students found.
-                        </td>
-                    </tr>
-
-                {% endfor %}
-
-                </tbody>
-
-            </table>
-
+        <div class="weekly-summary">
+            <strong>{{ weekly_attendance_percentage }}%</strong>
+            <span>Overall</span>
         </div>
 
     </div>
+
+
+    <div class="weekly-attendance-list">
+
+        {% for day in weekly_attendance %}
+
+            <div class="weekly-attendance-row">
+
+                <div class="weekly-day">
+                    <strong>{{ day.day }}</strong>
+                    <span>{{ day.date|date:"d M" }}</span>
+                </div>
+
+
+                <div class="weekly-progress">
+
+                    <div class="weekly-progress-track">
+
+                        <div
+                            class="weekly-progress-fill"
+                            style="--progress-width: {{ day.percentage }}%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="weekly-percentage">
+                    <strong>{{ day.percentage }}%</strong>
+                    <span>{{ day.present }}/{{ day.total }}</span>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- RECENT ADMISSIONS -->
+
+<div class="dashboard-card admissions-card">
+
+    <div class="card-heading">
+
+        <div>
+            <h2>Recent Admissions</h2>
+            <p>Latest students added to EduOS</p>
+        </div>
+
+        <a
+            href="{% url 'student_list' %}"
+            class="dashboard-link"
+        >
+            View all
+        </a>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table class="dashboard-table">
+
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Section</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for student in recent_students %}
+
+                <tr>
+
+                    <td>
+                        <span class="student-id">
+                            {{ student.student_id }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ student.full_name }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ student.academic_level }}
+                    </td>
+
+                    <td>
+                        {{ student.section }}
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+                    <td colspan="4" class="empty-state">
+                        No students found.
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
 </div>
 

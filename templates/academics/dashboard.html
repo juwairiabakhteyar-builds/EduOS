@@ -1,0 +1,194 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Academics | EduOS{% endblock %}
+{% block page_name %}Academics{% endblock %}
+
+{% block content %}
+<div class="page-container academics-page">
+
+    <div class="page-header">
+        <div>
+            <div class="page-eyebrow">ACADEMIC MANAGEMENT</div>
+            <h1>Academics</h1>
+            <p>Manage academic sessions, classes and sections from one place.</p>
+        </div>
+    </div>
+
+    <div class="academics-summary-grid">
+        <div class="academic-summary-card">
+            <span class="academic-summary-label">Active Session</span>
+            <strong>
+                {% if active_session %}
+                    {{ active_session.name }}
+                {% else %}
+                    Not set
+                {% endif %}
+            </strong>
+            <small>
+                {% if active_session %}
+                    Current academic year
+                {% else %}
+                    Set an active session to continue
+                {% endif %}
+            </small>
+        </div>
+
+        <div class="academic-summary-card">
+            <span class="academic-summary-label">Academic Sessions</span>
+            <strong>{{ session_count }}</strong>
+            <small>Configured school years</small>
+        </div>
+
+        <div class="academic-summary-card">
+            <span class="academic-summary-label">Academic Levels</span>
+            <strong>{{ level_count }}</strong>
+            <small>Nursery through Class 12</small>
+        </div>
+
+        <div class="academic-summary-card">
+            <span class="academic-summary-label">Sections</span>
+            <strong>{{ section_count }}</strong>
+            <small>Available class sections</small>
+        </div>
+    </div>
+
+
+    <div class="academic-management-grid">
+
+        <section class="card academic-management-card">
+            <div class="academic-card-header">
+                <div>
+                    <h2>Academic Sessions</h2>
+                    <p>Define and activate school academic years.</p>
+                </div>
+                <a href="{% url 'academic_session_add' %}" class="btn btn-primary">
+                    Add Session
+                </a>
+            </div>
+
+            <div class="academic-table-wrap">
+                <table class="academic-table">
+                    <thead>
+                        <tr>
+                            <th>Session</th>
+                            <th>Status</th>
+                            <th class="academic-actions-column">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session in sessions %}
+                        <tr>
+                            <td><strong>{{ session.name }}</strong></td>
+                            <td>
+                                {% if session.is_active %}
+                                    <span class="academic-status active">Active</span>
+                                {% else %}
+                                    <span class="academic-status">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="academic-actions">
+                                    <a href="{% url 'academic_session_edit' session.pk %}">Edit</a>
+                                    <a class="danger" href="{% url 'academic_session_delete' session.pk %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="academic-empty">No academic sessions configured.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <section class="card academic-management-card">
+            <div class="academic-card-header">
+                <div>
+                    <h2>Academic Levels</h2>
+                    <p>Manage Nursery, LKG, UKG and Classes 1–12.</p>
+                </div>
+                <a href="{% url 'academic_level_add' %}" class="btn btn-primary">
+                    Add Level
+                </a>
+            </div>
+
+            <div class="academic-table-wrap">
+                <table class="academic-table">
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>Students</th>
+                            <th class="academic-actions-column">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for level in levels %}
+                        <tr>
+                            <td><strong>{{ level.name }}</strong></td>
+                            <td>{{ level.student_count }}</td>
+                            <td>
+                                <div class="academic-actions">
+                                    <a href="{% url 'academic_level_edit' level.pk %}">Edit</a>
+                                    <a class="danger" href="{% url 'academic_level_delete' level.pk %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="academic-empty">No academic levels configured.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <section class="card academic-management-card academic-management-card-wide">
+            <div class="academic-card-header">
+                <div>
+                    <h2>Sections</h2>
+                    <p>Manage the section labels available during student admission.</p>
+                </div>
+                <a href="{% url 'academic_section_add' %}" class="btn btn-primary">
+                    Add Section
+                </a>
+            </div>
+
+            <div class="academic-table-wrap">
+                <table class="academic-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Students</th>
+                            <th class="academic-actions-column">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for section in sections %}
+                        <tr>
+                            <td><strong>{{ section.name }}</strong></td>
+                            <td>{{ section.student_count }}</td>
+                            <td>
+                                <div class="academic-actions">
+                                    <a href="{% url 'academic_section_edit' section.pk %}">Edit</a>
+                                    <a class="danger" href="{% url 'academic_section_delete' section.pk %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="academic-empty">No sections configured.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Sign In | EduOS
+Authority Access | EduOS
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@ Sign In | EduOS
 
     <div class="eduos-login-shell">
 
-        <!-- LEFT BRAND PANEL -->
+        <!-- BRAND PANEL -->
 
         <div class="eduos-login-brand">
 
@@ -26,21 +26,20 @@ Sign In | EduOS
                 </span>
 
                 <h1>
-                    One platform.
+                    Administrative
                     <br>
-                    <span>Every school.</span>
+                    <span>control centre.</span>
                 </h1>
 
                 <p>
-                    Manage students, teachers, attendance,
-                    academics and your entire school ecosystem
-                    from one intelligent platform.
+                    Secure access for authorised school
+                    administrators and management personnel.
                 </p>
 
             </div>
 
             <div class="eduos-brand-footer">
-                <span>Built for modern schools</span>
+                <span>Secure school management</span>
                 <span>•</span>
                 <span>EduOS</span>
             </div>
@@ -48,7 +47,7 @@ Sign In | EduOS
         </div>
 
 
-        <!-- LOGIN PANEL -->
+        <!-- AUTHORITY PANEL -->
 
         <div class="eduos-login-panel">
 
@@ -57,18 +56,20 @@ Sign In | EduOS
                 <strong>EduOS</strong>
             </div>
 
+
             <div class="eduos-login-heading">
 
                 <span class="eduos-login-kicker">
-                    SECURE ACCESS
+                    AUTHORISED ACCESS
                 </span>
 
                 <h2>
-                    Welcome back
+                    Authority Access
                 </h2>
 
                 <p>
-                    Sign in to continue to your EduOS workspace.
+                    Sign in with your authorised EduOS
+                    administrative account.
                 </p>
 
             </div>
@@ -88,9 +89,13 @@ Sign In | EduOS
             {% endif %}
 
 
-            <form method="post" class="eduos-login-form">
+            <form
+                method="post"
+                class="eduos-login-form"
+            >
 
                 {% csrf_token %}
+
 
                 <div class="eduos-field">
 
@@ -101,14 +106,14 @@ Sign In | EduOS
                     <div class="eduos-input-wrap">
 
                         <span class="eduos-input-icon">
-                            👤
+                            E
                         </span>
 
                         <input
                             type="text"
                             id="username"
                             name="username"
-                            placeholder="Enter your username"
+                            placeholder="Enter authority username"
                             autocomplete="username"
                             required
                             autofocus
@@ -121,59 +126,28 @@ Sign In | EduOS
 
                 <div class="eduos-field">
 
-                    <div class="eduos-password-label">
-
-                        <label for="password">
-                            Password
-                        </label>
-
-                        <a href="#">
-                            Forgot password?
-                        </a>
-
-                    </div>
+                    <label for="password">
+                        Password
+                    </label>
 
                     <div class="eduos-input-wrap">
 
                         <span class="eduos-input-icon">
-                            🔒
+                            •
                         </span>
 
                         <input
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="Enter your password"
+                            placeholder="Enter authority password"
                             autocomplete="current-password"
                             required
                         >
 
-                        <button
-                            type="button"
-                            class="eduos-password-toggle"
-                            onclick="togglePassword()"
-                            aria-label="Show password"
-                        >
-                            Show
-                        </button>
-
                     </div>
 
                 </div>
-
-
-                <label class="eduos-remember">
-
-                    <input
-                        type="checkbox"
-                        name="remember"
-                    >
-
-                    <span>
-                        Remember me
-                    </span>
-
-                </label>
 
 
                 <button
@@ -181,7 +155,9 @@ Sign In | EduOS
                     class="eduos-signin-btn"
                 >
 
-                    <span>Sign in to EduOS</span>
+                    <span>
+                        Enter EduOS
+                    </span>
 
                     <span class="eduos-btn-arrow">
                         →
@@ -193,61 +169,26 @@ Sign In | EduOS
 
 
             <div class="eduos-login-divider">
-                <span>EduOS access</span>
+                <span>Restricted access</span>
             </div>
 
 
             <div class="eduos-login-bottom">
 
                 <span>
-                    Don't have access yet?
+                    This area is restricted to authorised
+                    personnel.
                 </span>
-
-                <a href="#">
-                    Contact your school administrator
-                </a>
 
             </div>
 
-
-            <a
-                href="{% url 'home' %}"
-                class="eduos-back-home"
-            >
-                ← Back to EduOS
-            </a>
-
+                <a href="{% url 'login' %}">
+                        ← Back to Sign In
+                </a>
         </div>
 
     </div>
 
 </div>
-
-
-<script>
-
-function togglePassword() {
-
-    const password =
-        document.getElementById("password");
-
-    const button =
-        document.querySelector(".eduos-password-toggle");
-
-    if (password.type === "password") {
-
-        password.type = "text";
-        button.textContent = "Hide";
-
-    } else {
-
-        password.type = "password";
-        button.textContent = "Show";
-
-    }
-
-}
-
-</script>
 
 {% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Delete {{ object_type }} | EduOS{% endblock %}
+{% block page_name %}Academics{% endblock %}
+
+{% block content %}
+<div class="page-container academics-page">
+
+    <div class="page-header">
+        <div>
+            <div class="page-eyebrow">ACADEMIC MANAGEMENT</div>
+            <h1>Delete {{ object_type }}</h1>
+            <p>This action cannot be undone.</p>
+        </div>
+    </div>
+
+    <div class="card academic-delete-card">
+        <div class="academic-delete-icon">!</div>
+
+        <h2>Delete “{{ object }}”?</h2>
+
+        <p>
+            You are about to permanently remove this {{ object_type }}.
+            Please make sure it is no longer required by the school.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="academic-form-actions">
+                <a href="{% url back_url %}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">Delete Permanently</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

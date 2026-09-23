@@ -13,11 +13,9 @@
     >
 
     <title>
-
         {% block title %}
             EduOS
         {% endblock %}
-
     </title>
 
     <link
@@ -30,178 +28,539 @@
 
 <body>
 
-    <!-- ===================================================== -->
-    <!-- SIDEBAR -->
-    <!-- ===================================================== -->
-
-    <aside class="sidebar">
-
-        <div class="logo">
-            EduOS
-        </div>
+    <div class="app-shell">
 
 
-        <nav>
+        <!-- ================================================= -->
+        <!-- SIDEBAR -->
+        <!-- ================================================= -->
 
-            <!-- Dashboard -->
+        <aside class="sidebar" id="eduosSidebar">
 
-            <a href="{% url 'dashboard' %}">
-                🏠 Dashboard
-            </a>
+            <div class="sidebar-header">
 
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="eduos-brand"
+                >
+                    <span class="eduos-brand-mark">E</span>
 
-            <!-- Students -->
+                    <span class="eduos-brand-name">
+                        EduOS
+                    </span>
+                </a>
 
-            <a href="{% url 'student_list' %}">
-                👨‍🎓 Students
-            </a>
+                <span class="eduos-brand-label">
+                    SCHOOL ERP
+                </span>
 
-
-            <!-- Guardians -->
-
-            <a href="{% url 'guardian_list' %}">
-                👨‍👩‍👧 Guardians
-            </a>
-
-
-            <!-- Teachers -->
-
-            <a href="{% url 'teacher_list' %}">
-                👩‍🏫 Teachers
-            </a>
-
-
-            <!-- Academics -->
-
-            <a href="#">
-                📚 Academics
-            </a>
-
-             <!-- Leave Management -->
-
-
-            <a href="{% url 'leave_management_dashboard' %}">
-                🏖 Leave Management
-            </a>
-
-
-            <!-- Attendance -->
-
-            <a href="{% url 'attendance_dashboard' %}">
-                📝 Attendance
-            </a>
-
-
-            <!-- Transport -->
-
-            <a href="#">
-                🚌 Transport
-            </a>
-
-
-            <!-- Library -->
-
-            <a href="#">
-                📖 Library
-            </a>
-
-
-            <!-- Fees -->
-
-            <a href="#">
-                💰 Fees
-            </a>
-
-
-            <!-- Examinations -->
-
-            <a href="#">
-                📊 Examinations
-            </a>
-
-
-            <!-- Notices -->
-
-            <a href="#">
-                📢 Notices
-            </a>
-
-
-            <!-- Settings -->
-
-            <a href="#">
-                ⚙ Settings
-            </a>
-
-        </nav>
-
-    </aside>
-
-
-    <!-- ===================================================== -->
-    <!-- MAIN AREA -->
-    <!-- ===================================================== -->
-
-    <main class="main-area">
-
-
-        <!-- Top Bar -->
-
-        <header class="topbar">
-
-            <h2>
-                EduOS ERP
-            </h2>
-
-
-            <div>
-                👤 Admin
             </div>
 
-        </header>
+
+            <nav class="sidebar-nav">
+
+<!-- OVERVIEW -->
+
+<div class="nav-section">
+    <div class="nav-section-title">
+        Overview
+    </div>
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+    >
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+        </span>
+        <span>Dashboard</span>
+    </a>
+</div>
 
 
-        <!-- Page Content -->
+<!-- PEOPLE -->
 
-        <section class="page-content">
+<div class="nav-section">
+    <div class="nav-section-title">
+        People
+    </div>
+
+    <a
+        href="{% url 'student_list' %}"
+        class="nav-item {% if request.resolver_match.url_name == 'student_list' %}active{% endif %}"
+    >
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="9" cy="8" r="3"/>
+                <path d="M3.5 20c.5-3.5 2.4-5.5 5.5-5.5s5 2 5.5 5.5"/>
+                <path d="M16 11c2.2.2 3.8 1.7 4.5 4"/>
+                <path d="M16 5.5a3 3 0 0 1 0 5"/>
+            </svg>
+        </span>
+        <span>Students</span>
+    </a>
+
+    <a
+        href="{% url 'teacher_list' %}"
+        class="nav-item {% if request.resolver_match.url_name == 'teacher_list' %}active{% endif %}"
+    >
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="9" cy="8" r="3"/>
+                <path d="M3.5 20c.5-3.5 2.4-5.5 5.5-5.5s5 2 5.5 5.5"/>
+                <path d="M15 7h6"/>
+                <path d="M18 4v6"/>
+            </svg>
+        </span>
+        <span>Teachers</span>
+    </a>
+
+    <a
+        href="{% url 'guardian_list' %}"
+        class="nav-item {% if request.resolver_match.url_name == 'guardian_list' %}active{% endif %}"
+    >
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="8.5" cy="8" r="2.8"/>
+                <circle cx="16.5" cy="8" r="2.8"/>
+                <path d="M3.5 20c.4-3.3 2.1-5.2 5-5.2s4.6 1.9 5 5.2"/>
+                <path d="M12.5 20c.4-3.3 2.1-5.2 5-5.2 2.9 0 4.6 1.9 5 5.2"/>
+            </svg>
+        </span>
+        <span>Guardians</span>
+    </a>
+</div>
 
 
-            <!-- Messages -->
+<!-- ACADEMIC -->
 
-            {% if messages %}
+<div class="nav-section">
+    <div class="nav-section-title">
+        Academic
+    </div>
 
-                {% for message in messages %}
+    <a href="{% url 'academics_dashboard' %}"
+    class="nav-item {% if request.resolver_match.url_name == 'academics_dashboard' %}active{% endif %}"
+    >
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5Z"/>
+                <path d="M6 10.5V16c3.5 2.5 8.5 2.5 12 0v-5.5"/>
+                <path d="M21 8v6"/>
+            </svg>
+        </span>
+        <span>Academics</span>
+    </a>
 
-                    <div class="alert alert-{{ message.tags }}">
+    <a
+        href="{% url 'attendance_dashboard' %}"
+        class="nav-item {% if request.resolver_match.url_name == 'attendance_dashboard' %}active{% endif %}"
+    >
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="4" y="3" width="16" height="18" rx="2"/>
+                <path d="M8 8h8"/>
+                <path d="M8 12l2 2 4-4"/>
+                <path d="M8 17h8"/>
+            </svg>
+        </span>
+        <span>Attendance</span>
+    </a>
 
-                        {{ message }}
+    <a
+        href="{% url 'leave_management_dashboard' %}"
+        class="nav-item {% if request.resolver_match.url_name == 'leave_management_dashboard' %}active{% endif %}"
+    >
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3.5" y="5" width="17" height="15" rx="2"/>
+                <path d="M8 3v4"/>
+                <path d="M16 3v4"/>
+                <path d="M3.5 10h17"/>
+                <path d="M8 14h3"/>
+                <path d="M8 17h6"/>
+            </svg>
+        </span>
+        <span>Leave Management</span>
+    </a>
+
+    <a href="#" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 5h16v14H4z"/>
+                <path d="M8 9h8"/>
+                <path d="M8 13h5"/>
+                <path d="M8 17h6"/>
+            </svg>
+        </span>
+        <span>Examinations</span>
+    </a>
+</div>
 
 
-                        <button
-                            type="button"
-                            class="close-alert"
-                            onclick="this.parentElement.remove();"
-                        >
-                            &times;
-                        </button>
+<!-- OPERATIONS -->
+
+<div class="nav-section">
+    <div class="nav-section-title">
+        Operations
+    </div>
+
+    <a href="#" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 17V6h12v11"/>
+                <path d="M16 10h3l2 3v4h-5"/>
+                <circle cx="8" cy="18" r="2"/>
+                <circle cx="18" cy="18" r="2"/>
+                <path d="M10 18h6"/>
+            </svg>
+        </span>
+        <span>Transport</span>
+    </a>
+
+    <a href="#" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 5h16v15H4z"/>
+                <path d="M8 5v15"/>
+                <path d="M16 5v15"/>
+                <path d="M4 9h16"/>
+            </svg>
+        </span>
+        <span>Library</span>
+    </a>
+
+    <a href="#" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="M3 10h18"/>
+                <path d="M7 15h4"/>
+            </svg>
+        </span>
+        <span>Fees</span>
+    </a>
+
+    <a href="#" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 18V8l8-5 8 5v10"/>
+                <path d="M8 18v-6h8v6"/>
+                <path d="M3 18h18"/>
+            </svg>
+        </span>
+        <span>Notices</span>
+    </a>
+</div>
+
+
+<!-- SYSTEM -->
+
+<div class="nav-section nav-section-bottom">
+    <div class="nav-section-title">
+        System
+    </div>
+
+    <a href="#" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H6.3v-2.6h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V4.3h2.6v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2V13h-.2a1.7 1.7 0 0 0-1.5 1Z"/>
+            </svg>
+        </span>
+        <span>Settings</span>
+    </a>
+</div>
+
+</nav>
+
+
+
+
+            <!-- SIDEBAR FOOTER -->
+
+            <div class="sidebar-footer">
+
+                <div class="sidebar-footer-line"></div>
+
+                <span>
+                    EduOS School ERP
+                </span>
+
+                <small>
+                    Education Operating System
+                </small>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- ================================================= -->
+        <!-- MAIN AREA -->
+        <!-- ================================================= -->
+
+        <main class="main-area">
+
+
+            <!-- TOPBAR -->
+
+            <header class="topbar">
+
+
+                <div class="topbar-left">
+
+                    <button
+                        type="button"
+                        class="mobile-menu-button"
+                        id="mobileMenuButton"
+                        aria-label="Open navigation"
+                    >
+                        ☰
+                    </button>
+
+
+                    <div class="topbar-title">
+
+                        <span class="topbar-product">
+                            EduOS
+                        </span>
+
+                        <span class="topbar-separator">
+                            /
+                        </span>
+
+                        <span class="topbar-module">
+                            {% block page_name %}
+                                School ERP
+                            {% endblock %}
+                        </span>
 
                     </div>
 
-                {% endfor %}
-
-            {% endif %}
+                </div>
 
 
-            <!-- Main Template Content -->
 
-            {% block content %}
+                <!-- TOPBAR RIGHT -->
 
-            {% endblock %}
+                <div class="topbar-right">
 
 
-        </section>
+                    <!-- SEARCH -->
 
-    </main>
+                    <div class="topbar-search">
+
+                        <span class="search-icon">
+                            /
+                        </span>
+
+                        <input
+                            type="search"
+                            placeholder="Search..."
+                            aria-label="Search"
+                        >
+
+                        <span class="search-shortcut">
+                            Ctrl K
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- NOTIFICATION -->
+
+                    <button
+                        type="button"
+                        class="topbar-icon-button"
+                        aria-label="Notifications"
+                    >
+                        <span class="notification-mark"></span>
+                    </button>
+
+
+
+                    <!-- USER -->
+
+                    <div class="topbar-user">
+
+                        <div class="user-avatar">
+
+                            {{ request.user.username|first|upper }}
+
+                        </div>
+
+
+                        <div class="user-details">
+
+                            <strong>
+
+                                {% if request.user.get_full_name %}
+                                    {{ request.user.get_full_name }}
+                                {% else %}
+                                    {{ request.user.username }}
+                                {% endif %}
+
+                            </strong>
+
+                            <span>
+
+                                {% if request.user.get_role_display %}
+                                    {{ request.user.get_role_display }}
+                                {% else %}
+                                    User
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <span class="user-menu-arrow">
+                            ▾
+                        </span>
+
+                    </div>
+
+
+                    <!-- LOGOUT -->
+
+                    <a
+                        href="{% url 'logout' %}"
+                        class="topbar-logout"
+                    >
+                        Logout
+                    </a>
+
+                </div>
+
+            </header>
+
+            <!-- PAGE CONTENT -->
+
+            <section class="page-content">
+
+
+                <!-- DJANGO MESSAGES -->
+
+                {% if messages %}
+
+                    <div class="global-messages">
+
+                        {% for message in messages %}
+
+                            <div class="alert alert-{{ message.tags }}">
+
+                                <span>
+                                    {{ message }}
+                                </span>
+
+
+                                <button
+                                    type="button"
+                                    class="close-alert"
+                                    onclick="this.parentElement.remove();"
+                                    aria-label="Close"
+                                >
+                                    ×
+                                </button>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- ACTUAL PAGE -->
+
+                {% block content %}
+                {% endblock %}
+
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+
+    <!-- MOBILE SIDEBAR OVERLAY -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+
+    <script>
+
+        const sidebar =
+            document.getElementById("eduosSidebar");
+
+        const menuButton =
+            document.getElementById("mobileMenuButton");
+
+        const overlay =
+            document.getElementById("sidebarOverlay");
+
+
+        if (menuButton) {
+
+            menuButton.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "mobile-open"
+                    );
+
+                    overlay.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.remove(
+                        "mobile-open"
+                    );
+
+                    overlay.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+    </script>
 
 
 </body>

@@ -41,9 +41,9 @@ INSTALLED_APPS = [
 
     'accounts',
     'users',
-    
     'schools',
 
+    "Apps.dashboard",
     "Apps.students",
     "Apps.academics",
     "Apps.guardians",
@@ -136,6 +136,11 @@ STATICFILES_DIRS = [
 ]
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = "login"
+
+# Security: automatically expire inactive authenticated sessions after 30 minutes.
+SESSION_COOKIE_AGE = 1800
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 

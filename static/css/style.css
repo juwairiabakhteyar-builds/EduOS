@@ -2035,13 +2035,10 @@ label{
     width: 155px;
     height: 155px;
     border-radius: 50%;
-    background:
-        conic-gradient(
-            #0d6efd
-            {{ weekly_attendance_percentage }}%,
-            #e9eef5
-            0
-        );
+    background: conic-gradient(
+                    #0d6efd var(--attendance-percentage),
+                    #e9eef5 0
+                );
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2478,4 +2475,1278 @@ label{
         display: none;
     }
 
+}
+
+/* =========================================================
+   EDUOS LOGIN
+========================================================= */
+
+.eduos-login-page {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 45px 25px;
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(37, 99, 235, .10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(124, 58, 237, .10),
+            transparent 30%
+        ),
+        #f6f8fc;
+}
+
+.eduos-login-shell {
+    width: min(1050px, 100%);
+    min-height: 650px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e8edf4;
+    border-radius: 26px;
+    box-shadow: 0 25px 70px rgba(15, 23, 42, .12);
+}
+
+
+/* BRAND */
+
+.eduos-login-brand {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px;
+    overflow: hidden;
+    color: #fff;
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(255,255,255,.18),
+            transparent 28%
+        ),
+        linear-gradient(
+            145deg,
+            #2563eb 0%,
+            #4338ca 55%,
+            #6d28d9 100%
+        );
+}
+
+.eduos-login-brand::before {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    right: -110px;
+    bottom: -100px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.16);
+    box-shadow:
+        0 0 0 35px rgba(255,255,255,.035),
+        0 0 0 70px rgba(255,255,255,.025);
+}
+
+.eduos-login-logo {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -.7px;
+}
+
+.eduos-logo-mark {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.25);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.eduos-brand-content {
+    position: relative;
+    z-index: 2;
+    max-width: 420px;
+}
+
+.eduos-login-eyebrow {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,.72);
+}
+
+.eduos-brand-content h1 {
+    margin: 0;
+    font-size: clamp(38px, 4vw, 58px);
+    line-height: 1.03;
+    letter-spacing: -2.5px;
+    font-weight: 800;
+}
+
+.eduos-brand-content h1 span {
+    color: #bfdbfe;
+}
+
+.eduos-brand-content p {
+    max-width: 390px;
+    margin: 25px 0 0;
+    color: rgba(255,255,255,.78);
+    line-height: 1.75;
+    font-size: 14px;
+}
+
+.eduos-brand-footer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: rgba(255,255,255,.65);
+    font-size: 12px;
+}
+
+
+/* LOGIN PANEL */
+
+.eduos-login-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 55px 65px;
+    background: #fff;
+}
+
+.eduos-mobile-logo {
+    display: none;
+}
+
+.eduos-login-heading {
+    margin-bottom: 30px;
+}
+
+.eduos-login-kicker {
+    display: block;
+    margin-bottom: 8px;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+}
+
+.eduos-login-heading h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 34px;
+    letter-spacing: -1.2px;
+}
+
+.eduos-login-heading p {
+    margin: 8px 0 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* ALERT */
+
+.eduos-login-alert {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    font-size: 13px;
+}
+
+.eduos-login-alert > span {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #dc2626;
+    color: #fff;
+    font-weight: 800;
+}
+
+
+/* FORM */
+
+.eduos-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.eduos-field label,
+.eduos-password-label label {
+    display: block;
+    margin-bottom: 8px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.eduos-password-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.eduos-password-label a {
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.eduos-password-label a:hover {
+    text-decoration: underline;
+}
+
+.eduos-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.eduos-input-icon {
+    position: absolute;
+    left: 14px;
+    z-index: 1;
+    font-size: 14px;
+    opacity: .65;
+}
+
+.eduos-input-wrap input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 50px;
+    padding: 0 48px 0 43px;
+    border: 1px solid #dbe2ea;
+    border-radius: 11px;
+    outline: none;
+    color: #0f172a;
+    background: #fbfcfe;
+    font-size: 14px;
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.eduos-input-wrap input::placeholder {
+    color: #94a3b8;
+}
+
+.eduos-input-wrap input:focus {
+    border-color: #2563eb;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+}
+
+.eduos-password-toggle {
+    position: absolute;
+    right: 10px;
+    border: none;
+    background: transparent;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.eduos-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.eduos-remember input {
+    accent-color: #2563eb;
+}
+
+
+/* SIGN IN */
+
+.eduos-signin-btn {
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 17px 0 20px;
+    border: none;
+    border-radius: 11px;
+    color: #fff;
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(37,99,235,.22);
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.eduos-signin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(37,99,235,.30);
+}
+
+.eduos-btn-arrow {
+    width: 29px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255,255,255,.15);
+    font-size: 17px;
+}
+
+
+/* BOTTOM */
+
+.eduos-login-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 27px 0 20px;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.eduos-login-divider::before,
+.eduos-login-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: #edf0f4;
+}
+
+.eduos-login-bottom {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.eduos-login-bottom a {
+    display: block;
+    margin-top: 2px;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.eduos-login-bottom a:hover {
+    text-decoration: underline;
+}
+
+.eduos-back-home {
+    align-self: center;
+    margin-top: 24px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.eduos-back-home:hover {
+    color: #2563eb;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+
+    .eduos-login-page {
+        padding: 20px;
+    }
+
+    .eduos-login-shell {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        border-radius: 20px;
+    }
+
+    .eduos-login-brand {
+        display: none;
+    }
+
+    .eduos-login-panel {
+        padding: 40px 28px;
+    }
+
+    .eduos-mobile-logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 35px;
+        color: #0f172a;
+        font-size: 22px;
+    }
+
+    .eduos-mobile-logo .eduos-logo-mark {
+        color: #fff;
+        background: linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+        );
+        border: none;
+    }
+
+    .eduos-login-heading h2 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .eduos-login-page {
+        padding: 10px;
+    }
+
+    .eduos-login-panel {
+        padding: 32px 20px;
+    }
+
+}
+
+/* =========================================================
+   EduOS Authentication & Authority
+========================================================= */
+.eduos-input{width:100%;padding:12px 14px;border:1px solid var(--edu-border);border-radius:10px;background:#fff;color:var(--edu-text);font:inherit;outline:none;transition:.2s ease;}
+.eduos-input:focus{border-color:var(--edu-primary);box-shadow:0 0 0 3px rgba(37,99,235,.10);}
+.eduos-input::placeholder{color:#98a2b3;}
+textarea.eduos-input{resize:vertical;}
+.eduos-field label span{font-weight:400;color:var(--edu-muted);}
+.authority-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;background:var(--edu-bg);}
+.authority-card{width:min(560px,100%);padding:42px;border:1px solid var(--edu-border);border-radius:20px;background:#fff;box-shadow:var(--edu-shadow);}
+.authority-kicker{color:var(--edu-primary);font-size:11px;font-weight:800;letter-spacing:1.5px;}
+.authority-card h1{margin:8px 0 10px;font-size:32px;letter-spacing:-1px;}
+.authority-intro{margin:0 0 25px;color:var(--edu-muted);}
+.authority-profile{display:flex;align-items:center;gap:14px;padding:15px;border:1px solid var(--edu-border);border-radius:14px;background:#fafbfe;margin-bottom:20px;}
+.authority-avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#eef4ff;color:var(--edu-primary);font-weight:800;}
+.authority-profile strong,.authority-profile span{display:block;}
+.authority-profile span{font-size:13px;color:var(--edu-muted);margin-top:2px;}
+.authority-actions{display:grid;gap:12px;}
+.authority-action{display:block;padding:17px 18px;border:1px solid var(--edu-border);border-radius:12px;text-decoration:none;color:var(--edu-text);transition:.2s ease;}
+.authority-action:hover{border-color:#bfd0ff;transform:translateY(-1px);box-shadow:0 8px 20px rgba(15,23,42,.06);}
+.authority-action.primary{background:var(--edu-primary);border-color:var(--edu-primary);color:#fff;}
+.authority-action span,.authority-action small{display:block;}
+.authority-action span{font-weight:700;}
+.authority-action small{margin-top:3px;opacity:.75;}
+.authority-logout{display:block;margin-top:22px;text-align:center;color:var(--edu-muted);text-decoration:none;font-size:14px;}
+.authority-logout:hover{color:var(--edu-danger);}
+@media(max-width:700px){.authority-card{padding:28px 22px}.authority-card h1{font-size:27px;}}
+/* =========================================================
+   EDUOS ERP — GLOBAL SHELL & ICON SAFETY
+   Prevent oversized SVG/icons on all ERP pages
+========================================================= */
+
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.main-area {
+    min-width: 0;
+    width: calc(100% - 260px);
+    margin-left: 260px;
+}
+
+/* Navigation icons */
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-icon {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    max-width: 20px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.nav-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    max-width: 18px !important;
+    min-height: 18px !important;
+    max-height: 18px !important;
+    display: block !important;
+    flex-shrink: 0;
+}
+
+/* ALL SVGs inside the ERP shell must never become giant */
+.main-area svg {
+    max-width: 100%;
+}
+
+.main-area .nav-icon svg,
+.main-area .topbar svg,
+.main-area .page-header svg,
+.main-area .module-icon svg,
+.main-area .icon svg {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    max-width: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
+    flex-shrink: 0;
+}
+
+/* Topbar */
+.topbar {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Page content must remain inside the ERP layout */
+.page-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+/* Prevent accidental oversized images/icons */
+.sidebar img,
+.sidebar svg,
+.topbar img,
+.topbar svg {
+    object-fit: contain;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform .25s ease;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .main-area {
+        width: 100%;
+        margin-left: 0;
+    }
+
+}
+
+/* =========================================================
+   EDUOS â€” ACADEMICS MODULE
+   ========================================================= */
+
+.academics-page {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.page-eyebrow {
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.academics-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.academic-summary-card {
+    min-height: 125px;
+    padding: 20px;
+    border: 1px solid #e8edf4;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+}
+
+.academic-summary-label {
+    display: block;
+    margin-bottom: 9px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.academic-summary-card strong {
+    display: block;
+    color: #0f172a;
+    font-size: 25px;
+    line-height: 1.2;
+}
+
+.academic-summary-card small {
+    display: block;
+    margin-top: 7px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.academic-management-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.academic-management-card-wide {
+    grid-column: 1 / -1;
+}
+
+.academic-management-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.academic-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 20px 16px;
+}
+
+.academic-card-header h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 16px;
+}
+
+.academic-card-header p {
+    margin: 5px 0 0;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.academic-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-top: 1px solid #eef2f7;
+}
+
+.academic-table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+}
+
+.academic-table th,
+.academic-table td {
+    padding: 13px 20px;
+    border-bottom: 1px solid #eef2f7;
+    text-align: left;
+    font-size: 12px;
+}
+
+.academic-table th {
+    color: #64748b;
+    background: #fafbfc;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+}
+
+.academic-table td {
+    color: #475569;
+}
+
+.academic-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.academic-actions-column {
+    width: 150px;
+}
+
+.academic-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.academic-actions a {
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.academic-actions a:hover {
+    text-decoration: underline;
+}
+
+.academic-actions a.danger {
+    color: #dc2626;
+}
+
+.academic-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 9px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    color: #64748b;
+    background: #f8fafc;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.academic-status.active {
+    border-color: #bbf7d0;
+    color: #15803d;
+    background: #f0fdf4;
+}
+
+.academic-empty {
+    padding: 28px 20px !important;
+    color: #94a3b8 !important;
+    text-align: center !important;
+}
+
+.academic-form-card {
+    max-width: 760px;
+    padding: 26px;
+}
+
+.academic-form-field {
+    margin-bottom: 20px;
+}
+
+.academic-form-field > label {
+    display: block;
+    margin-bottom: 7px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.academic-form-field small {
+    display: block;
+    margin-top: 6px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.academic-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #475569;
+    font-size: 12px;
+}
+
+.academic-checkbox-row input {
+    width: 16px;
+    height: 16px;
+}
+
+.academic-field-error {
+    margin-top: 6px;
+    color: #dc2626;
+    font-size: 11px;
+}
+
+.academic-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #eef2f7;
+}
+
+.academic-delete-card {
+    max-width: 600px;
+    padding: 34px;
+    text-align: center;
+}
+
+.academic-delete-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin: 0 auto 18px;
+    border-radius: 12px;
+    color: #b91c1c;
+    background: #fef2f2;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.academic-delete-card h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 20px;
+}
+
+.academic-delete-card p {
+    max-width: 470px;
+    margin: 10px auto 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.btn-danger {
+    border: 1px solid #dc2626;
+    color: #fff !important;
+    background: #dc2626;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+@media (max-width: 1000px) {
+    .academics-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .academic-management-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .academic-management-card-wide {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .academics-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .academic-card-header {
+        flex-direction: column;
+    }
+
+    .academic-card-header .btn {
+        width: 100%;
+    }
+
+    .academic-form-card,
+    .academic-delete-card {
+        padding: 20px;
+    }
+}
+
+/* =========================================================
+   SIDEBAR SVG ICON SIZE FIX
+   ========================================================= */
+
+.sidebar .nav-item .nav-icon,
+.sidebar .nav-item .nav-icon svg {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    max-width: 20px !important;
+    max-height: 20px !important;
+    flex: 0 0 20px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar .nav-item .nav-icon svg {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.sidebar .nav-item .nav-icon svg * {
+    vector-effect: non-scaling-stroke;
+}
+
+.sidebar .nav-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.sidebar .nav-item .nav-label {
+    min-width: 0;
+}
+
+/* =========================================================
+   EDUOS — ACADEMICS MODULE
+   ========================================================= */
+
+.academics-page {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.page-eyebrow {
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.academics-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.academic-summary-card {
+    min-height: 125px;
+    padding: 20px;
+    border: 1px solid #e8edf4;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+}
+
+.academic-summary-label {
+    display: block;
+    margin-bottom: 9px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.academic-summary-card strong {
+    display: block;
+    color: #0f172a;
+    font-size: 25px;
+    line-height: 1.2;
+}
+
+.academic-summary-card small {
+    display: block;
+    margin-top: 7px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.academic-management-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.academic-management-card-wide {
+    grid-column: 1 / -1;
+}
+
+.academic-management-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.academic-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 20px 16px;
+}
+
+.academic-card-header h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 16px;
+}
+
+.academic-card-header p {
+    margin: 5px 0 0;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.academic-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-top: 1px solid #eef2f7;
+}
+
+.academic-table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+}
+
+.academic-table th,
+.academic-table td {
+    padding: 13px 20px;
+    border-bottom: 1px solid #eef2f7;
+    text-align: left;
+    font-size: 12px;
+}
+
+.academic-table th {
+    color: #64748b;
+    background: #fafbfc;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+}
+
+.academic-table td {
+    color: #475569;
+}
+
+.academic-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.academic-actions-column {
+    width: 150px;
+}
+
+.academic-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.academic-actions a {
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.academic-actions a:hover {
+    text-decoration: underline;
+}
+
+.academic-actions a.danger {
+    color: #dc2626;
+}
+
+.academic-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 9px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    color: #64748b;
+    background: #f8fafc;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.academic-status.active {
+    border-color: #bbf7d0;
+    color: #15803d;
+    background: #f0fdf4;
+}
+
+.academic-empty {
+    padding: 28px 20px !important;
+    color: #94a3b8 !important;
+    text-align: center !important;
+}
+
+.academic-form-card {
+    max-width: 760px;
+    padding: 26px;
+}
+
+.academic-form-field {
+    margin-bottom: 20px;
+}
+
+.academic-form-field > label {
+    display: block;
+    margin-bottom: 7px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.academic-form-field small {
+    display: block;
+    margin-top: 6px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.academic-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #475569;
+    font-size: 12px;
+}
+
+.academic-checkbox-row input {
+    width: 16px;
+    height: 16px;
+}
+
+.academic-field-error {
+    margin-top: 6px;
+    color: #dc2626;
+    font-size: 11px;
+}
+
+.academic-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #eef2f7;
+}
+
+.academic-delete-card {
+    max-width: 600px;
+    padding: 34px;
+    text-align: center;
+}
+
+.academic-delete-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin: 0 auto 18px;
+    border-radius: 12px;
+    color: #b91c1c;
+    background: #fef2f2;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.academic-delete-card h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 20px;
+}
+
+.academic-delete-card p {
+    max-width: 470px;
+    margin: 10px auto 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.btn-danger {
+    border: 1px solid #dc2626;
+    color: #fff !important;
+    background: #dc2626;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+@media (max-width: 1000px) {
+    .academics-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .academic-management-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .academic-management-card-wide {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .academics-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .academic-card-header {
+        flex-direction: column;
+    }
+
+    .academic-card-header .btn {
+        width: 100%;
+    }
+
+    .academic-form-card,
+    .academic-delete-card {
+        padding: 20px;
+    }
 }

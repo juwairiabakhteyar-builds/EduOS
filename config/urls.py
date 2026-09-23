@@ -19,7 +19,7 @@ urlpatterns = [
     # Guardians
     path("guardians/", include("Apps.guardians.urls")),
 
-    #Teachers
+    # Teachers
     path("teachers/", include("Apps.teachers.urls")),
 
     # Leave Management
@@ -33,6 +33,9 @@ urlpatterns = [
         "attendance/",
         include("Apps.attendance.urls"),
     ),
+
+    # Academics
+    path("academics/", include("Apps.academics.urls")),
 
 ]
 
