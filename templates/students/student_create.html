@@ -1,7 +1,11 @@
 {% extends "layouts/app.html" %}
 
 {% block title %}
+{% if page_mode == "edit" %}
+Edit Student | EduOS
+{% else %}
 Add Student | EduOS
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -9,210 +13,156 @@ Add Student | EduOS
 <div class="page-container">
 
     <div class="page-header">
-
         <div>
-            <h1>Add New Student</h1>
-            <p>Register a new student into EduOS</p>
-        </div>
+            <h1>
+                {% if page_mode == "edit" %}
+                    Edit Student
+                {% else %}
+                    Add New Student
+                {% endif %}
+            </h1>
 
+            <p>
+                {% if page_mode == "edit" %}
+                    Update student and guardian information
+                {% else %}
+                    Register a new student into EduOS
+                {% endif %}
+            </p>
+        </div>
     </div>
 
     <div class="card">
 
         <form method="POST" enctype="multipart/form-data">
-
             {% csrf_token %}
 
             {% if form.non_field_errors %}
-
-            <div class="alert alert-danger">
-
-                {{ form.non_field_errors }}
-
-            </div>
-
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
             {% endif %}
 
-            <h3>Student Details</h3>
+            <div class="form-section">
 
-            <div class="row">
+                <h3>Student Details</h3>
 
-                <div class="alert alert-info mb-3">
-    Student ID and Admission Number will be generated automatically after admission.
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label>First Name *</label>
-
-                    {{ form.first_name }}
-
-                    {% if form.first_name.errors %}
-
-                    <div class="text-danger small">
-
-                        {{ form.first_name.errors }}
-
+                {% if page_mode == "create" %}
+                    <div class="alert alert-info">
+                        Student ID and Admission Number will be generated automatically after admission.
                     </div>
-                    {% endif %}
-                </div>
+                {% else %}
+                    <div class="alert alert-secondary">
+                        <strong>Student ID:</strong> {{ student.student_id }}
+                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <strong>Admission No:</strong> {{ student.admission_number }}
+                    </div>
+                {% endif %}
 
-                <div class="col-md-6 mb-3">
-                    <label>Middle Name</label>
-                    {{ form.middle_name }}
-                    {% if form.middle_name.errors %}
-                        <div class="text-danger small">
-                            {{ form.middle_name.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                <div class="row">
 
-                <div class="col-md-6 mb-3">
-                    <label>Last Name *</label>
-                    {{ form.last_name }}
-                    {% if form.last_name.errors %}
-                        <div class="text-danger small">
-                            {{ form.last_name.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>First Name *</label>
+                        {{ form.first_name }}
+                        {{ form.first_name.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Gender *</label>
-                    {{ form.gender }}
-                    {% if form.gender.errors %}
-                        <div class="text-danger small">
-                            {{ form.gender.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Middle Name</label>
+                        {{ form.middle_name }}
+                        {{ form.middle_name.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Date of Birth *</label>
-                    {{ form.date_of_birth }}
-                    {% if form.date_of_birth.errors %}
-                        <div class="text-danger small">
-                            {{ form.date_of_birth.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Last Name *</label>
+                        {{ form.last_name }}
+                        {{ form.last_name.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Photo</label>
-                    {{ form.photo }}
-                    {% if form.photo.errors %}
-                        <div class="text-danger small">
-                            {{ form.photo.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Gender *</label>
+                        {{ form.gender }}
+                        {{ form.gender.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Academic Session *</label>
-                    {{ form.academic_session }}
-                    {% if form.academic_session.errors %}
-                        <div class="text-danger small">
-                            {{ form.academic_session.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Date of Birth *</label>
+                        {{ form.date_of_birth }}
+                        {{ form.date_of_birth.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Academic Level *</label>
-                    {{ form.academic_level }}
-                    {% if form.academic_level.errors %}
-                        <div class="text-danger small">
-                            {{ form.academic_level.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Student Photo</label>
+                        {{ form.photo }}
+                        {{ form.photo.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Section *</label>
-                    {{ form.section }}
-                    {% if form.section.errors %}
-                        <div class="text-danger small">
-                            {{ form.section.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Academic Session *</label>
+                        {{ form.academic_session }}
+                        {{ form.academic_session.errors }}
+                    </div>
 
-                {{ form.guardian }}
+                    <div class="col-md-4 mb-3">
+                        <label>Academic Level *</label>
+                        {{ form.academic_level }}
+                        {{ form.academic_level.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Section *</label>
+                        {{ form.section }}
+                        {{ form.section.errors }}
+                    </div>
+
+                </div>
 
             </div>
 
             <hr>
 
-            <h3>Guardian Details</h3>
+            <div class="form-section">
 
-            <div class="row">
+                <h3>Guardian Details</h3>
 
-                <div class="col-md-4 mb-3">
-                    <label>Guardian First Name *</label>
-                    {{ form.guardian_first_name }}
-                    {% if form.guardian_first_name.errors %}
-                        <div class="text-danger small">
-                            {{ form.guardian_first_name.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                <div class="row">
 
-                <div class="col-md-4 mb-3">
-                    <label>Guardian Last Name</label>
-                    {{ form.guardian_last_name }}
-                    {% if form.guardian_last_name.errors %}
-                        <div class="text-danger small">
-                            {{ form.guardian_last_name.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Guardian First Name *</label>
+                        {{ form.guardian_first_name }}
+                        {{ form.guardian_first_name.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Relationship *</label>
-                    {{ form.guardian_relationship }}
-                    {% if form.guardian_relationship.errors %}
-                        <div class="text-danger small">
-                            {{ form.guardian_relationship.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Guardian Last Name</label>
+                        {{ form.guardian_last_name }}
+                        {{ form.guardian_last_name.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Mobile Number *</label>
-                    <input
-                        type="tel"
-                        name="guardian_mobile"
-                        id="id_guardian_mobile"
-                        maxlength="10"
-                        pattern="[0-9]{10}"
-                        inputmode="numeric"
-                        class="form-control"
-                        value="{{ form.guardian_mobile.value|default:'' }}"
-                    >
-                    {% if form.guardian_mobile.errors %}
-                        <div class="text-danger small">
-                            {{ form.guardian_mobile.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Relationship *</label>
+                        {{ form.guardian_relationship }}
+                        {{ form.guardian_relationship.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Email</label>
-                    {{ form.guardian_email }}
-                    {% if form.guardian_email.errors %}
-                        <div class="text-danger small">
-                            {{ form.guardian_email.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Mobile Number *</label>
+                        {{ form.guardian_mobile }}
+                        {{ form.guardian_mobile.errors }}
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Occupation</label>
-                    {{ form.guardian_occupation }}
-                    {% if form.guardian_occupation.errors %}
-                        <div class="text-danger small">
-                            {{ form.guardian_occupation.errors }}
-                        </div>
-                    {% endif %}
+                    <div class="col-md-4 mb-3">
+                        <label>Email</label>
+                        {{ form.guardian_email }}
+                        {{ form.guardian_email.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Occupation</label>
+                        {{ form.guardian_occupation }}
+                        {{ form.guardian_occupation.errors }}
+                    </div>
+
                 </div>
 
             </div>
@@ -221,12 +171,22 @@ Add Student | EduOS
 
             <div class="d-flex justify-content-end">
 
-                <a href="{% url 'student_list' %}" class="btn btn-secondary me-2">
+                <a
+                    href="{% url 'student_list' %}"
+                    class="btn btn-secondary me-2"
+                >
                     Cancel
                 </a>
 
-                <button type="submit" class="btn btn-primary">
-                    Admit Student
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    {% if page_mode == "edit" %}
+                        Save Changes
+                    {% else %}
+                        Admit Student
+                    {% endif %}
                 </button>
 
             </div>
@@ -240,128 +200,42 @@ Add Student | EduOS
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const section = document.getElementById("id_section");
-
-    if (!section) {
-        console.log("Section dropdown not found.");
-        return;
-    }
-
-    function loadSections() {
-
-        section.innerHTML =
-            '<option value="">Loading...</option>';
-
-        fetch("/students/sections/")
-            .then(response => {
-
-                if (!response.ok) {
-                    throw new Error("Unable to load sections.");
-                }
-
-                return response.json();
-            })
-
-            .then(data => {
-
-                section.innerHTML =
-                    '<option value="">Select Section</option>';
-
-                data.forEach(function (item) {
-
-                    const option =
-                        document.createElement("option");
-
-                    option.value = item.id;
-                    option.textContent = item.name;
-
-                    section.appendChild(option);
-                });
-            })
-
-            .catch(function (error) {
-
-                console.error("Section loading error:", error);
-
-                section.innerHTML =
-                    '<option value="">Unable to load</option>';
-            });
-    }
-
-    loadSections();
-
-});
-</script>
-<script>
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    // ==========================
-    // Mobile Number
-    // ==========================
-
     const mobile = document.getElementById("id_guardian_mobile");
 
     if (mobile) {
-
-        mobile.addEventListener("keypress", function(e){
-
-            const key = e.key;
-
-            // Allow only digits
-            if (!/[0-9]/.test(key)) {
-                e.preventDefault();
-                return;
-            }
-
-            // Maximum 10 digits
-            if (this.value.length >= 10) {
-                e.preventDefault();
-            }
-
-        });
-
-        // Prevent paste of invalid content
-        mobile.addEventListener("input", function(){
-
+        mobile.addEventListener("input", function () {
             this.value = this.value
-                .replace(/\D/g,"")
-                .slice(0,10);
-
+                .replace(/\D/g, "")
+                .slice(0, 10);
         });
-
     }
 
-    // ==========================
-    // Name Fields
-    // ==========================
-
     const nameFields = [
-
         "id_first_name",
         "id_middle_name",
         "id_last_name",
         "id_guardian_first_name",
-        "id_guardian_last_name",
-
+        "id_guardian_last_name"
     ];
 
-    nameFields.forEach(function(id){
+    nameFields.forEach(function (id) {
 
         const field = document.getElementById(id);
 
-        if(!field) return;
+        if (!field) {
+            return;
+        }
 
-        field.addEventListener("input", function(){
-
-            this.value = this.value.replace(/[^a-zA-Z\s'-]/g,"");
-
+        field.addEventListener("input", function () {
+            this.value = this.value.replace(
+                /[^a-zA-Z\s'-]/g,
+                ""
+            );
         });
 
     });
 
 });
-
 </script>
 
 {% endblock %}

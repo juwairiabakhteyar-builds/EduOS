@@ -12,10 +12,15 @@ Students | EduOS
 
         <div>
             <h1>Student Management</h1>
-            <p>Total Students: {{ page_obj.paginator.count }}</p>
+            <p>
+                Manage admissions, student records and guardians
+            </p>
         </div>
 
-        <a href="{% url 'student_create' %}" class="btn-primary">
+        <a
+            href="{% url 'student_create' %}"
+            class="btn-primary"
+        >
             + Add Student
         </a>
 
@@ -29,140 +34,230 @@ Students | EduOS
                 type="text"
                 name="q"
                 value="{{ query }}"
-                placeholder="Search by Name, Student ID or Admission No..."
-                class="search-box">
+                placeholder="Search name, Student ID, admission number or guardian..."
+                class="search-box"
+            >
 
-            <button class="btn-primary" type="submit">
+            <button
+                class="btn-primary"
+                type="submit"
+            >
                 Search
             </button>
 
+            {% if query %}
+                <a
+                    href="{% url 'student_list' %}"
+                    class="btn-secondary"
+                >
+                    Clear
+                </a>
+            {% endif %}
+
         </form>
 
-        <table class="erp-table">
+        <div style="overflow-x:auto;">
 
-            <thead>
+            <table class="erp-table">
 
-                <tr>
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Student ID</th>
+                        <th>Admission No.</th>
+                        <th>Student Name</th>
+                        <th>Gender</th>
+                        <th>Academic Level</th>
+                        <th>Section</th>
+                        <th>Guardian</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-                    <th>Photo</th>
-                    <th>Student ID</th>
-                    <th>Admission No.</th>
-                    <th>Student Name</th>
-                    <th>Gender</th>
-                    <th>Academic Level</th>
-                    <th>Section</th>
-                    <th>Guardian</th>
-                    <th>Actions</th>
+                <tbody>
 
-                </tr>
+                {% for student in page_obj %}
 
-            </thead>
+                    <tr>
 
-            <tbody>
+                        <td>
+                            {% if student.photo %}
+                                <img
+                                    src="{{ student.photo.url }}"
+                                    alt="{{ student.full_name }}"
+                                    width="45"
+                                    height="45"
+                                    style="
+                                        border-radius:50%;
+                                        object-fit:cover;
+                                    "
+                                >
+                            {% else %}
+                                <span
+                                    style="
+                                        display:inline-flex;
+                                        width:45px;
+                                        height:45px;
+                                        border-radius:50%;
+                                        align-items:center;
+                                        justify-content:center;
+                                        background:#f1f5f9;
+                                    "
+                                >
+                                    👤
+                                </span>
+                            {% endif %}
+                        </td>
 
-           {% for student in page_obj %}
-            <tr style="background:#ffffcc;">
+                        <td>
+                            <strong>{{ student.student_id }}</strong>
+                        </td>
 
-                    <td>
+                        <td>
+                            {{ student.admission_number }}
+                        </td>
 
-                        {% if student.photo %}
-                            <img src="{{ student.photo.url }}"
-                                 width="45"
-                                 height="45"
-                                 style="border-radius:50%;object-fit:cover;">
-                        {% else %}
-                            —
-                        {% endif %}
+                        <td>
+                            <a
+                                href="{% url 'student_detail' student.pk %}"
+                            >
+                                <strong>{{ student.full_name }}</strong>
+                            </a>
+                        </td>
 
-                    </td>
+                        <td>
+                            {{ student.gender }}
+                        </td>
 
-                    <td>{{ student.student_id }}</td>
+                        <td>
+                            {{ student.academic_level }}
+                        </td>
 
-                    <td>{{ student.admission_number }}</td>
+                        <td>
+                            {{ student.section }}
+                        </td>
 
-                    <td>
+                        <td>
+                            {% if student.guardian %}
+                                {{ student.guardian.first_name }}
+                                {{ student.guardian.last_name }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
 
-                        <a href="{% url 'student_detail' student.pk %}">
-                            {{ student.full_name }}
-                        </a>
+                        <td>
+                            <a
+                                href="{% url 'student_detail' student.pk %}"
+                            >
+                                View
+                            </a>
 
-                    </td>
+                            |
 
-                    <td>{{ student.gender }}</td>
+                            <a
+                                href="{% url 'student_update' student.pk %}"
+                            >
+                                Edit
+                            </a>
 
-                    <td>{{ student.academic_level }}</td>
+                            |
 
-                    <td>{{ student.section }}</td>
+                            <a
+                                href="{% url 'student_delete' student.pk %}"
+                            >
+                                Delete
+                            </a>
+                        </td>
 
-                    <td>{{ student.guardian }}</td>
+                    </tr>
 
-                    <td>
+                {% empty %}
 
-                        <a href="{% url 'student_detail' student.pk %}">
-                            View
-                        </a>
+                    <tr>
+                        <td
+                            colspan="9"
+                            style="
+                                text-align:center;
+                                padding:50px;
+                            "
+                        >
+                            <h4>No Students Found</h4>
 
-                        |
+                            {% if query %}
+                                <p>
+                                    No students matched
+                                    "{{ query }}".
+                                </p>
 
-                        <a href="{% url 'student_update' student.pk %}">
-                            Edit
-                        </a>
+                                <a
+                                    href="{% url 'student_list' %}"
+                                    class="btn-secondary"
+                                >
+                                    Clear Search
+                                </a>
+                            {% else %}
+                                <p>
+                                    No students have been admitted yet.
+                                </p>
 
-                        |
+                                <a
+                                    href="{% url 'student_create' %}"
+                                    class="btn-primary"
+                                >
+                                    + Admit First Student
+                                </a>
+                            {% endif %}
 
-                        <a href="{% url 'student_delete' student.pk %}">
-                            Delete
-                        </a>
+                        </td>
+                    </tr>
 
-                    </td>
+                {% endfor %}
 
-                </tr>
+                </tbody>
 
-            {% empty %}
-
-                <tr>
-
-                    <td colspan="9" style="text-align:center;padding:40px;">
-
-                        <h4>No Students Found</h4>
-
-                        <p>Click "Add Student" to create the first student.</p>
-
-                    </td>
-
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-        <div style="margin-top:20px;text-align:center;">
-
-            {% if page_obj.has_previous %}
-
-                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
-                    ← Previous
-                </a>
-
-            {% endif %}
-
-            <strong>
-
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-
-            </strong>
-
-            {% if page_obj.has_next %}
-
-                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
-                    Next →
-                </a>
-
-            {% endif %}
+            </table>
 
         </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+
+            <div
+                style="
+                    margin-top:20px;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    gap:20px;
+                "
+            >
+
+                {% if page_obj.has_previous %}
+                    <a
+                        href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}"
+                        class="btn-secondary"
+                    >
+                        ← Previous
+                    </a>
+                {% endif %}
+
+                <strong>
+                    Page {{ page_obj.number }}
+                    of {{ page_obj.paginator.num_pages }}
+                </strong>
+
+                {% if page_obj.has_next %}
+                    <a
+                        href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}"
+                        class="btn-secondary"
+                    >
+                        Next →
+                    </a>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
 
     </div>
 
