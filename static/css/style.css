@@ -3236,3 +3236,525 @@ textarea.eduos-input{resize:vertical;}
     .eduos-school-label{max-width:130px;}
     .edu-error-card{padding:38px 24px;}
 }
+
+
+/* =========================================================
+   EDUOS GLOBAL SHELL FIX
+   Sidebar + Topbar + ERP Navigation
+========================================================= */
+
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    width: 100%;
+    background: #f6f8fc;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: #0f172a;
+    color: #cbd5e1;
+    border-right: 1px solid #1e293b;
+    scrollbar-width: thin;
+}
+
+.sidebar-header {
+    padding: 22px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.eduos-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.eduos-brand-mark {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.eduos-brand-name {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+}
+
+.eduos-brand-label {
+    display: block;
+    margin-top: 6px;
+    margin-left: 45px;
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.sidebar-nav {
+    flex: 1;
+    padding: 18px 12px;
+}
+
+.nav-section {
+    margin-bottom: 22px;
+}
+
+.nav-section-bottom {
+    margin-top: auto;
+}
+
+.nav-section-title {
+    padding: 0 11px 8px;
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.nav-item {
+    min-height: 42px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin: 2px 0;
+    padding: 10px 11px;
+    border-radius: 10px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .18s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,.06);
+    color: #ffffff;
+}
+
+.nav-item.active {
+    background: rgba(37,99,235,.18);
+    color: #ffffff;
+}
+
+.nav-icon {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: currentColor;
+}
+
+.nav-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+    display: block !important;
+    flex-shrink: 0;
+}
+
+.nav-item.active .nav-icon {
+    color: #60a5fa;
+}
+
+/* =========================================================
+   SIDEBAR FOOTER
+========================================================= */
+
+.sidebar-footer {
+    padding: 16px 20px 20px;
+    color: #64748b;
+}
+
+.sidebar-footer-line {
+    height: 1px;
+    margin-bottom: 14px;
+    background: rgba(255,255,255,.07);
+}
+
+.sidebar-footer span,
+.sidebar-footer small {
+    display: block;
+}
+
+.sidebar-footer span {
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.sidebar-footer small {
+    margin-top: 3px;
+    color: #475569;
+    font-size: 9px;
+}
+
+/* =========================================================
+   MAIN AREA
+========================================================= */
+
+.main-area {
+    min-width: 0;
+    width: calc(100% - 260px);
+    margin-left: 260px;
+}
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    min-height: 70px;
+    padding: 0 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #e8edf4;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.topbar-left,
+.topbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.topbar-left {
+    gap: 14px;
+    min-width: 0;
+}
+
+.topbar-right {
+    gap: 16px;
+}
+
+.mobile-menu-button {
+    width: 36px;
+    height: 36px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #334155;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.topbar-product {
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.topbar-separator {
+    color: #cbd5e1;
+}
+
+.topbar-module {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.topbar-search {
+    width: 210px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #f8fafc;
+    color: #94a3b8;
+}
+
+.search-icon {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.topbar-search input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #334155;
+    font: inherit;
+    font-size: 11px;
+}
+
+.topbar-search input::placeholder {
+    color: #94a3b8;
+}
+
+.search-shortcut {
+    flex-shrink: 0;
+    color: #94a3b8;
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   TOPBAR NOTIFICATION
+========================================================= */
+
+.topbar-icon-button {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.notification-mark {
+    width: 7px;
+    height: 7px;
+    display: block;
+    border-radius: 50%;
+    background: #2563eb;
+}
+
+/* =========================================================
+   USER
+========================================================= */
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.user-avatar {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.user-details {
+    min-width: 0;
+}
+
+.user-details strong,
+.user-details span {
+    display: block;
+}
+
+.user-details strong {
+    color: #1e293b;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.user-details span {
+    margin-top: 1px;
+    color: #94a3b8;
+    font-size: 9px;
+}
+
+.user-menu-arrow {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.topbar-logout {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topbar-logout:hover {
+    color: #dc3545;
+}
+
+/* =========================================================
+   PAGE CONTENT
+========================================================= */
+
+.page-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0 28px;
+    overflow-x: hidden;
+}
+
+/* =========================================================
+   GLOBAL MESSAGES
+========================================================= */
+
+.global-messages {
+    padding-top: 18px;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.alert-success {
+    background: #ecfdf5;
+    color: #166534;
+}
+
+.alert-error,
+.alert-danger {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.alert-warning {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.alert-info {
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.close-alert {
+    border: 0;
+    background: transparent;
+    color: currentColor;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-overlay {
+    display: none;
+}
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform .25s ease;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .main-area {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .mobile-menu-button {
+        display: inline-flex;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        display: block;
+        background: rgba(15,23,42,.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .25s ease;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .topbar-search {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .topbar {
+        padding: 0 15px;
+    }
+
+    .page-content {
+        padding: 0 15px;
+    }
+
+    .topbar-module,
+    .topbar-logout {
+        display: none;
+    }
+
+    .user-details {
+        display: none;
+    }
+
+}

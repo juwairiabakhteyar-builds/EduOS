@@ -1,4 +1,4 @@
-{% extends "layouts/app.html" %}
+﻿{% extends "layouts/app.html" %}
 
 {% block title %}
 Guardians | EduOS
@@ -23,56 +23,145 @@ Guardians | EduOS
 
     <div class="card mt-3">
 
-        <table class="table">
+        <form method="get" class="table-toolbar">
 
-            <thead>
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                class="search-box"
+                placeholder="Search by name, mobile, email..."
+            >
 
-                <tr>
-                    <th>Name</th>
-                    <th>Relationship</th>
-                    <th>Mobile</th>
-                    <th></th>
-                </tr>
+            <select name="relationship" class="search-box">
+                <option value="">All relationships</option>
 
-            </thead>
-
-            <tbody>
-
-                {% for guardian in guardians %}
-
-                <tr>
-
-                    <td>{{ guardian.first_name }} {{ guardian.last_name }}</td>
-
-                    <td>{{ guardian.relationship }}</td>
-
-                    <td>{{ guardian.mobile_number }}</td>
-
-                    <td>
-
-                        <a href="{% url 'guardian_detail' guardian.id %}" class="btn btn-sm btn-info">
-                            View
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% empty %}
-
-                <tr>
-
-                    <td colspan="4">
-                        No guardians found.
-                    </td>
-
-                </tr>
-
+                {% for value, label in relationship_choices %}
+                    <option
+                        value="{{ value }}"
+                        {% if relationship == value %}selected{% endif %}
+                    >
+                        {{ label }}
+                    </option>
                 {% endfor %}
 
-            </tbody>
+            </select>
 
-        </table>
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            {% if query or relationship %}
+                <a href="{% url 'guardian_list' %}" class="btn btn-secondary">
+                    Clear
+                </a>
+            {% endif %}
+
+        </form>
+
+        <div class="table-responsive">
+
+            <table class="erp-table">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Relationship</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Occupation</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for guardian in page_obj %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ guardian.first_name }} {{ guardian.last_name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ guardian.relationship }}
+                            </td>
+
+                            <td>
+                                {{ guardian.mobile_number }}
+                            </td>
+
+                            <td>
+                                {% if guardian.email %}
+                                    {{ guardian.email }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if guardian.occupation %}
+                                    {{ guardian.occupation }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <a
+                                    href="{% url 'guardian_detail' guardian.pk %}"
+                                    class="btn btn-sm btn-primary"
+                                >
+                                    View
+                                </a>
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <strong>No guardians found.</strong>
+                                <br>
+                                Try changing your search or add a new guardian.
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+
+            <div class="pagination">
+
+                {% if page_obj.has_previous %}
+                    <a href="?q={{ query }}&relationship={{ relationship }}&page={{ page_obj.previous_page_number }}">
+                        Previous
+                    </a>
+                {% endif %}
+
+                <span>
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?q={{ query }}&relationship={{ relationship }}&page={{ page_obj.next_page_number }}">
+                        Next
+                    </a>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
 
     </div>
 

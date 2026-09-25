@@ -1,4 +1,4 @@
-{% extends "layouts/app.html" %}
+﻿{% extends "layouts/app.html" %}
 
 {% block title %}
 Teachers | EduOS
@@ -8,7 +8,7 @@ Teachers | EduOS
 
 <div class="page-container">
 
-    <div class="page-header">
+    <div class="page-header d-flex justify-content-between align-items-center">
 
         <div>
             <h1>Teachers</h1>
@@ -21,142 +21,150 @@ Teachers | EduOS
 
     </div>
 
-    <div class="card">
+    <div class="card mt-3">
 
-        <form method="GET">
+        <form method="get" class="table-toolbar">
 
-            <div class="table-toolbar">
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                class="search-box"
+                placeholder="Search by name, teacher ID, designation..."
+            >
 
-                <input
-                    type="text"
-                    name="q"
-                    value="{{ query }}"
-                    class="search-box"
-                    placeholder="Search teacher..."
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Search
+            </button>
+
+            {% if query %}
+                <a
+                    href="{% url 'teacher_list' %}"
+                    class="btn btn-secondary"
                 >
-
-                <button
-                    class="btn btn-primary"
-                    type="submit"
-                >
-                    Search
-                </button>
-
-            </div>
+                    Clear
+                </a>
+            {% endif %}
 
         </form>
 
-        <table class="erp-table">
+        <div class="table-responsive">
 
-            <thead>
+            <table class="erp-table">
 
-                <tr>
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Teacher ID</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Mobile</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-                    <th>Photo</th>
-                    <th>Teacher ID</th>
-                    <th>Name</th>
-                    <th>Designation</th>
-                    <th>Mobile</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                <tbody>
 
-                </tr>
+                    {% for teacher in page_obj %}
 
-            </thead>
+                        <tr>
 
-            <tbody>
+                            <td>
 
-            {% for teacher in page_obj %}
+                                {% if teacher.photo %}
 
-                <tr>
+                                    <img
+                                        src="{{ teacher.photo.url }}"
+                                        class="teacher-photo"
+                                        alt="{{ teacher.full_name }}"
+                                    >
 
-                    <td>
+                                {% else %}
 
-                        {% if teacher.photo %}
+                                    <span>—</span>
 
-                            <img
-                                src="{{ teacher.photo.url }}"
-                                class="student-photo"
-                            >
+                                {% endif %}
 
-                        {% else %}
+                            </td>
 
-                            —
+                            <td>
+                                <strong>{{ teacher.teacher_id }}</strong>
+                            </td>
 
-                        {% endif %}
+                            <td>
+                                {{ teacher.full_name }}
+                            </td>
 
-                    </td>
+                            <td>
+                                {{ teacher.designation }}
+                            </td>
 
-                    <td>{{ teacher.teacher_id }}</td>
+                            <td>
+                                {{ teacher.mobile_number }}
+                            </td>
 
-                    <td>{{ teacher.full_name }}</td>
+                            <td>
+                                {{ teacher.status }}
+                            </td>
 
-                    <td>{{ teacher.designation }}</td>
+                            <td>
 
-                    <td>{{ teacher.mobile_number }}</td>
+                                <a
+                                    href="{% url 'teacher_detail' teacher.pk %}"
+                                    class="btn btn-sm btn-primary"
+                                >
+                                    View
+                                </a>
 
-                    <td>{{ teacher.status }}</td>
+                            </td>
 
-                    <td>
+                        </tr>
 
-                        <a
-                            href="{% url 'teacher_detail' teacher.pk %}"
-                            class="btn btn-primary"
-                        >
-                            View
-                        </a>
+                    {% empty %}
 
-                    </td>
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <strong>No teachers found.</strong>
+                                <br>
+                                Try changing your search or add a new teacher.
+                            </td>
+                        </tr>
 
-                </tr>
+                    {% endfor %}
 
-            {% empty %}
+                </tbody>
 
-                <tr>
-
-                    <td colspan="7">
-
-                        No teachers found.
-
-                    </td>
-
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-        <div class="pagination">
-
-            {% if page_obj.has_previous %}
-
-                <a href="?page={{ page_obj.previous_page_number }}">
-
-                    Previous
-
-                </a>
-
-            {% endif %}
-
-            <a>
-
-                {{ page_obj.number }}
-
-            </a>
-
-            {% if page_obj.has_next %}
-
-                <a href="?page={{ page_obj.next_page_number }}">
-
-                    Next
-
-                </a>
-
-            {% endif %}
+            </table>
 
         </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+
+            <div class="pagination">
+
+                {% if page_obj.has_previous %}
+                    <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">
+                        Previous
+                    </a>
+                {% endif %}
+
+                <span>
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">
+                        Next
+                    </a>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
 
     </div>
 
