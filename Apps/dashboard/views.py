@@ -1,13 +1,16 @@
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Q
 from django.shortcuts import render
 from django.utils import timezone
 
-from Apps.students.models import Student
-from Apps.teachers.models import Teacher
 from Apps.academics.models import AcademicLevel, Section
 from Apps.attendance.models import Attendance
+from Apps.students.models import Student
+from Apps.teachers.models import Teacher
+
+from .models import ActivityLog
 
 
 @login_required
@@ -26,9 +29,9 @@ def dashboard(request):
 
     week_start = today - timedelta(days=6)
 
-    # ------------------------------------------------------
+    # --------------------------------------------------
     # BASIC COUNTS
-    # ------------------------------------------------------
+    # --------------------------------------------------
 
     total_students = Student.objects.count()
 
@@ -40,35 +43,44 @@ def dashboard(request):
 
     total_sections = Section.objects.count()
 
-    # ------------------------------------------------------
+    # --------------------------------------------------
     # TODAY'S ATTENDANCE
-    # ------------------------------------------------------
+    # --------------------------------------------------
 
     today_attendance = Attendance.objects.filter(
         attendance_date=today
     )
 
-    today_total = today_attendance.count()
+    today_summary = today_attendance.aggregate(
+        total=Count("id"),
+        present=Count(
+            "id",
+            filter=Q(status="Present"),
+        ),
+        absent=Count(
+            "id",
+            filter=Q(status="Absent"),
+        ),
+        late=Count(
+            "id",
+            filter=Q(status="Late"),
+        ),
+        half_day=Count(
+            "id",
+            filter=Q(status="Half Day"),
+        ),
+        leave=Count(
+            "id",
+            filter=Q(status="Leave"),
+        ),
+    )
 
-    today_present = today_attendance.filter(
-        status="Present"
-    ).count()
-
-    today_absent = today_attendance.filter(
-        status="Absent"
-    ).count()
-
-    today_late = today_attendance.filter(
-        status="Late"
-    ).count()
-
-    today_half_day = today_attendance.filter(
-        status="Half Day"
-    ).count()
-
-    today_leave = today_attendance.filter(
-        status="Leave"
-    ).count()
+    today_total = today_summary["total"] or 0
+    today_present = today_summary["present"] or 0
+    today_absent = today_summary["absent"] or 0
+    today_late = today_summary["late"] or 0
+    today_half_day = today_summary["half_day"] or 0
+    today_leave = today_summary["leave"] or 0
 
     if today_total:
         attendance_percentage = round(
@@ -78,9 +90,32 @@ def dashboard(request):
     else:
         attendance_percentage = 0
 
-    # ------------------------------------------------------
+    # --------------------------------------------------
     # WEEKLY ATTENDANCE
-    # ------------------------------------------------------
+    # --------------------------------------------------
+
+    weekly_records = (
+        Attendance.objects
+        .filter(
+            attendance_date__range=[
+                week_start,
+                today,
+            ]
+        )
+        .values("attendance_date")
+        .annotate(
+            total=Count("id"),
+            present=Count(
+                "id",
+                filter=Q(status="Present"),
+            ),
+        )
+    )
+
+    weekly_lookup = {
+        record["attendance_date"]: record
+        for record in weekly_records
+    }
 
     weekly_attendance = []
 
@@ -91,15 +126,16 @@ def dashboard(request):
 
         current_date = week_start + timedelta(days=i)
 
-        records = Attendance.objects.filter(
-            attendance_date=current_date
+        record = weekly_lookup.get(
+            current_date,
+            {
+                "total": 0,
+                "present": 0,
+            },
         )
 
-        total = records.count()
-
-        present = records.filter(
-            status="Present"
-        ).count()
+        total = record["total"]
+        present = record["present"]
 
         weekly_total += total
         weekly_present += present
@@ -130,67 +166,36 @@ def dashboard(request):
     else:
         weekly_attendance_percentage = 0
 
-    # ------------------------------------------------------
+    # --------------------------------------------------
     # RECENT STUDENT ADMISSIONS
-    # ------------------------------------------------------
+    # --------------------------------------------------
 
-    recent_students = Student.objects.order_by(
-        "-created_at"
-    )[:5]
-
-    # ------------------------------------------------------
-    # RECENT ATTENDANCE
-    # ------------------------------------------------------
-
-    recent_attendance = Attendance.objects.select_related(
-        "student"
-    ).order_by(
-        "-created_at"
-    )[:5]
-
-    # ------------------------------------------------------
-    # UNIFIED ACTIVITY FEED
-    # ------------------------------------------------------
-
-    activities = []
-
-    for student in recent_students:
-
-        activities.append(
-            {
-                "type": "student",
-                "title": "New student admission",
-                "description": student.full_name,
-                "time": student.created_at,
-                "sort_time": student.created_at,
-            }
+    recent_students = (
+        Student.objects
+        .select_related(
+            "academic_level",
+            "section",
         )
-
-    for attendance in recent_attendance:
-
-        activities.append(
-            {
-                "type": "attendance",
-                "title": "Attendance marked",
-                "description": (
-                    f"{attendance.student.full_name} — "
-                    f"{attendance.status}"
-                ),
-                "time": attendance.created_at,
-                "sort_time": attendance.created_at,
-            }
-        )
-
-    activities.sort(
-        key=lambda item: item["sort_time"],
-        reverse=True,
+        .order_by("-created_at")[:5]
     )
 
-    activities = activities[:8]
+    # --------------------------------------------------
+    # RECENT ATTENDANCE
+    # --------------------------------------------------
 
-    # ------------------------------------------------------
-    # CONTEXT
-    # ------------------------------------------------------
+    recent_attendance = (
+        Attendance.objects
+        .select_related("student")
+        .order_by("-created_at")[:5]
+    )
+
+    # --------------------------------------------------
+    # ACTIVITY FEED
+    # --------------------------------------------------
+
+    activities = ActivityLog.objects.select_related(
+        "actor"
+    ).order_by("-created_at")[:8]
 
     context = {
         "today": today,
@@ -201,7 +206,6 @@ def dashboard(request):
         "total_classes": total_classes,
         "total_sections": total_sections,
 
-        # Today
         "today_total": today_total,
         "today_present": today_present,
         "today_absent": today_absent,
@@ -210,11 +214,11 @@ def dashboard(request):
         "today_leave": today_leave,
         "attendance_percentage": attendance_percentage,
 
-        # Weekly
         "weekly_attendance": weekly_attendance,
-        "weekly_attendance_percentage": weekly_attendance_percentage,
+        "weekly_attendance_percentage": (
+            weekly_attendance_percentage
+        ),
 
-        # Activity
         "recent_students": recent_students,
         "recent_attendance": recent_attendance,
         "activities": activities,

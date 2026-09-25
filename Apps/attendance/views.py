@@ -6,6 +6,8 @@ from .forms import AttendanceFilterForm
 
 from Apps.students.models import Student
 
+from Apps.dashboard.utils import log_activity
+
 from Apps.academics.models import (
     AcademicSession,
     AcademicLevel,
@@ -136,12 +138,9 @@ def mark_attendance(request):
 
             if status:
 
-                Attendance.objects.update_or_create(
-
+                attendance, created = Attendance.objects.update_or_create(
                     student=student,
-
                     attendance_date=attendance_date,
-
                     defaults={
                         "academic_session": academic_session,
                         "academic_level": academic_level,
@@ -150,6 +149,32 @@ def mark_attendance(request):
                         "marked_by": request.user,
                     },
                 )
+
+                if created:
+
+                    log_activity(
+                        actor=request.user,
+                        instance=attendance,
+                        module="Attendance",
+                        action="created",
+                        description=(
+                            f"Attendance marked for "
+                            f"{student.full_name}: {status}"
+                        ),
+                    )
+
+                else:
+
+                    log_activity(
+                        actor=request.user,
+                        instance=attendance,
+                        module="Attendance",
+                        action="updated",
+                        description=(
+                            f"Attendance updated for "
+                            f"{student.full_name}: {status}"
+                        ),
+                    )
 
         return redirect("attendance_records")
 
@@ -404,7 +429,21 @@ def attendance_edit(request, pk):
             "",
         )
 
+        attendance.marked_by = request.user
+
         attendance.save()
+
+        log_activity(
+            actor=request.user,
+            instance=attendance,
+            module="Attendance",
+            action="updated",
+            description=(
+                f"Attendance updated for "
+                f"{attendance.student.full_name}: "
+                f"{attendance.status}"
+            ),
+        )
 
         return redirect(
             "attendance_detail",
@@ -432,6 +471,23 @@ def attendance_delete(request, pk):
     )
 
     if request.method == "POST":
+
+        student_name = attendance.student.full_name
+        attendance_date = attendance.attendance_date
+        attendance_status = attendance.status
+
+        log_activity(
+            actor=request.user,
+            instance=attendance,
+            module="Attendance",
+            action="deleted",
+            description=(
+                f"Attendance deleted for "
+                f"{student_name} on "
+                f"{attendance_date}: "
+                f"{attendance_status}"
+            ),
+        )
 
         attendance.delete()
 

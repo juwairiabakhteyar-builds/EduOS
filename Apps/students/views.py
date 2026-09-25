@@ -11,6 +11,7 @@ from Apps.guardians.models import Guardian
 from .forms import StudentForm
 from .models import Student
 
+from Apps.dashboard.utils import log_activity
 
 def student_list(request):
     query = request.GET.get("q", "").strip()
@@ -75,6 +76,14 @@ def student_create(request):
             student = form.save(commit=False)
             student.guardian = guardian
             student.save()
+
+            log_activity(
+                actor=request.user,
+                instance=student,
+                module="Students",
+                action="created",
+                description=f"New student admitted: {student.full_name}",
+            )
 
             messages.success(
                 request,
@@ -178,6 +187,14 @@ def student_update(request, pk):
 
             student.save()
 
+            log_activity(
+                actor=request.user,
+                instance=student,
+                module="Students",
+                action="updated",
+                description=f"Student updated: {student.full_name}",
+            )
+
             messages.success(
                 request,
                 f"{student.full_name} was updated successfully.",
@@ -214,6 +231,14 @@ def student_delete(request, pk):
     if request.method == "POST":
 
         student_name = student.full_name
+
+        log_activity(
+            actor=request.user,
+            instance=student,
+            module="Students",
+            action="deleted",
+            description=f"Student deleted: {student_name}",
+        )
 
         student.delete()
 

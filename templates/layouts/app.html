@@ -28,6 +28,8 @@
 
 <body>
 
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+
     <div class="app-shell">
 
 
@@ -53,6 +55,9 @@
                 <span class="eduos-brand-label">
                     SCHOOL ERP
                 </span>
+                {% if request.user.school %}
+                <span class="eduos-school-label">{{ request.user.school.name }}</span>
+                {% endif %}
 
             </div>
 
@@ -306,7 +311,7 @@
         <!-- MAIN AREA -->
         <!-- ================================================= -->
 
-        <main class="main-area">
+        <main class="main-area" id="mainContent">
 
 
             <!-- TOPBAR -->
@@ -341,6 +346,11 @@
                                 School ERP
                             {% endblock %}
                         </span>
+                        {% if request.user.school %}
+                        <span class="topbar-school">
+                            {{ request.user.school.name }}
+                        </span>
+                        {% endif %}
 
                     </div>
 
@@ -363,7 +373,7 @@
 
                         <input
                             type="search"
-                            placeholder="Search..."
+                            placeholder="Search this area..."
                             aria-label="Search"
                         >
 

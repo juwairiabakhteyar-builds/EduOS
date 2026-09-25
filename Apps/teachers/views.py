@@ -5,6 +5,8 @@ from django.core.paginator import Paginator
 from .models import Teacher
 from .forms import TeacherForm
 
+from Apps.dashboard.utils import log_activity
+
 
 def teacher_list(request):
 
@@ -54,6 +56,14 @@ def teacher_create(request):
         if form.is_valid():
 
             teacher = form.save()
+
+            log_activity(
+            actor=request.user,
+            instance=teacher,
+            module="Teachers",
+            action="created",
+            description=f"New teacher added: {teacher.full_name}",
+        )
 
             messages.success(
                 request,
@@ -123,6 +133,14 @@ def teacher_update(request, pk):
 
             form.save()
 
+            log_activity(
+            actor=request.user,
+            instance=teacher,
+            module="Teachers",
+            action="updated",
+            description=f"Teacher updated: {teacher.full_name}",
+        )
+
             messages.success(
                 request,
                 "Teacher updated successfully."
@@ -164,6 +182,16 @@ def teacher_delete(request, pk):
     )
 
     if request.method == "POST":
+
+        teacher_name = teacher.full_name
+
+        log_activity(
+            actor=request.user,
+            instance=teacher,
+            module="Teachers",
+            action="deleted",
+            description=f"Teacher deleted: {teacher_name}",
+        )
 
         teacher.delete()
 
