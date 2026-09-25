@@ -1,4 +1,4 @@
-{% extends "layouts/app.html" %}
+﻿{% extends "layouts/app.html" %}
 
 {% block title %}
 Leave Application | EduOS
@@ -22,7 +22,7 @@ Leave Application | EduOS
             href="{% url 'leave_application_list' %}"
             class="btn btn-secondary"
         >
-            ← Back
+            â† Back
         </a>
 
     </div>
@@ -85,17 +85,17 @@ Leave Application | EduOS
 
             <a href="{% url 'leave_application_approve' application.pk %}"
             class="btn btn-success">
-                ✅ Approve
+                âœ… Approve
             </a>
 
             <a href="{% url 'leave_application_reject' application.pk %}"
             class="btn btn-danger">
-                ❌ Reject
+                âŒ Reject
             </a>
 
             <a href="{% url 'leave_application_cancel' application.pk %}"
             class="btn btn-secondary">
-                🚫 Cancel
+                ðŸš« Cancel
             </a>
 
             {% endif %}

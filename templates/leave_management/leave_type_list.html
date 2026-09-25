@@ -1,4 +1,4 @@
-{% extends "layouts/app.html" %}
+﻿{% extends "layouts/app.html" %}
 
 {% block title %}
 Leave Types | EduOS
@@ -166,7 +166,7 @@ Leave Types | EduOS
             {% if page_obj.has_previous %}
 
                 <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
-                    ← Previous
+                    â† Previous
                 </a>
 
             {% endif %}
@@ -180,7 +180,7 @@ Leave Types | EduOS
             {% if page_obj.has_next %}
 
                 <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
-                    Next →
+                    Next â†’
                 </a>
 
             {% endif %}

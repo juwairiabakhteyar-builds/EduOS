@@ -3758,3 +3758,16 @@ textarea.eduos-input{resize:vertical;}
     }
 
 }
+
+/* Unified ERP logout form */
+.topbar-logout-form {
+    margin: 0;
+    padding: 0;
+}
+
+.topbar-logout {
+    border: 0;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+}

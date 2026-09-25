@@ -1,4 +1,4 @@
-{% extends "layouts/app.html" %}
+﻿{% extends "layouts/app.html" %}
 
 {% block title %}
 {{ student.full_name }} | EduOS
@@ -15,7 +15,7 @@
 
             <p>
                 Student ID: <strong>{{ student.student_id }}</strong>
-                &nbsp; • &nbsp;
+                &nbsp; â€¢ &nbsp;
                 Admission No:
                 <strong>{{ student.admission_number }}</strong>
             </p>
@@ -27,14 +27,14 @@
                 href="{% url 'student_update' student.pk %}"
                 class="btn-primary"
             >
-                ✏ Edit Student
+                âœ Edit Student
             </a>
 
             <a
                 href="{% url 'student_list' %}"
                 class="btn-secondary"
             >
-                ← Students
+                â† Students
             </a>
 
         </div>
@@ -83,7 +83,7 @@
                             font-size:60px;
                         "
                     >
-                        👤
+                        ðŸ‘¤
                     </div>
 
                 {% endif %}
@@ -96,7 +96,7 @@
 
                 <p>
                     <strong>{{ student.academic_level }}</strong>
-                    •
+                    â€¢
                     Section {{ student.section }}
                 </p>
 
@@ -117,7 +117,7 @@
 
         <div class="form-section">
 
-            <h2>👤 Student Information</h2>
+            <h2>ðŸ‘¤ Student Information</h2>
 
             <table class="erp-table">
 
@@ -164,7 +164,7 @@
 
         <div class="form-section">
 
-            <h2>🎓 Academic Information</h2>
+            <h2>ðŸŽ“ Academic Information</h2>
 
             <table class="erp-table">
 
@@ -191,7 +191,7 @@
 
         <div class="form-section">
 
-            <h2>👨‍👩‍👧 Guardian Information</h2>
+            <h2>ðŸ‘¨â€ðŸ‘©â€ðŸ‘§ Guardian Information</h2>
 
             {% if student.guardian %}
 
@@ -222,14 +222,14 @@
                     <tr>
                         <th>Email</th>
                         <td>
-                            {{ student.guardian.email|default:"—" }}
+                            {{ student.guardian.email|default:"â€”" }}
                         </td>
                     </tr>
 
                     <tr>
                         <th>Occupation</th>
                         <td>
-                            {{ student.guardian.occupation|default:"—" }}
+                            {{ student.guardian.occupation|default:"â€”" }}
                         </td>
                     </tr>
 
@@ -249,7 +249,7 @@
 
         <div class="form-section">
 
-            <h2>📊 Student Activity</h2>
+            <h2>ðŸ“Š Student Activity</h2>
 
             <div class="row">
 
@@ -284,21 +284,21 @@
                 href="{% url 'student_update' student.pk %}"
                 class="btn-primary"
             >
-                ✏ Edit Student
+                âœ Edit Student
             </a>
 
             <a
                 href="{% url 'student_delete' student.pk %}"
                 class="btn-danger"
             >
-                🗑 Delete Student
+                ðŸ—‘ Delete Student
             </a>
 
             <a
                 href="{% url 'student_list' %}"
                 class="btn-secondary"
             >
-                ← Back to Students
+                â† Back to Students
             </a>
 
         </div>

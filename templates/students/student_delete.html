@@ -1,4 +1,4 @@
-{% extends "layouts/app.html" %}
+﻿{% extends "layouts/app.html" %}
 
 {% block title %}
 Delete Student | EduOS
@@ -24,7 +24,7 @@ Delete Student | EduOS
         {% csrf_token %}
 
         <button type="submit" class="btn-danger">
-            🗑 Delete Student
+            ðŸ—‘ Delete Student
         </button>
 
         <a href="{% url 'student_detail' student.id %}"

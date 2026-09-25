@@ -1,4 +1,4 @@
-{% extends "layouts/app.html" %}
+﻿{% extends "layouts/app.html" %}
 
 {% block title %}
 Students | EduOS
@@ -104,7 +104,7 @@ Students | EduOS
                                         background:#f1f5f9;
                                     "
                                 >
-                                    👤
+                                    ðŸ‘¤
                                 </span>
                             {% endif %}
                         </td>
@@ -142,7 +142,7 @@ Students | EduOS
                                 {{ student.guardian.first_name }}
                                 {{ student.guardian.last_name }}
                             {% else %}
-                                —
+                                â€”
                             {% endif %}
                         </td>
 
@@ -237,7 +237,7 @@ Students | EduOS
                         href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}"
                         class="btn-secondary"
                     >
-                        ← Previous
+                        â† Previous
                     </a>
                 {% endif %}
 
@@ -251,7 +251,7 @@ Students | EduOS
                         href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}"
                         class="btn-secondary"
                     >
-                        Next →
+                        Next â†’
                     </a>
                 {% endif %}
 
