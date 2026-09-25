@@ -158,7 +158,7 @@ Dashboard | EduOS
                     <div class="activity-text">
 
                         <strong>
-                            {{ activity.title }}
+                            {{ activity.action|capfirst }} {{ activity.module|capfirst }}
                         </strong>
 
                         <span>
@@ -166,7 +166,7 @@ Dashboard | EduOS
                         </span>
 
                         <small>
-                            {{ activity.time|timesince }} ago
+                            {{ activity.created_at|timesince }} ago
                         </small>
 
                     </div>
