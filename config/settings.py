@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "Apps.leave_management",
     "Apps.attendance",
     "Apps.library",
+    "Apps.transportation",
 ]
 
 MIDDLEWARE = [
