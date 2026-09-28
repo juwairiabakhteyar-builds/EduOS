@@ -1,0 +1,94 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Issue Records | EduOS{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">Issue Records</h1>
+            <p class="text-muted mb-0">Track issued, returned, and overdue library books.</p>
+        </div>
+        <a href="{% url 'library:issue_create' %}" class="btn btn-primary">
+            + Issue Book
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            {% if issues %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Book</th>
+                            <th>Member</th>
+                            <th>Issued</th>
+                            <th>Due</th>
+                            <th>Returned</th>
+                            <th>Status</th>
+                            <th>Fine</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issue in issues %}
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">{{ issue.book.title }}</div>
+                                <small class="text-muted">{{ issue.book.author|default:"Unknown author" }}</small>
+                            </td>
+                            <td>
+                                <div>{{ issue.member.user.get_full_name|default:issue.member.user.username }}</div>
+                                <small class="text-muted">{{ issue.member.membership_id }}</small>
+                            </td>
+                            <td>{{ issue.issued_date|date:"d M Y" }}</td>
+                            <td>{{ issue.due_date|date:"d M Y" }}</td>
+                            <td>
+                                {% if issue.returned_date %}
+                                    {{ issue.returned_date|date:"d M Y" }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if issue.status == "returned" %}
+                                    <span class="badge bg-success">Returned</span>
+                                {% elif issue.status == "overdue" %}
+                                    <span class="badge bg-danger">Overdue</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">Issued</span>
+                                {% endif %}
+                            </td>
+                            <td>?{{ issue.fine_amount|default:"0.00" }}</td>
+                            <td class="text-end">
+                                {% if issue.status != "returned" %}
+                                <a href="{% url 'library:issue_return' issue.pk %}"
+                                   class="btn btn-sm btn-outline-success">
+                                    Return
+                                </a>
+                                {% else %}
+                                <span class="text-muted small">Completed</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="fs-1 mb-3">??</div>
+                <h5>No issue records found</h5>
+                <p class="text-muted mb-3">No books have been issued yet.</p>
+                <a href="{% url 'library:issue_create' %}" class="btn btn-primary">
+                    Issue First Book
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

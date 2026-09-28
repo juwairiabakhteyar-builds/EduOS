@@ -37,6 +37,9 @@ urlpatterns = [
     # Academics
     path("academics/", include("Apps.academics.urls")),
 
+    # Library
+    path("library/", include("Apps.library.urls")),
+
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,122 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Books | EduOS{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Books</h1>
+            <p class="text-muted mb-0">Manage books available in the EduOS library.</p>
+        </div>
+
+        <a href="{% url 'library:book_create' %}" class="btn btn-primary">
+            Add Book
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-2">
+                <div class="col-md-10">
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ query }}"
+                        class="form-control"
+                        placeholder="Search by title, author, ISBN or publisher"
+                    >
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-primary w-100">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                            <th>ISBN</th>
+                            <th>Copies</th>
+                            <th>Available</th>
+                            <th>Shelf</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for book in books %}
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">{{ book.title }}</div>
+                                {% if book.publisher %}
+                                    <small class="text-muted">{{ book.publisher }}</small>
+                                {% endif %}
+                            </td>
+
+                            <td>{{ book.author|default:"—" }}</td>
+
+                            <td>
+                                {{ book.category.name|default:"Uncategorized" }}
+                            </td>
+
+                            <td>{{ book.isbn|default:"—" }}</td>
+
+                            <td>{{ book.quantity }}</td>
+
+                            <td>
+                                {% if book.available_quantity > 0 %}
+                                    <span class="badge bg-success">
+                                        {{ book.available_quantity }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger">
+                                        0
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td>{{ book.shelf_location|default:"—" }}</td>
+
+                            <td class="text-end">
+                                <a
+                                    href="{% url 'library:book_update' book.pk %}"
+                                    class="btn btn-sm btn-outline-primary"
+                                >
+                                    Edit
+                                </a>
+
+                                <a
+                                    href="{% url 'library:book_delete' book.pk %}"
+                                    class="btn btn-sm btn-outline-danger"
+                                >
+                                    Remove
+                                </a>
+                            </td>
+                        </tr>
+
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted">
+                                No books found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

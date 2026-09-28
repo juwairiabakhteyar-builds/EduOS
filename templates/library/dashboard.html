@@ -1,0 +1,140 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Library | EduOS{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Library</h1>
+            <p class="text-muted mb-0">Manage books, circulation and library records.</p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="{% url 'library:book_list' %}" class="btn btn-primary">
+                View Books
+            </a>
+            <a href="{% url 'library:issue_list' %}" class="btn btn-outline-primary">
+                Issue Records
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Book Titles</p>
+                    <h2 class="mb-0">{{ total_books }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Total Copies</p>
+                    <h2 class="mb-0">{{ total_copies }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Available Copies</p>
+                    <h2 class="mb-0">{{ available_copies }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Issued Books</p>
+                    <h2 class="mb-0">{{ issued_books }}</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Issue Activity</h5>
+                </div>
+
+                <div class="card-body p-0">
+                    {% if recent_issues %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Book</th>
+                                    <th>Member</th>
+                                    <th>Issued</th>
+                                    <th>Due</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for issue in recent_issues %}
+                                <tr>
+                                    <td>{{ issue.book.title }}</td>
+                                    <td>{{ issue.member.membership_id }}</td>
+                                    <td>{{ issue.issued_date }}</td>
+                                    <td>{{ issue.due_date }}</td>
+                                    <td>
+                                        <span class="badge bg-secondary">
+                                            {{ issue.get_status_display }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="p-4 text-center text-muted">
+                        No library issue records yet.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Library Overview</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Issued</span>
+                        <strong>{{ issued_books }}</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Overdue</span>
+                        <strong>{{ overdue_books }}</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <span>Available Copies</span>
+                        <strong>{{ available_copies }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
