@@ -1,0 +1,278 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Assignments | EduOS{% endblock %}
+
+{% block page_name %}Homework & Assignments{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Assignments</h1>
+            <p class="text-muted mb-0">
+                Search and manage homework assigned to students.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'homework:assignment_create' %}"
+            class="btn btn-primary"
+        >
+            + Create Assignment
+        </a>
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form method="get">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-md-9">
+
+                        <label
+                            for="assignmentSearch"
+                            class="form-label"
+                        >
+                            Search assignments
+                        </label>
+
+                        <input
+                            type="search"
+                            id="assignmentSearch"
+                            name="q"
+                            value="{{ query }}"
+                            class="form-control"
+                            placeholder="Search by title, subject, description or teacher..."
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-3 d-flex gap-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary flex-grow-1"
+                        >
+                            Search
+                        </button>
+
+                        {% if query %}
+
+                        <a
+                            href="{% url 'homework:assignment_list' %}"
+                            class="btn btn-outline-secondary"
+                        >
+                            Clear
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ASSIGNMENT TABLE -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+                Assignment Records
+            </h5>
+
+            <span class="text-muted small">
+                {{ assignments|length }} record{{ assignments|length|pluralize }}
+            </span>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            {% if assignments %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0 align-middle">
+
+                    <thead>
+
+                        <tr>
+                            <th>Assignment</th>
+                            <th>Subject</th>
+                            <th>Teacher</th>
+                            <th>Class</th>
+                            <th>Assigned</th>
+                            <th>Due</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for assignment in assignments %}
+
+                        <tr>
+
+                            <td>
+                                <div>
+                                    <strong>
+                                        {{ assignment.title }}
+                                    </strong>
+
+                                    {% if assignment.attachment %}
+                                    <div class="small text-muted">
+                                        Attachment available
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+
+
+                            <td>
+                                {{ assignment.subject }}
+                            </td>
+
+
+                            <td>
+                                {{ assignment.teacher.full_name|default:assignment.teacher.first_name }}
+                            </td>
+
+
+                            <td>
+                                {{ assignment.academic_level.name }}
+                                -
+                                {{ assignment.section.name }}
+                            </td>
+
+
+                            <td>
+                                {{ assignment.assigned_date }}
+                            </td>
+
+
+                            <td>
+                                {{ assignment.due_date }}
+                            </td>
+
+
+                            <td>
+
+                                {% if assignment.is_published %}
+
+                                <span class="badge bg-success">
+                                    Published
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-secondary">
+                                    Draft
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td class="text-end">
+
+                                <div class="d-flex justify-content-end gap-2">
+
+                                    <a
+                                        href="{% url 'homework:assignment_update' assignment.pk %}"
+                                        class="btn btn-sm btn-outline-primary"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{% url 'homework:assignment_delete' assignment.pk %}"
+                                        class="btn btn-sm btn-outline-danger"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="p-5 text-center text-muted">
+
+                {% if query %}
+
+                <h5 class="mb-2">
+                    No assignments found
+                </h5>
+
+                <p class="mb-3">
+                    No assignment matched "{{ query }}".
+                </p>
+
+                <a
+                    href="{% url 'homework:assignment_list' %}"
+                    class="btn btn-outline-primary"
+                >
+                    Clear Search
+                </a>
+
+                {% else %}
+
+                <h5 class="mb-2">
+                    No assignments yet
+                </h5>
+
+                <p class="mb-3">
+                    Create your first homework assignment to get started.
+                </p>
+
+                <a
+                    href="{% url 'homework:assignment_create' %}"
+                    class="btn btn-primary"
+                >
+                    Create Assignment
+                </a>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

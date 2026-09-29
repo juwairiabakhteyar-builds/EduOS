@@ -194,6 +194,21 @@
         <span>Leave Management</span>
     </a>
 
+        <a
+        href="{% url 'homework:dashboard' %}"
+        class="nav-item {% if request.resolver_match.app_name == 'homework' %}active{% endif %}"
+    >
+        <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M5 4h14v16H5z"/>
+                <path d="M8 8h8"/>
+                <path d="M8 12h5"/>
+                <path d="M8 16h7"/>
+            </svg>
+        </span>
+        <span>Homework &amp; Assignments</span>
+    </a>
+
     <a href="#" class="nav-item">
         <span class="nav-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">

@@ -39,6 +39,7 @@ urlpatterns = [
 
     # Library
     path("library/", include("Apps.library.urls")),
+    path("homework/", include("Apps.homework.urls")),
 
 ]
 
