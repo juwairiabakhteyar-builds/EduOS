@@ -25,8 +25,8 @@ urlpatterns = [
     # Leave Management
     path(
         "leave-management/",
-         include("Apps.leave_management.urls"),
-         ),
+        include("Apps.leave_management.urls"),
+    ),
 
     # Attendance
     path(
@@ -39,12 +39,15 @@ urlpatterns = [
 
     # Library
     path("library/", include("Apps.library.urls")),
+
+    # Homework
     path("homework/", include("Apps.homework.urls")),
 
+    # Exams
+    path("exams/", include("Apps.exams.urls")),
 ]
 
 if settings.DEBUG:
-
     urlpatterns += static(
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,

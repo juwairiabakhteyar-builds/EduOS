@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "Apps.library",
     "Apps.transportation",
     "Apps.homework",
+    "Apps.exams",
 ]
 
 MIDDLEWARE = [

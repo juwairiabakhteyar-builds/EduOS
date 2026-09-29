@@ -1,0 +1,167 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Exams | EduOS{% endblock %}
+
+{% block page_name %}Examinations{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Examinations</h1>
+            <p class="text-muted mb-0">
+                Plan examinations, manage subjects, and record student results.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'exams:exam_create' %}"
+            class="btn btn-primary"
+        >
+            + Create Examination
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Examination Records</h5>
+
+            <span class="text-muted small">
+                {{ exams|length }} examination{{ exams|length|pluralize }}
+            </span>
+        </div>
+
+        <div class="card-body p-0">
+
+            {% if exams %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0 align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Examination</th>
+                            <th>Academic Session</th>
+                            <th>Class</th>
+                            <th>Schedule</th>
+                            <th>Subjects</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for exam in exams %}
+
+                        <tr>
+
+                            <td>
+                                <div>
+                                    <strong>{{ exam.name }}</strong>
+                                </div>
+                            </td>
+
+                            <td>
+                                {{ exam.academic_session.name }}
+                            </td>
+
+                            <td>
+                                {{ exam.academic_level.name }}
+                            </td>
+
+                            <td>
+                                {{ exam.start_date }}
+                                <span class="text-muted">to</span>
+                                {{ exam.end_date }}
+                            </td>
+
+                            <td>
+                                <span class="badge bg-light text-dark">
+                                    {{ exam.subject_count }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if exam.is_published %}
+                                    <span class="badge bg-success">
+                                        Published
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">
+                                        Draft
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td class="text-end">
+
+                                <div class="d-flex justify-content-end gap-2">
+
+                                    <a
+                                        href="{% url 'exams:exam_detail' exam.pk %}"
+                                        class="btn btn-sm btn-outline-primary"
+                                    >
+                                        View
+                                    </a>
+
+                                    <a
+                                        href="{% url 'exams:exam_update' exam.pk %}"
+                                        class="btn btn-sm btn-outline-secondary"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{% url 'exams:exam_delete' exam.pk %}"
+                                        class="btn btn-sm btn-outline-danger"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="p-5 text-center text-muted">
+
+                <h5 class="mb-2">
+                    No examinations yet
+                </h5>
+
+                <p class="mb-3">
+                    Create your first examination to start managing subjects and results.
+                </p>
+
+                <a
+                    href="{% url 'exams:exam_create' %}"
+                    class="btn btn-primary"
+                >
+                    Create Examination
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
