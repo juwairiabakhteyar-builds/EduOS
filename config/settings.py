@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "Apps.transportation",
     "Apps.homework",
     "Apps.exams",
+    "Apps.notifications",
 ]
 
 MIDDLEWARE = [

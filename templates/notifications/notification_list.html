@@ -1,0 +1,38 @@
+{% extends "layouts/app.html" %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">COMMUNICATION</p>
+        <h1>Notifications</h1>
+        <p class="page-subtitle">Stay updated with important school announcements.</p>
+    </div>
+
+    {% if can_manage %}
+    <a href="{% url 'notifications:create' %}" class="btn btn-primary">
+        + New Notification
+    </a>
+    {% endif %}
+</div>
+
+<div class="card-grid">
+    {% for notification in notifications %}
+    <a href="{% url 'notifications:detail' notification.pk %}" class="dashboard-card">
+        <div class="card-content">
+            <div class="card-label">{{ notification.get_priority_display }}</div>
+            <h3>{{ notification.title }}</h3>
+            <p>{{ notification.message|truncatewords:24 }}</p>
+            <small>{{ notification.created_at|date:"d M Y, h:i A" }}</small>
+        </div>
+        {% if not notification.is_read %}
+        <span class="status-badge">Unread</span>
+        {% endif %}
+    </a>
+    {% empty %}
+    <div class="empty-state">
+        <h3>No notifications yet</h3>
+        <p>You're all caught up.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

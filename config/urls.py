@@ -45,6 +45,7 @@ urlpatterns = [
 
     # Exams
     path("exams/", include("Apps.exams.urls")),
+    path("notifications/", include("Apps.notifications.urls")),
 ]
 
 if settings.DEBUG:

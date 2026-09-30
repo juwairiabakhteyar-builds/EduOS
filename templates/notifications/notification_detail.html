@@ -1,0 +1,37 @@
+{% extends "layouts/app.html" %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">COMMUNICATION</p>
+        <h1>{{ notification.title }}</h1>
+        <p class="page-subtitle">
+            {{ notification.created_at|date:"d M Y, h:i A" }}
+        </p>
+    </div>
+
+    {% if can_manage %}
+    <div class="page-actions">
+        <a href="{% url 'notifications:edit' notification.pk %}" class="btn btn-secondary">
+            Edit
+        </a>
+        <a href="{% url 'notifications:delete' notification.pk %}" class="btn btn-danger">
+            Delete
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-content">
+        <div class="card-label">
+            {{ notification.get_priority_display }} ·
+            {{ notification.get_audience_display }}
+        </div>
+
+        <div class="notification-message">
+            {{ notification.message|linebreaks }}
+        </div>
+    </div>
+</div>
+{% endblock %}

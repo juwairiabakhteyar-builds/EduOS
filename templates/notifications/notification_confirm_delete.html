@@ -1,0 +1,30 @@
+{% extends "layouts/app.html" %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">COMMUNICATION</p>
+        <h1>Delete Notification</h1>
+        <p class="page-subtitle">This action cannot be undone.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-content">
+        <h3>{{ notification.title }}</h3>
+        <p>Are you sure you want to delete this notification?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-actions">
+                <a href="{% url 'notifications:detail' notification.pk %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    Delete Notification
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
